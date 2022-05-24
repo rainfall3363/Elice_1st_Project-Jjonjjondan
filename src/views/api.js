@@ -4,9 +4,8 @@ async function get(endpoint, params = '') {
   console.log(`%cGET 요청: ${apiUrl} `, 'color: #a25cd1;');
 
   const res = await fetch(apiUrl, {
-    // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     },
   });
 
@@ -26,8 +25,6 @@ async function get(endpoint, params = '') {
 // api 로 POST 요청 (/endpoint 로, JSON 데이터 형태로 요청함)
 async function post(endpoint, data) {
   const apiUrl = endpoint;
-  // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
-  // 예시: {name: "Kim"} => {"name": "Kim"}
   const bodyData = JSON.stringify(data);
   console.log(`%cPOST 요청: ${apiUrl}`, 'color: #296aba;');
   console.log(`%cPOST 요청 데이터: ${bodyData}`, 'color: #296aba;');
@@ -36,7 +33,7 @@ async function post(endpoint, data) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     },
     body: bodyData,
   });
@@ -68,7 +65,7 @@ async function patch(endpoint, params = '', data) {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     },
     body: bodyData,
   });
@@ -86,8 +83,6 @@ async function patch(endpoint, params = '', data) {
   return result;
 }
 
-// 아래 함수명에 관해, delete 단어는 자바스크립트의 reserved 단어이기에,
-// 여기서는 우선 delete 대신 del로 쓰고 아래 export 시에 delete로 alias 함.
 async function del(endpoint, params = '', data = {}) {
   const apiUrl = `${endpoint}/${params}`;
   const bodyData = JSON.stringify(data);
@@ -99,7 +94,7 @@ async function del(endpoint, params = '', data = {}) {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     },
     body: bodyData,
   });
@@ -117,5 +112,4 @@ async function del(endpoint, params = '', data = {}) {
   return result;
 }
 
-// 아래처럼 export하면, import * as Api 로 할 시 Api.get, Api.post 등으로 쓸 수 있음.
 export { get, post, patch, del as delete };
