@@ -80,6 +80,14 @@ class UserService {
     return users;
   }
 
+  // 유저 정보 불러오기
+  async getUserInfo(userId) {
+    const user = await this.userModel.findById(userId);
+    const { email, fullName, phoneNumber, address } = user;
+
+    return { email, fullName, phoneNumber, address };
+  }
+
   // 유저정보 수정, 현재 비밀번호가 있어야 수정 가능함.
   async setUser(userInfoRequired, toUpdate) {
     // 객체 destructuring
