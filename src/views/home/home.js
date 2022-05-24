@@ -3,7 +3,10 @@
 // 코드 예시를 남겨 두었습니다.
 
 import * as Api from '/api.js';
+import { loginLogout } from '/useful-functions.js';
 import { randomId } from '/useful-functions.js';
+
+window.onload = loginLogout();
 
 // 요소(element), input 혹은 상수
 const landingDiv = document.querySelector('#landingDiv');
