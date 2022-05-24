@@ -27,3 +27,21 @@ export const convertToNumber = (string) => {
 export const wait = (ms) => {
   return new Promise((r) => setTimeout(r, ms));
 };
+
+export const loginLogout = () => {
+  // 세션스토리지에 로그인 정보를 확인해서, 로그인 돼 있는 사람이면 로그인 - 로그아웃
+  // 상태가 로그아웃이라면 클릭 시 로그아웃 되고 , 로그인으로 변경
+  const data = sessionStorage.getItem('token');
+  const login = document.getElementById('login_id');
+  if (data) {
+    login.innerText = '로그아웃';
+  }
+  if (login.innerText === '로그아웃') {
+    login.addEventListener('click', (logout) => {
+      logout.preventDefault();
+      login.innerText = '로그인';
+      sessionStorage.clear();
+      location.reload();
+    });
+  }
+};
