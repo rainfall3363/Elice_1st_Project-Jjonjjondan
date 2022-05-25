@@ -35,7 +35,7 @@ async function handleSubmit(e) {
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;
   const isPasswordSame = password === passwordConfirm;
-  const isPhoneNumberValid = phoneNumber.length === 0;
+  const isPhoneNumberValid = phoneNumber.length !== 0;
 
   if (!isEmailValid) {
     return alert('이메일 형식이 맞지 않습니다.');
