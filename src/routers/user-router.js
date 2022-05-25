@@ -144,4 +144,19 @@ userRouter.patch(
   }
 );
 
+// 사용자 정보 삭제
+userRouter.delete(
+  '/userDelete',
+  loginRequired,
+  async function (req, res, next) {
+    try {
+      const deletedUserInfo = await userService.deleteUser(req.currentUserId);
+
+      res.status(200).json(deletedUserInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export { userRouter };
