@@ -3,11 +3,6 @@ import { Schema } from 'mongoose';
 // 상품번호, 상품명, 가격, 설명, 제조사, 카테고리
 const ProductSchema = new Schema(
   {
-    productId: {
-      // 추후 nanoid로 구현
-      type: Number,
-      required: true,
-    },
     title: {
       type: String,
       required: true,

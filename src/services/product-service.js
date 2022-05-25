@@ -8,7 +8,7 @@ class ProductService {
 
   // 상품 등록
   async addProduct(productInfo) {
-    const { email, fullName, password } = userInfo;
+    const { title, price, description, maker, category } = productInfo;
 
     // 상품명 중복 확인
     const product = await this.productModel.findByTitle(title);
@@ -33,13 +33,13 @@ class ProductService {
   // 상품 상세정보 불러오기
   async getProductInfo(productId) {
     const product = await this.productModel.findByProductId(productId);
-    const { productId, title, price, description, maker, category } = product;
+    const { title, price, description, maker, category } = product;
 
-    return { productId, title, price, description, maker, category };
+    return { title, price, description, maker, category };
   }
 
   // 상품정보 수정 -> 추후 admin 비밀번호 재입력 필요하게 개발
-  async setProduct(toUpdate) {
+  async setProduct(productId, toUpdate) {
     // 우선 해당 id의 상품이 db에 있는지 확인
     let product = await this.productModel.findByProductId(productId);
 

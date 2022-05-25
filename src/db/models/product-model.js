@@ -5,7 +5,7 @@ const Product = model('product', ProductSchema);
 
 export class ProductModel {
   async findByProductId(productId) {
-    const product = await Product.findOne({ productId });
+    const product = await Product.findOne({ _id: productId });
     return product;
   }
 
@@ -25,7 +25,7 @@ export class ProductModel {
   }
 
   async update({ productId, update }) {
-    const filter = { productId };
+    const filter = { _id: productId };
     const option = { returnOriginal: false };
 
     const updatedProduct = await User.findOneAndUpdate(filter, update, option);
