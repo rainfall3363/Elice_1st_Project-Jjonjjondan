@@ -1,7 +1,7 @@
 import { productModel } from '../db';
 
 class ProductService {
-  // 본 파일의 맨 아래에서, new UserService(userModel) 하면, 이 함수의 인자로 전달됨
+  // 본 파일의 맨 아래에서, new ProductService(productModel) 하면, 이 함수의 인자로 전달됨
   constructor(productModel) {
     this.productModel = productModel;
   }
@@ -38,7 +38,7 @@ class ProductService {
     return { title, price, description, maker, category };
   }
 
-  // 상품정보 수정 -> 추후 admin 비밀번호 재입력 필요하게 개발
+  // 상품정보 수정
   async setProduct(productId, toUpdate) {
     // 우선 해당 id의 상품이 db에 있는지 확인
     let product = await this.productModel.findByProductId(productId);
