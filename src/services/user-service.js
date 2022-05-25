@@ -83,6 +83,11 @@ class UserService {
   // 유저 정보 불러오기
   async getUserInfo(userId) {
     const user = await this.userModel.findById(userId);
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!user) {
+      throw new Error('해당 회원 정보가 없습니다. 유효한 ID가 아닙니다.');
+    }
+
     const { email, fullName, phoneNumber, address } = user;
 
     return { email, fullName, phoneNumber, address };
