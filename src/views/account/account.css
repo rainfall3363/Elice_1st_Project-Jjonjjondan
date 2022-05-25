@@ -1,0 +1,25 @@
+main {
+  height: 85vh;
+}
+
+.profile_image {
+  width: 300px;
+  height: 300px;
+}
+
+.information_section {
+  width: 50vw;
+}
+
+.user_information {
+  width: 20.8vw;
+}
+
+.user_information > div {
+  width: 100%;
+}
+
+i {
+  font-size: 1.3rem;
+  color: grey;
+}
