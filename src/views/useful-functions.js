@@ -51,3 +51,13 @@ export const logoutUser = () => {
     });
   }
 };
+
+//로그인 시 회원가입 텍스트 계정관리로 변경
+export const setRegister = () => {
+  const data = sessionStorage.getItem('token');
+  const register = document.getElementById('registerId');
+  if (data) {
+    register.innerText = '마이페이지';
+    register.href = '/account'; //임시 테스트 이동경로, 계정관리 페이지 구현 시 수정
+  }
+};
