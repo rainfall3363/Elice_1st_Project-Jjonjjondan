@@ -32,7 +32,7 @@ export const wait = (ms) => {
 //세션 스토리지 내 토큰 활용
 export const loginUser = () => {
   const data = sessionStorage.getItem('token');
-  const login = document.getElementById('login_id');
+  const login = document.getElementById('loginId');
   if (data) {
     login.innerText = '로그아웃';
   }
@@ -41,7 +41,7 @@ export const loginUser = () => {
 //로그아웃 클릭 시 로그인으로 변경
 export const logoutUser = () => {
   const data = sessionStorage.getItem('token');
-  const login = document.getElementById('login_id');
+  const login = document.getElementById('loginId');
   if (data) {
     login.addEventListener('click', (logout) => {
       logout.preventDefault();
@@ -49,15 +49,5 @@ export const logoutUser = () => {
       sessionStorage.clear();
       location.reload();
     });
-  }
-};
-
-//로그인 시 회원가입 텍스트 계정관리로 변경
-export const setRegister = () => {
-  const data = sessionStorage.getItem('token');
-  const register = document.getElementById('register_id');
-  if (data) {
-    register.innerText = '계정관리';
-    register.href = '/login'; //임시 테스트 이동경로, 계정관리 페이지 구현 시 수정
   }
 };
