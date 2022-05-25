@@ -71,7 +71,9 @@
       </div>
     </nav>
 
-    <main class="is-flex is-justify-content-center is-align-items-center">
+    <main
+      class="is-flex is-justify-content-center is-align-items-center is-flex-direction-column"
+    >
       <section
         class="information_section is-flex is-justify-content-space-between mt-3"
       >
@@ -91,25 +93,43 @@
           <div class="mb-5">
             <div class="info_area">
               <span class="is-size-3 mr-2">이름</span>
-              <i id="icon-1" class="fas fa-edit is-hidden"></i>
               <p id="userName"></p>
             </div>
           </div>
           <div class="mb-5">
             <div class="info_area">
               <span id="phoneNumberArea" class="is-size-3 mr-2">전화번호</span>
-              <i id="icon-2" class="fas fa-edit is-hidden"></i>
               <p id="userPhoneNumber"></p>
             </div>
           </div>
           <div>
             <div class="info_area">
               <span id="addressArea" class="is-size-3 mr-2">주소</span>
-              <i id="icon-3" class="fas fa-edit is-hidden"></i>
-              <p id="userAddress">가나다라마 바사아자 차카 타파하하하</p>
+              <p id="userAddress"></p>
             </div>
           </div>
         </div>
+      </section>
+      <section
+        id="option"
+        class="option is-flex is-justify-content-space-evenly is-align-items-center"
+      >
+        <button class="button is-link is-light">
+          <i class="fas fa-user-edit mr-2"></i>
+          <p>회원정보 수정</p>
+        </button>
+        <button class="is-hidden button is-link is-light">
+          <i class="fas fa-bags-shopping mr-2"></i>
+          <p>상품 등록</p>
+        </button>
+        <button class="button is-link is-light">
+          <i class="fas fa-shopping-bag mr-2"></i>
+          <p>주문 조회</p>
+        </button>
+        <button class="button is-link is-light">
+          <i class="fas fa-sign-out mr-2"></i>
+          <p>회원 탈퇴</p>
+        </button>
       </section>
     </main>
   </body>
