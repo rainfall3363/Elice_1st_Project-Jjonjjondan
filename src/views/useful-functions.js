@@ -28,20 +28,36 @@ export const wait = (ms) => {
   return new Promise((r) => setTimeout(r, ms));
 };
 
-export const loginLogout = () => {
-  // 세션스토리지에 로그인 정보를 확인해서, 로그인 돼 있는 사람이면 로그인 - 로그아웃
-  // 상태가 로그아웃이라면 클릭 시 로그아웃 되고 , 로그인으로 변경
+//로그인 시 로그인 글씨 로그아웃으로 변경
+//세션 스토리지 내 토큰 활용
+export const loginUser = () => {
   const data = sessionStorage.getItem('token');
-  const login = document.getElementById('login_id');
+  const login = document.getElementById('loginId');
   if (data) {
     login.innerText = '로그아웃';
   }
-  if (login.innerText === '로그아웃') {
+};
+
+//로그아웃 클릭 시 로그인으로 변경
+export const logoutUser = () => {
+  const data = sessionStorage.getItem('token');
+  const login = document.getElementById('loginId');
+  if (data) {
     login.addEventListener('click', (logout) => {
       logout.preventDefault();
       login.innerText = '로그인';
       sessionStorage.clear();
       location.reload();
     });
+  }
+};
+
+//로그인 시 회원가입 텍스트 계정관리로 변경
+export const setRegister = () => {
+  const data = sessionStorage.getItem('token');
+  const register = document.getElementById('registerId');
+  if (data) {
+    register.innerText = '마이페이지';
+    register.href = '/account'; //임시 테스트 이동경로, 계정관리 페이지 구현 시 수정
   }
 };
