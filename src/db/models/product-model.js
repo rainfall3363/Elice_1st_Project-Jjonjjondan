@@ -29,7 +29,7 @@ export class ProductModel {
   }
   // 상품 삭제
   async delete(productId) {
-    const product = await Product.deleteOne({ _id: productId });
+    const product = await Product.findOneAndDeleteOne({ _id: productId });
     return product;
   }
 }
