@@ -23,6 +23,10 @@ const ProductSchema = new Schema(
       type: Number, // 카테고리:1 -> 남자셔츠, 2 -> 여자셔츠 ...
       required: false,
     },
+    image: {
+      type: String,
+      required: false,
+    },
   },
   {
     collection: 'products',
