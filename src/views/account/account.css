@@ -1,0 +1,44 @@
+main {
+  height: 85vh;
+}
+
+.profile_image {
+  width: 300px;
+  height: 300px;
+}
+
+.information_section {
+  width: 50vw;
+}
+
+.user_information {
+  width: 20.8vw;
+}
+
+.user_information > div {
+  width: 100%;
+}
+
+i {
+  font-size: 1.3rem;
+}
+
+.option {
+  width: 50vw;
+  margin-top: 50px;
+}
+
+.option div {
+  display: inline-block;
+}
+
+.option button,
+.option a {
+  width: 200px;
+  height: 5rem;
+}
+
+.option i {
+  display: block;
+  font-size: 2rem;
+}
