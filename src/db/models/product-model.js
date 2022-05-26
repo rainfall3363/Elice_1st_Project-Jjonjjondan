@@ -19,6 +19,7 @@ export class ProductModel {
     const products = await Product.find({});
     return products;
   }
+
   // 상품 수정, 카테고리 추가 및 수정
   async update({ productId, update }) {
     const filter = { _id: productId };
@@ -31,6 +32,11 @@ export class ProductModel {
   async delete(productId) {
     const product = await Product.findOneAndDeleteOne({ _id: productId });
     return product;
+  }
+  // 모든 카테고리 조회
+  async findAllCategories() {
+    const categories = await Product.find({}, { _id: 0, category: 1 });
+    return categories;
   }
 }
 

@@ -4,8 +4,10 @@ import { productService } from '../services';
 
 const productRouter = Router();
 
+// 여기부터 진행!
+
 // 상품등록 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
-productRouter.post('/register', async (req, res, next) => {
+productRouter.post('/productRegister', async (req, res, next) => {
   try {
     // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
     // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
@@ -16,12 +18,15 @@ productRouter.post('/register', async (req, res, next) => {
     }
 
     // req (request)의 body 에서 데이터 가져오기
-    const fullName = req.body.fullName;
-    const email = req.body.email;
-    const password = req.body.password;
+    const title = req.body.title;
+    const price = req.body.price;
+    const description = req.body.description;
+    const maker = req.body.maker;
+    const category = req.body.category;
+    const image = req.body.image;
 
     // 위 데이터를 유저 db에 추가하기
-    const newUser = await userService.addUser({
+    const newProduct = await userService.addProduct({
       fullName,
       email,
       password,
@@ -142,4 +147,16 @@ userRouter.patch(
   }
 );
 
-export { userRouter };
+// 전체 카테고리 목록을 가져옴 (배열 형태임)
+productRouter.get('/categoryList', async function (req, res, next) {
+  try {
+    // 전체 카테고리 목록을 얻음
+    const categories = await productService.getCategories();
+    // 사용자 목록(배열)을 JSON 형태로 프론트에 보냄
+    res.status(200).json(categories);
+  } catch (error) {
+    next(error);
+  }
+});
+
+export { productRouter };

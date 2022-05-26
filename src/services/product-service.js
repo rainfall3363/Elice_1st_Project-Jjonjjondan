@@ -1,4 +1,5 @@
 // 이제 userModel 받아왔으니 admin 검색 가능
+import { set } from 'mongoose';
 import { productModel, userModel } from '../db';
 
 class ProductService {
@@ -68,6 +69,19 @@ class ProductService {
     const deletedProductInfo = await this.productModel.deleteOne(productId);
 
     return deletedProductInfo;
+  }
+  // 모든 카테고리 조회
+  async getCategories() {
+    let categories = await this.productModel.findAllCategories();
+    if (!categories) {
+      throw new Error('카테고리 정보가 없습니다. 유효한 ID가 아닙니다.');
+    }
+    let categoryArr = [];
+    categories.map((el) => {
+      categoryArr.push(el['category']);
+    });
+    const categorySet = [...new Set(categoryArr)];
+    return categorySet; // 카테고리 배열 리턴
   }
 }
 
