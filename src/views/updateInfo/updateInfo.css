@@ -1,0 +1,9 @@
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+.field {
+  width: 41rem;
+  margin-top: 20px;
+}
