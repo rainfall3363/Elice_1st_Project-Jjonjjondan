@@ -32,7 +32,8 @@ i {
   display: inline-block;
 }
 
-.option button {
+.option button,
+.option a {
   width: 200px;
   height: 5rem;
 }
