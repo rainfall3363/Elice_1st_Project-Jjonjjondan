@@ -1,4 +1,4 @@
-import * as Api from '../api.js';
+import * as Api from '../../api.js';
 
 // elements
 const nameInput = document.querySelector('#nameInput');
@@ -9,8 +9,12 @@ const postalCodeInput = document.querySelector('#postalCode');
 const address1Input = document.querySelector('#address1');
 const address2Input = document.querySelector('#address2');
 const searchAddressButton = document.querySelector('#searchAddressButton');
-const submitButton = document.querySelector('#submitButton');
-const cancelButton = document.querySelector('#cancelButton');
+const submitButton1 = document.querySelector('#submitButton1');
+const cancelButton1 = document.querySelector('#cancelButton1');
+const modal = document.querySelector('#modal');
+const submitButton2 = document.querySelector('#submitButton2');
+const cancelButton2 = document.querySelector('#cancelButton2');
+const currentPasswordInput = document.querySelector('#currentPasswordInput');
 let role;
 
 getUserInfo();
@@ -19,8 +23,8 @@ addAllevents();
 function addAllevents() {
   passwordCheckInput.addEventListener('input', checkPassword);
   searchAddressButton.addEventListener('click', searchAddress);
-  submitButton.addEventListener('click', updateUserInfo);
-  cancelButton.addEventListener('click', handleCancel);
+  submitButton1.addEventListener('click', checkCurrentPassword);
+  cancelButton1.addEventListener('click', handleCancel);
 }
 
 async function getUserInfo() {
@@ -41,6 +45,7 @@ function renderUserInfo(user) {
   }
 }
 
+// 비밀번호 변경 시 변경 비밀번호와 비밀번호 확인이 일치하는 지 확인하는 함수
 function checkPassword() {
   const passwordCorrect = document.querySelector('#passwordCorrect');
   const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
@@ -52,7 +57,7 @@ function checkPassword() {
     passwordCheckInput.classList.remove('is-success');
     passwordCorrect.classList.add('is-hidden');
     passwordNotCorrect.classList.add('is-hidden');
-    submitButton.disabled = true;
+    submitButton1.disabled = true;
   } else {
     if (passwordInput.value === passwordCheckInput.value) {
       passwordCorrect.classList.remove('is-hidden');
@@ -61,7 +66,7 @@ function checkPassword() {
       passwordInput.classList.add('is-success');
       passwordCheckInput.classList.remove('is-danger');
       passwordCheckInput.classList.add('is-success');
-      submitButton.disabled = false;
+      submitButton1.disabled = false;
     } else {
       passwordNotCorrect.classList.remove('is-hidden');
       passwordCorrect.classList.add('is-hidden');
@@ -69,12 +74,12 @@ function checkPassword() {
       passwordInput.classList.add('is-danger');
       passwordCheckInput.classList.remove('is-success');
       passwordCheckInput.classList.add('is-danger');
-      submitButton.disabled = true;
+      submitButton1.disabled = true;
     }
   }
 }
 
-// 이벤트에 사용할 함수
+// 주소검색 API 사용 함수
 function searchAddress() {
   new daum.Postcode({
     oncomplete: function (data) {
@@ -110,21 +115,32 @@ function searchAddress() {
   }).open();
 }
 
+// 현재 비밀번호 입력을 받는 모달 창 출력을 위한 함수
+function checkCurrentPassword() {
+  modal.classList.add('is-active');
+  submitButton2.addEventListener('click', updateUserInfo);
+  cancelButton2.addEventListener('click', modalDeactivate);
+}
+
+// 모달 창을 없애는 이벤트 처리 함수
+function modalDeactivate() {
+  modal.classList.remove('is-active');
+  currentPasswordInput.value = '';
+}
+
+// 입력받은 정보를 바탕으로 DB에 patch요청을 보내는 이벤트 처리 함수
 async function updateUserInfo() {
   const userName = nameInput.value;
   const phoneNumber = phoneNumberInput.value;
   const password = passwordInput.value;
-  // const passwordCheck = passwordCheckInput.value;
   const postalCode = postalCodeInput.value;
   const address1 = address1Input.value;
   const address2 = address2Input.value;
+  const currentPassword = currentPasswordInput.value;
 
   if (!userName || !phoneNumber || !postalCode || !address2) {
     return alert('배송지 정보를 모두 입력해 주세요.');
   }
-
-  // 비밀번호 입력 구현
-  const currentPassword = 'test';
 
   const address = {
     postalCode,
@@ -148,8 +164,7 @@ async function updateUserInfo() {
       window.location.href = '/account';
     }
   } catch (err) {
-    alert('회원정보가 수정되지 않았습니다. 다시 시도해주세요.');
-    window.location.href = '/updateInfo';
+    alert(err.message);
   }
 }
 

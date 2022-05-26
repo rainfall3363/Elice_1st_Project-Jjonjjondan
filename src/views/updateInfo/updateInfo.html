@@ -65,6 +65,7 @@
               class="input"
               type="text"
               placeholder="전화번호"
+              maxlength="11"
             />
             <span class="icon is-small is-left">
               <i class="fas fa-mobile"></i>
@@ -72,7 +73,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="" class="label">비밀번호</label>
+          <label for="" class="label">변경할 비밀번호</label>
           <div class="control has-icons-left">
             <input
               id="passwordInput"
@@ -86,7 +87,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="" class="label">비밀번호 확인</label>
+          <label for="" class="label">변경할 비밀번호 확인</label>
           <div class="control has-icons-left">
             <input
               id="passwordCheckInput"
@@ -123,15 +124,34 @@
         </div>
         <div class="field is-grouped mt-6">
           <div class="control">
-            <button id="submitButton" class="button is-link">수정하기</button>
+            <button id="submitButton1" class="button is-link">수정하기</button>
           </div>
           <div class="control">
-            <button id="cancelButton" class="button is-grey is-light">
-              취소
-            </button>
+            <button id="cancelButton1" class="button">취소</button>
           </div>
         </div>
       </section>
+      <div id="modal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">현재 비밀번호 입력</p>
+          </header>
+          <section class="modal-card-body">
+            <p class="mb-4">현재 비밀번호를 입력해주세요.</p>
+            <input
+              id="currentPasswordInput"
+              class="input"
+              type="password"
+              placeholder="********"
+            />
+          </section>
+          <footer class="modal-card-foot">
+            <button id="submitButton2" class="button is-link">수정완료</button>
+            <button id="cancelButton2" class="button">취소하기</button>
+          </footer>
+        </div>
+      </div>
     </main>
   </body>
 </html>
