@@ -75,6 +75,23 @@ function renderCartList() {
   });
 }
 
+function selectAllCheckEvent() {
+  const checkboxElements = document.getElementsByClassName('cart-checkbox');
+  const selectAllCheckboxElement = document.getElementById('allSelectCheckbox');
+
+  selectAllCheckboxElement.addEventListener('change', (event) => {
+    if (event.currentTarget.checked) {
+      for (let element of checkboxElements) {
+        element.checked = true;
+      }
+    } else {
+      for (let element of checkboxElements) {
+        element.checked = false;
+      }
+    }
+  });
+}
+
 const dbReq = indexedDB.open('shopping', 1);
 let db;
 
@@ -99,17 +116,4 @@ dbReq.addEventListener('upgradeneeded', function (event) {
   }
 });
 
-const checkboxElements = document.getElementsByClassName('cart-checkbox');
-const selectAllCheckboxElement = document.getElementById('allSelectCheckbox');
-
-selectAllCheckboxElement.addEventListener('change', (event) => {
-  if (event.currentTarget.checked) {
-    for (let element of checkboxElements) {
-      element.checked = true;
-    }
-  } else {
-    for (let element of checkboxElements) {
-      element.checked = false;
-    }
-  }
-});
+selectAllCheckEvent();
