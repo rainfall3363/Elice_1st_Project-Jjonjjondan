@@ -47,7 +47,7 @@
           <div class="control has-icons-left">
             <input
               id="nameInput"
-              class="input is-success"
+              class="input"
               type="text"
               placeholder="Text input"
               value="api를 통해 받아온 이름 출력"
@@ -55,12 +55,7 @@
             <span class="icon is-small is-left">
               <i class="fas fa-user"></i>
             </span>
-            <!-- <span class="icon is-small is-right">
-              <i class="fas fa-check"></i>
-            </span> -->
           </div>
-          <p class="help is-success">This name is available</p>
-          <p class="help is-danger is-hidden">This name is invalid</p>
         </div>
         <div class="field">
           <label class="label">전화번호</label>
@@ -74,15 +69,17 @@
             <span class="icon is-small is-left">
               <i class="fas fa-mobile"></i>
             </span>
-            <!-- <span class="icon is-small is-right">
-              <i class="fas fa-exclamation-triangle"></i>
-            </span> -->
           </div>
         </div>
         <div class="field">
           <label for="" class="label">비밀번호</label>
           <div class="control has-icons-left">
-            <input class="input" type="password" placeholder="********" />
+            <input
+              id="passwordInput"
+              class="input"
+              type="password"
+              placeholder="********"
+            />
             <span class="icon is-small is-left">
               <i class="fas fa-lock"></i>
             </span>
@@ -91,34 +88,47 @@
         <div class="field">
           <label for="" class="label">비밀번호 확인</label>
           <div class="control has-icons-left">
-            <input class="input" type="password" placeholder="********" />
+            <input
+              id="passwordCheckInput"
+              class="input"
+              type="password"
+              placeholder="********"
+            />
             <span class="icon is-small is-left">
               <i class="fas fa-lock"></i>
             </span>
           </div>
+          <p id="passwordCorrect" class="help is-success is-hidden">
+            비밀번호가 일치합니다.
+          </p>
+          <p id="passwordNotCorrect" class="help is-danger is-hidden">
+            비밀번호가 일치하지 않습니다.
+          </p>
         </div>
         <div class="field">
           <label for="" class="label">주소</label>
           <div class="control">
             <div class="is-flex is-justify-content-space-between mb-3">
               <input id="postalCode" class="input mr-2" type="text" readonly />
-              <button class="button is-link is-outlined">주소 찾기</button>
+              <button
+                id="searchAddressButton"
+                class="button is-link is-outlined"
+              >
+                주소 찾기
+              </button>
             </div>
             <input id="address1" class="input mb-3" type="text" readonly />
-            <input
-              id="address2"
-              class="input"
-              type="text"
-              placeholder="상세주소 입력"
-            />
+            <input id="address2" class="input" type="text" />
           </div>
         </div>
         <div class="field is-grouped mt-6">
           <div class="control">
-            <button class="button is-link">수정하기</button>
+            <button id="submitButton" class="button is-link">수정하기</button>
           </div>
           <div class="control">
-            <button class="button is-grey is-light">취소</button>
+            <button id="cancelButton" class="button is-grey is-light">
+              취소
+            </button>
           </div>
         </div>
       </section>
