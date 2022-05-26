@@ -88,9 +88,9 @@ class UserService {
       throw new Error('해당 회원 정보가 없습니다. 유효한 ID가 아닙니다.');
     }
 
-    const { email, fullName, phoneNumber, address } = user;
+    const { email, fullName, phoneNumber, address, role } = user;
 
-    return { email, fullName, phoneNumber, address };
+    return { email, fullName, phoneNumber, address, role };
   }
 
   // 유저정보 수정, 현재 비밀번호가 있어야 수정 가능함.
