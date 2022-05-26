@@ -75,7 +75,7 @@ function renderCartList() {
   });
 }
 
-function selectAllCheckEvent() {
+function selectAllCheckboxEvent() {
   const checkboxElements = document.getElementsByClassName('cart-checkbox');
   const selectAllCheckboxElement = document.getElementById('allSelectCheckbox');
 
@@ -116,4 +116,18 @@ dbReq.addEventListener('upgradeneeded', function (event) {
   }
 });
 
-selectAllCheckEvent();
+selectAllCheckboxEvent();
+
+Array.from(document.getElementsByClassName('button is-rounded')).forEach(
+  (element) => {
+    console.log('test');
+  }
+);
+
+// const buttonPlusMinusElement =
+//   document.getElementsByClassName('button is-rounded');
+// for (let button of buttonPlusMinusElement) {
+//   button.addEventListener('click', function () {
+//     console.log('test');
+//   });
+// }
