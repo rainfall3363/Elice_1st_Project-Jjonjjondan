@@ -27,6 +27,11 @@ export class ProductModel {
     const updatedProduct = await User.findOneAndUpdate(filter, update, option);
     return updatedProduct;
   }
+  // 상품 삭제
+  async delete(productId) {
+    const product = await Product.deleteOne({ _id: productId });
+    return product;
+  }
 }
 
 const productModel = new ProductModel();
