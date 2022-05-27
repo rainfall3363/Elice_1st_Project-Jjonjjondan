@@ -1,0 +1,12 @@
+main {
+  height: 85vh;
+}
+
+main > section {
+  width: 70vw;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+}
