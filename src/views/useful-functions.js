@@ -64,7 +64,7 @@ export const setRegister = () => {
 
 //LocalStorage에서 key에 해당하는 객체 반환. key가 없을 경우 list로 초기화 후 반환
 export const getLocalStorageList = (key) => {
-  let valueList = window.localStorage.getItem(key);
+  const valueList = window.localStorage.getItem(key);
   if (valueList === null) {
     window.localStorage.setItem(key, JSON.stringify([]));
     return JSON.parse(window.localStorage.getItem(key));
@@ -75,7 +75,7 @@ export const getLocalStorageList = (key) => {
 
 //localStorage에서 key에 해당하는 list 객체에 value를 push
 export const addLocalStorageList = (key, value) => {
-  let valueList = getLocalStorageList(key);
+  const valueList = getLocalStorageList(key);
   valueList.push(value);
   window.localStorage.setItem(key, JSON.stringify(valueList));
   return JSON.parse(window.localStorage.getItem(key));
