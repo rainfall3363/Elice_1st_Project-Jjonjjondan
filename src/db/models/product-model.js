@@ -14,12 +14,13 @@ export class ProductModel {
     const createdNewProduct = await Product.create(productInfo);
     return createdNewProduct;
   }
-  // 상품 목록
+  // 모든 상품 조회
   async findAll() {
     const products = await Product.find({});
     return products;
   }
-  // 상품 수정, 카테고리 추가 및 수정
+
+  // 상품 수정
   async update({ productId, update }) {
     const filter = { _id: productId };
     const option = { returnOriginal: false };
