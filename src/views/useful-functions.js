@@ -80,3 +80,11 @@ export const addLocalStorageList = (key, value) => {
   window.localStorage.setItem(key, JSON.stringify(valueList));
   return JSON.parse(window.localStorage.getItem(key));
 };
+
+//localStorage에서 해당 key의 value인 리스트 내 해당 id가 있는 요소 삭제
+export const deleteLocalStorageList = (key, id) => {
+  const storageList = getLocalStorageList(key);
+  const remainStorageList = storageList.filter((e) => e.id !== id);
+  window.localStorage.setItem(key, JSON.stringify(remainStorageList));
+  console.log(getLocalStorageList(key));
+};
