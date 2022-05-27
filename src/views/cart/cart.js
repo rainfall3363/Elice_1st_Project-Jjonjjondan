@@ -72,7 +72,7 @@ function renderCartList() {
 }
 
 function selectAllCheckboxEvent() {
-  const checkboxElements = document.getElementsByClassName('cart-checkbox');
+  const checkboxElements = document.getElementsByClassName('deleteButtons');
   const selectAllCheckboxElement = document.getElementById('allSelectCheckbox');
 
   selectAllCheckboxElement.addEventListener('change', (event) => {
@@ -88,9 +88,29 @@ function selectAllCheckboxEvent() {
   });
 }
 
+function deleteButtonsEvent() {
+  const deleteButtons = document.getElementsByClassName('delete-button');
+  Array.from(deleteButtons).forEach((elem) =>
+    elem.addEventListener('click', function (e) {
+      // console.log('test');
+      // e.preventDefault();
+      let storageId = this.id.split('-')[1];
+      let storageList = getLocalStorageList('cart');
+      let remainStorageList = storageList.filter((e) => e.id !== storageId);
+      // console.log(remainStorageList);
+      window.localStorage.setItem('cart', JSON.stringify(remainStorageList));
+      renderCartList();
+      deleteButtonsEvent();
+    })
+  );
+}
+
 renderCartList();
 
 selectAllCheckboxEvent();
+deleteButtonsEvent();
+
+// console.log([1, 2, 3, 4].filter((e) => e == !3));
 
 // Array.from(document.getElementsByClassName('button is-rounded')).forEach(
 //   (element) => {
