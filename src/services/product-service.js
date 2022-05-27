@@ -1,5 +1,4 @@
 // 이제 userModel 받아왔으니 admin 검색 가능
-import { set } from 'mongoose';
 import { productModel, userModel } from '../db';
 
 class ProductService {
@@ -22,13 +21,13 @@ class ProductService {
     // 상품명 중복은 이제 아니므로, 상품등록을 진행함
 
     // db에 저장
-    const createdNewProduct = await this.productModel.create(newProductInfo);
+    const createdNewProduct = await this.productModel.create(productInfo);
 
     return createdNewProduct;
   }
 
   // 전체 상품 목록을 받음.
-  async getProduct() {
+  async getProducts() {
     const products = await this.productModel.findAll();
     return products;
   }
@@ -69,19 +68,6 @@ class ProductService {
     const deletedProductInfo = await this.productModel.deleteOne(productId);
 
     return deletedProductInfo;
-  }
-  // 모든 카테고리 조회
-  async getCategories() {
-    let categories = await this.productModel.findAllCategories();
-    if (!categories) {
-      throw new Error('카테고리 정보가 없습니다. 유효한 ID가 아닙니다.');
-    }
-    let categoryArr = [];
-    categories.map((el) => {
-      categoryArr.push(el['category']);
-    });
-    const categorySet = [...new Set(categoryArr)];
-    return categorySet; // 카테고리 배열 리턴
   }
 }
 
