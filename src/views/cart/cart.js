@@ -92,12 +92,9 @@ function deleteButtonsEvent() {
   const deleteButtons = document.getElementsByClassName('delete-button');
   Array.from(deleteButtons).forEach((elem) =>
     elem.addEventListener('click', function (e) {
-      // console.log('test');
-      // e.preventDefault();
       let storageId = this.id.split('-')[1];
       let storageList = getLocalStorageList('cart');
       let remainStorageList = storageList.filter((e) => e.id !== storageId);
-      // console.log(remainStorageList);
       window.localStorage.setItem('cart', JSON.stringify(remainStorageList));
       renderCartList();
       deleteButtonsEvent();
@@ -109,19 +106,3 @@ renderCartList();
 
 selectAllCheckboxEvent();
 deleteButtonsEvent();
-
-// console.log([1, 2, 3, 4].filter((e) => e == !3));
-
-// Array.from(document.getElementsByClassName('button is-rounded')).forEach(
-//   (element) => {
-//     console.log('test');
-//   }
-// );
-
-// const buttonPlusMinusElement =
-//   document.getElementsByClassName('button is-rounded');
-// for (let button of buttonPlusMinusElement) {
-//   button.addEventListener('click', function () {
-//     console.log('test');
-//   });
-// }
