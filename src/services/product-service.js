@@ -21,13 +21,13 @@ class ProductService {
     // 상품명 중복은 이제 아니므로, 상품등록을 진행함
 
     // db에 저장
-    const createdNewProduct = await this.productModel.create(newProductInfo);
+    const createdNewProduct = await this.productModel.create(productInfo);
 
     return createdNewProduct;
   }
 
   // 전체 상품 목록을 받음.
-  async getProduct() {
+  async getProducts() {
     const products = await this.productModel.findAll();
     return products;
   }
