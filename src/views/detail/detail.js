@@ -1,12 +1,15 @@
-function getLocalStorage() {
-  let cartList = window.localStorage.getItem('cart');
+function getLocalStorageList(key) {
+  let cartList = window.localStorage.getItem(key);
   if (cartList === null) {
-    window.localStorage.setItem('cart', JSON.stringify([]));
-    return window.localStorage.getItem('cart');
+    window.localStorage.setItem(key, JSON.stringify([]));
+    return JSON.parse(window.localStorage.getItem(key));
   } else {
-    return window.localStorage.getItem('cart');
+    return JSON.parse(window.localStorage.getItem(key));
   }
 }
 
-let localStorageBtnElement = document.getElementById('localStorageBtn');
-localStorageBtnElement.addEventListener('click', function () {});
+let localStorageBtnElement = document.getElementById('localStorageReadBtn');
+localStorageBtnElement.addEventListener('click', function () {
+  let cartList = getLocalStorageList('cart');
+  console.log(cartList);
+});
