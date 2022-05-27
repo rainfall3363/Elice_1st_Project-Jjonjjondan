@@ -4,15 +4,6 @@ import { OrderSchema } from '../schemas/order-schema';
 const Order = model('order', OrderSchema);
 
 export class OrderModel {
-  // 주문을 DB에서 다루는 함수 구현
-  // 주문 생성
-  // 주문 수정 o
-  // 주문 조회
-  //  - 전체 주문 목록 o
-  //  - 유저ID로 조회 o
-  //  - 주문번호로 조회 o
-  // 주문 취소
-
   async create(orderInfo) {
     // orderInfo - 담을 정보 굉장히 많음 체크 꼼꼼히
     const createdNewOrder = await Order.create(orderInfo);
