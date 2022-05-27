@@ -33,6 +33,6 @@ export class CategoryModel {
   }
 }
 
-const categoryModel = new categoryModel();
+const categoryModel = new CategoryModel();
 
 export { categoryModel };
