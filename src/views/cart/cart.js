@@ -1,3 +1,5 @@
+import { getLocalStorageList, addLocalStorageList } from '/useful-functions.js';
+
 function makeProductsCard(productsCardsElement) {
   return `
     <div class="cart-product-item" id="productItem-${productsCardsElement.id}">
@@ -61,18 +63,12 @@ function makeProductsCard(productsCardsElement) {
 function renderCartList() {
   let productsCardsElement = document.getElementById('cartList');
 
-  let store = db.transaction('order', 'readonly').objectStore('order');
-  let getAllReq = store.getAll();
-
-  getAllReq.addEventListener('success', function (event) {
-    let productsCards = event.target.result;
-
-    let resultCards = '';
-    for (let i = 0; i < productsCards.length; i++) {
-      resultCards += makeProductsCard(productsCards[i]);
-    }
-    productsCardsElement.innerHTML = resultCards;
-  });
+  let productsCards = getLocalStorageList('cart');
+  let resultCards = productsCards.reduce(
+    (acc, element) => acc + makeProductsCard(element),
+    ''
+  );
+  productsCardsElement.innerHTML = resultCards;
 }
 
 function selectAllCheckboxEvent() {
@@ -92,37 +88,15 @@ function selectAllCheckboxEvent() {
   });
 }
 
-const dbReq = indexedDB.open('shopping', 1);
-let db;
-
-dbReq.addEventListener('success', function (event) {
-  db = event.target.result;
-  renderCartList();
-});
-
-dbReq.addEventListener('error', function (event) {
-  const error = event.target.error;
-  console.log('error', error.name);
-});
-
-dbReq.addEventListener('upgradeneeded', function (event) {
-  db = event.target.result;
-  let oldVersion = event.oldVersion;
-  if (oldVersion < 1) {
-    db.createObjectStore('order', {
-      keyPath: 'id',
-      autoIncrement: true,
-    });
-  }
-});
+renderCartList();
 
 selectAllCheckboxEvent();
 
-Array.from(document.getElementsByClassName('button is-rounded')).forEach(
-  (element) => {
-    console.log('test');
-  }
-);
+// Array.from(document.getElementsByClassName('button is-rounded')).forEach(
+//   (element) => {
+//     console.log('test');
+//   }
+// );
 
 // const buttonPlusMinusElement =
 //   document.getElementsByClassName('button is-rounded');
