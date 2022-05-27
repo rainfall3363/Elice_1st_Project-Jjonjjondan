@@ -71,17 +71,17 @@ function renderCartList() {
   productsCardsElement.innerHTML = resultCards;
 }
 
-function selectAllCheckboxEvent() {
-  const checkboxElements = document.getElementsByClassName('deleteButtons');
-  const selectAllCheckboxElement = document.getElementById('allSelectCheckbox');
+function allSelectCheckboxEvent() {
+  const cartCheckboxElements = document.getElementsByClassName('cart-checkbox');
+  const allSelectCheckboxElement = document.getElementById('allSelectCheckbox');
 
-  selectAllCheckboxElement.addEventListener('change', (event) => {
+  allSelectCheckboxElement.addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
-      for (let element of checkboxElements) {
+      for (let element of cartCheckboxElements) {
         element.checked = true;
       }
     } else {
-      for (let element of checkboxElements) {
+      for (let element of cartCheckboxElements) {
         element.checked = false;
       }
     }
@@ -96,13 +96,15 @@ function deleteButtonsEvent() {
       let storageList = getLocalStorageList('cart');
       let remainStorageList = storageList.filter((e) => e.id !== storageId);
       window.localStorage.setItem('cart', JSON.stringify(remainStorageList));
-      renderCartList();
-      deleteButtonsEvent();
+      renderCartMain();
     })
   );
 }
 
-renderCartList();
+function renderCartMain() {
+  renderCartList();
+  allSelectCheckboxEvent();
+  deleteButtonsEvent();
+}
 
-selectAllCheckboxEvent();
-deleteButtonsEvent();
+renderCartMain();
