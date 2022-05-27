@@ -32,9 +32,9 @@ class CategoryService {
   // 카테고리 상세정보 불러오기
   async getCategoryInfo(categoryId) {
     const category = await this.categoryModel.findByCategoryId(categoryId);
-    const { categoryId, categoryName, imageUrl, description } = category;
+    const { categoryName, imageUrl, description } = category;
 
-    return { categoryId, categoryName, imageUrl, description };
+    return { categoryName, imageUrl, description };
   }
 
   // 카테고리 정보 수정
