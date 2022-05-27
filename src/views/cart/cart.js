@@ -1,4 +1,7 @@
-import { getLocalStorageList, addLocalStorageList } from '/useful-functions.js';
+import {
+  getLocalStorageList,
+  deleteLocalStorageList,
+} from '/useful-functions.js';
 
 function makeProductsCard(productsCardsElement) {
   return `
@@ -93,12 +96,14 @@ function deleteButtonsEvent() {
   Array.from(deleteButtons).forEach((elem) =>
     elem.addEventListener('click', function (e) {
       let storageId = this.id.split('-')[1];
-      let storageList = getLocalStorageList('cart');
-      let remainStorageList = storageList.filter((e) => e.id !== storageId);
-      window.localStorage.setItem('cart', JSON.stringify(remainStorageList));
+      deleteLocalStorageList('cart', storageId);
       renderCartMain();
     })
   );
+}
+
+function selectCheckBoxEvent() {
+  const cartCheckboxElements = document.getElementsByClassName('cart-checkbox');
 }
 
 function renderCartMain() {
