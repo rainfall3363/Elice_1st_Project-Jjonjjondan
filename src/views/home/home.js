@@ -29,15 +29,16 @@ async function categoryList() {
     const categoryId = data[i].categoryId;
     const description = data[i].description;
     const imageUrl = data[i].imageURL;
+    const categoryName = data[i].categoryName;
     slideContainer.insertAdjacentHTML(
       'beforeend',
       `
       <div class="slideBox">
       <a href="/products/${categoryId}" class="slidesAtag">
-        <img src="${imageUrl}">
+        <img src="${imageUrl}" style="width: 50rem; height: 30rem";>
       </a>
       <p class="brandName">Camping</p>
-      <h3 class="categoryName">Camping-Accessary</h3>
+      <h3 class="categoryName">${categoryName}</h3>
       <p class="categoryDescription">${description}</p>
       </div>
       `
