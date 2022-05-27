@@ -1,4 +1,4 @@
-import { loginUser, logoutUser, wait } from '../../useful-functions.js';
+import { loginUser, logoutUser } from '../../useful-functions.js';
 import * as Api from '../../api.js';
 
 // elements
@@ -11,7 +11,7 @@ async function init() {
   loginUser();
   logoutUser();
   await renderOrders();
-  addEvents();
+  addAllEvents();
 }
 
 async function renderOrders() {
@@ -44,7 +44,7 @@ function createOrderTable(data) {
   `;
 }
 
-function addEvents() {
+function addAllEvents() {
   const calcelButton = document.querySelectorAll('.cancel-button');
   const modalBackground = document.querySelector('.modal-background');
 

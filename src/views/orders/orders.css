@@ -10,3 +10,12 @@ table {
   width: 100%;
   text-align: center;
 }
+
+.modal-content {
+  height: 13rem;
+  width: 30rem;
+}
+
+.box {
+  height: 100%;
+}
