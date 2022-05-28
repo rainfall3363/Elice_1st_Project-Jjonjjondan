@@ -26,18 +26,18 @@ function makeProductsCard(productsCardsElement) {
       <div class="content">
         <p id="title-${productsCardsElement.id}">${productsCardsElement.product}</p>
         <div class="quantity">
-          <button class="button is-rounded" id="minus-${productsCardsElement.id}" disabled>
+          <button class="button is-rounded" id="minus-${productsCardsElement.id}">
             <span class="icon is-small">
               <i class="fas fa-thin fa-minus"></i>
             </span>
           </button>
           <input
-            class="input"
+            class="quantity input"
             id="quantityInput-${productsCardsElement.id}"
             type="number"
             min="1"
             max="99"
-            value="1"
+            value=${productsCardsElement.quantity}
           />
           <button class="button is-rounded" id="plus-${productsCardsElement.id}">
             <span class="icon">
@@ -140,10 +140,64 @@ function deleteButtonsEvent() {
   );
 }
 
+function quantityPlusButtonEvent() {
+  const plusMinusButton = document.getElementsByClassName('button is-rounded');
+
+  Array.from(plusMinusButton).forEach(
+    (element) => {
+      let buttonKind = element.id.split('-')[0];
+      let storeId = element.id.split('-')[1];
+      if (buttonKind === 'plus') {
+        element.addEventListener('click', function () {
+          const quantityInput = document.getElementById(
+            `quantityInput-${storeId}`
+          );
+          const minusButton = document.getElementById(`minus-${storeId}`);
+          let quantityValue = parseInt(quantityInput.value);
+          quantityValue++;
+
+          if (quantityValue >= 99) {
+            element.disabled = true;
+            quantityInput.value = `99`;
+          }
+          if (quantityValue >= 1 && quantityValue <= 99) {
+            minusButton.disabled = false;
+            quantityInput.value = `${quantityValue}`;
+          }
+        });
+      } else {
+        element.addEventListener('click', function () {
+          const quantityInput = document.getElementById(
+            `quantityInput-${storeId}`
+          );
+          const plusButton = document.getElementById(`plus-${storeId}`);
+          let quantityValue = parseInt(quantityInput.value);
+          quantityValue--;
+
+          if (quantityValue <= 0) {
+            element.disabled = true;
+            quantityInput.value = `0`;
+          }
+          if (quantityValue >= 1 && quantityValue < 99) {
+            plusButton.disabled = false;
+            quantityInput.value = `${quantityValue}`;
+          }
+        });
+      }
+    }
+    // element.addEventListener('click', function (e) {
+    //   let storageId = this.id.split('-')[1];
+    //   deleteLocalStorageListById('cart', storageId);
+    //   renderCartMain();
+    // })
+  );
+}
+
 function renderCartMain() {
   renderCartList();
   allSelectCheckboxEvent();
   selectCheckBoxEvent();
+  quantityPlusButtonEvent();
   deletePartEvent();
   deleteButtonsEvent();
 }
