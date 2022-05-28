@@ -116,6 +116,19 @@ function selectCheckBoxEvent() {
   );
 }
 
+function deletePartEvent() {
+  const partialDeleteLabel = document.getElementById('partialDeleteLabel');
+  partialDeleteLabel.addEventListener('click', function () {
+    let checkList = getLocalStorageList('checkList');
+    console.log(checkList);
+    checkList.forEach((storageId) => {
+      deleteLocalStorageListById('cart', storageId);
+      deleteLocalStorageList('checkList', storageId);
+      renderCartMain();
+    });
+  });
+}
+
 function deleteButtonsEvent() {
   const deleteButtonElements = document.getElementsByClassName('delete-button');
   Array.from(deleteButtonElements).forEach((element) =>
@@ -131,6 +144,7 @@ function renderCartMain() {
   renderCartList();
   allSelectCheckboxEvent();
   selectCheckBoxEvent();
+  deletePartEvent();
   deleteButtonsEvent();
 }
 
