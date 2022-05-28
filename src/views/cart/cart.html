@@ -137,17 +137,6 @@
           </div>
         </div>
       </div>
-      <input
-        type="button"
-        value="list"
-        onclick="
-          let store = db.transaction('order','readonly').objectStore('order');
-          let getAllReq = store.getAll();
-          getAllReq.addEventListener('success', function(event){
-            console.log(event.target.result);
-          })
-        "
-      />
     </section>
     
   </body>
