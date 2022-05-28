@@ -47,7 +47,7 @@ export const logoutUser = () => {
       logout.preventDefault();
       login.innerText = '로그인';
       sessionStorage.clear();
-      location.reload();
+      location.href = '/';
     });
   }
 };
@@ -95,4 +95,9 @@ export const deleteLocalStorageList = (key, value) => {
   const remainStorageList = storageList.filter((e) => e !== value);
   window.localStorage.setItem(key, JSON.stringify(remainStorageList));
   console.log(getLocalStorageList(key));
+};
+
+export const calculateTotalPrice = (price) => {
+  const DELIVERY_FEE = 3000;
+  return addCommas(Number(price) + DELIVERY_FEE);
 };
