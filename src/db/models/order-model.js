@@ -48,6 +48,6 @@ export class OrderModel {
   }
 }
 
-const orderModel = new orderModel();
+const orderModel = new OrderModel();
 
 export { orderModel };
