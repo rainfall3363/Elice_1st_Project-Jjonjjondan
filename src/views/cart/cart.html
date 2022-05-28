@@ -99,11 +99,9 @@
                 </label>
               </div>
               
-              <!-- 장바구니에 담긴 상품들의 html 요소(카드 형태)가 주입되는 곳 -->
+              <!-- cartList 장바구니에 담긴 상품들의 html 요소(카드 형태)가 대입되는 곳 -->
+              <div id="cartList"></div>
             </div>
-          </div>
-          <div class="cart-products-cards">
-
           </div>
 
           <!-- 선택한 상품 총 요약 -->
@@ -139,17 +137,6 @@
           </div>
         </div>
       </div>
-      <input
-        type="button"
-        value="list"
-        onclick="
-          let store = db.transaction('order','readonly').objectStore('order');
-          let getAllReq = store.getAll();
-          getAllReq.addEventListener('success', function(event){
-            console.log(event.target.result);
-          })
-        "
-      />
     </section>
     
   </body>

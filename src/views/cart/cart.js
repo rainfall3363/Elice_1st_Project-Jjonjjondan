@@ -1,49 +1,203 @@
-function getCartList() {
-  let productsCardsElement = document.getElementsByClassName(
-    'cart-products-cards'
-  )[0];
+// plus minus 버튼 기능 완성하였고 localStorage에 update되도록 만들 예정입니다.
+// 결제정보는 localStorage에 order key를 만들어 object로 저장하여 관리할 예정입니다.
+// 백엔드에서 구현한 실제 제품 스키마를 적용하여 데이터를 뿌려줄 예정입니다.
+// 이후 주문서 작성 페이지 만들 예정입니다.
 
-  let store = db.transaction('order', 'readonly').objectStore('order');
-  let getAllReq = store.getAll();
+import {
+  getLocalStorageList,
+  addLocalStorageList,
+  deleteLocalStorageListById,
+  deleteLocalStorageList,
+} from '/useful-functions.js';
 
-  getAllReq.addEventListener('success', function (event) {
-    let productsCards = event.target.result;
+function makeProductsCard(productsCardsElement) {
+  return `
+    <div class="cart-product-item" id="productItem-${productsCardsElement.id}">
+      <label class="checkbox">
+        <input type="checkbox" class="cart-checkbox" id="checkbox-${productsCardsElement.id}"/>
+      </label>
+      <button class="delete-button" id="delete-${productsCardsElement.id}">
+        <span class="icon">
+          <i class="fas fa-trash-can"></i>
+        </span>
+      </button>
+      <figure class="image is-96x96">
+        <img
+          id="image-${productsCardsElement.id}"
+          src="https://ifh.cc/g/o5yDfg.jpg"
+          alt="product-image"
+        />
+      </figure>
+      <div class="content">
+        <p id="title-${productsCardsElement.id}">${productsCardsElement.product}</p>
+        <div class="quantity">
+          <button class="button is-rounded" id="minus-${productsCardsElement.id}">
+            <span class="icon is-small">
+              <i class="fas fa-thin fa-minus"></i>
+            </span>
+          </button>
+          <input
+            class="quantity input"
+            id="quantityInput-${productsCardsElement.id}"
+            type="number"
+            min="1"
+            max="99"
+            value=${productsCardsElement.quantity}
+          />
+          <button class="button is-rounded" id="plus-${productsCardsElement.id}">
+            <span class="icon">
+              <i class="fas fa-lg fa-plus"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="calulation">
+        <p id="unitPrice-${productsCardsElement.id}">${productsCardsElement.price}</p>
+        <p>
+          <span class="icon">
+            <i class="fas fa-thin fa-xmark"></i>
+          </span>
+        </p>
+        <p id="quantity-${productsCardsElement.id}">제품 수량</p>
+        <p>
+          <span class="icon">
+            <i class="fas fa-thin fa-equals"></i>
+          </span>
+        </p>
+        <p id="total-${productsCardsElement.id}">합산 값</p>
+      </div>
+    </div>
+  `;
+}
 
-    let resultCards = '';
-    for (let i = 0; i < productsCards.length; i++) {
-      resultCards += `
-                    <div class="card">
-                        <div class="container">
-                            <h4><b>${productsCards[i].product}</b></h4>
-                            <p>${productsCards[i].price}</p>
-                        </div>
-                    </div>
-                `;
+function renderCartList() {
+  let productsCardsElement = document.getElementById('cartList');
+
+  let productsCards = getLocalStorageList('cart');
+  let resultCards = productsCards.reduce(
+    (acc, element) => acc + makeProductsCard(element),
+    ''
+  );
+  productsCardsElement.innerHTML = resultCards;
+}
+
+function allSelectCheckboxEvent() {
+  const cartCheckboxElements = document.getElementsByClassName('cart-checkbox');
+  const allSelectCheckboxElement = document.getElementById('allSelectCheckbox');
+
+  allSelectCheckboxElement.addEventListener('change', (e) => {
+    if (e.currentTarget.checked) {
+      for (let element of cartCheckboxElements) {
+        let storageId = element.id.split('-')[1];
+        getLocalStorageList('checkList');
+        addLocalStorageList('checkList', storageId);
+        element.checked = true;
+      }
+    } else {
+      for (let element of cartCheckboxElements) {
+        let storageId = element.id.split('-')[1];
+        deleteLocalStorageList('checkList', storageId);
+        element.checked = false;
+      }
     }
-    productsCardsElement.innerHTML = resultCards;
   });
 }
 
-const dbReq = indexedDB.open('shopping', 1);
-let db;
+function selectCheckBoxEvent() {
+  const cartCheckboxElements = document.getElementsByClassName('cart-checkbox');
+  Array.from(cartCheckboxElements).forEach((element) =>
+    element.addEventListener('change', function (e) {
+      let storageId = this.id.split('-')[1];
+      if (e.currentTarget.checked) {
+        // checkList가 없다면 []로 초기화
+        getLocalStorageList('checkList');
+        addLocalStorageList('checkList', storageId);
+        element.checked = true;
+      } else {
+        deleteLocalStorageList('checkList', storageId);
+        element.checked = false;
+      }
+    })
+  );
+}
 
-dbReq.addEventListener('success', function (event) {
-  db = event.target.result;
-  getCartList();
-});
-
-dbReq.addEventListener('error', function (event) {
-  const error = event.target.error;
-  console.log('error', error.name);
-});
-
-dbReq.addEventListener('upgradeneeded', function (event) {
-  db = event.target.result;
-  let oldVersion = event.oldVersion;
-  if (oldVersion < 1) {
-    db.createObjectStore('order', {
-      keyPath: 'id',
-      autoIncrement: true,
+function deletePartEvent() {
+  const partialDeleteLabel = document.getElementById('partialDeleteLabel');
+  partialDeleteLabel.addEventListener('click', function () {
+    let checkList = getLocalStorageList('checkList');
+    console.log(checkList);
+    checkList.forEach((storageId) => {
+      deleteLocalStorageListById('cart', storageId);
+      deleteLocalStorageList('checkList', storageId);
+      renderCartMain();
     });
-  }
-});
+  });
+}
+
+function deleteButtonsEvent() {
+  const deleteButtonElements = document.getElementsByClassName('delete-button');
+  Array.from(deleteButtonElements).forEach((element) =>
+    element.addEventListener('click', function (e) {
+      let storageId = this.id.split('-')[1];
+      deleteLocalStorageListById('cart', storageId);
+      renderCartMain();
+    })
+  );
+}
+
+function quantityPlusButtonEvent() {
+  const plusMinusButton = document.getElementsByClassName('button is-rounded');
+
+  Array.from(plusMinusButton).forEach((element) => {
+    let buttonKind = element.id.split('-')[0];
+    let storeId = element.id.split('-')[1];
+    if (buttonKind === 'plus') {
+      element.addEventListener('click', function () {
+        const quantityInput = document.getElementById(
+          `quantityInput-${storeId}`
+        );
+        const minusButton = document.getElementById(`minus-${storeId}`);
+        let quantityValue = parseInt(quantityInput.value);
+        quantityValue++;
+
+        if (quantityValue >= 99) {
+          element.disabled = true;
+          quantityInput.value = `99`;
+        }
+        if (quantityValue >= 1 && quantityValue <= 99) {
+          minusButton.disabled = false;
+          quantityInput.value = `${quantityValue}`;
+        }
+      });
+    } else {
+      element.addEventListener('click', function () {
+        const quantityInput = document.getElementById(
+          `quantityInput-${storeId}`
+        );
+        const plusButton = document.getElementById(`plus-${storeId}`);
+        let quantityValue = parseInt(quantityInput.value);
+        quantityValue--;
+
+        if (quantityValue <= 0) {
+          element.disabled = true;
+          quantityInput.value = `0`;
+        }
+        if (quantityValue >= 1 && quantityValue < 99) {
+          plusButton.disabled = false;
+          quantityInput.value = `${quantityValue}`;
+        }
+      });
+    }
+  });
+}
+
+function renderCartMain() {
+  renderCartList();
+  allSelectCheckboxEvent();
+  selectCheckBoxEvent();
+  quantityPlusButtonEvent();
+  deletePartEvent();
+  deleteButtonsEvent();
+}
+
+renderCartMain();

@@ -1,21 +1,20 @@
-const dbReq = indexedDB.open('shopping', 1);
-let db;
-dbReq.addEventListener('success', function (event) {
-  db = event.target.result;
+import { getLocalStorageList, addLocalStorageList } from '/useful-functions.js';
+
+let localStorageGetBtnElement = document.getElementById('localStorageGetBtn');
+localStorageGetBtnElement.addEventListener('click', function () {
+  let cartList = getLocalStorageList('cart');
+  console.log(cartList);
 });
 
-dbReq.addEventListener('error', function (event) {
-  const error = event.target.error;
-  console.log('error', error.name);
-});
+let localStorageAddBtnElement = document.getElementById('localStorageAddBtn');
+localStorageAddBtnElement.addEventListener('click', function () {
+  let productDummySchema = {
+    id: prompt('id?'),
+    quantity: prompt('수량은?'),
+    product: prompt('상품?'),
+    price: prompt('가격?'),
+  };
 
-dbReq.addEventListener('upgradeneeded', function (event) {
-  db = event.target.result;
-  let oldVersion = event.oldVersion;
-  if (oldVersion < 1) {
-    db.createObjectStore('order', {
-      keyPath: 'id',
-      autoIncrement: true,
-    });
-  }
+  let cartList = addLocalStorageList('cart', productDummySchema);
+  console.log(cartList);
 });

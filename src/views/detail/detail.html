@@ -26,7 +26,7 @@
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.410.0.min.js"></script>
     <!-- 커스텀 css, js -->
     <link rel="stylesheet" href="detail.css" />
-    <script src="detail.js" defer></script>
+    <script src="detail.js" type="module" defer></script>
   </head>
   <body>
     <!-- 헤더 -->
@@ -68,27 +68,22 @@
           </div>
         </div>
       </div>
-    </nav>
-    
+    </nav>  
 
     <!-- 장바구니 추가 -->
-    <section class="section">
-        
-        <input
+    <section class="section">        
+      <input
+        id="localStorageGetBtn"
         type="button"
-        value="add"
-        onclick="
-            let store = db.transaction('order', 'readwrite').objectStore('order');
-            let addReq = store.add({
-                product:prompt('상품?'),
-                price:prompt('가격?')
-            });
+        value="local storage get"
+      />
 
-            addReq.addEventListener('success', function(event){
-                console.log(event.target.result);
-            });
-        "
-    />
+      <input
+        id="localStorageAddBtn"
+        type="button"
+        value="local storage add"
+      />
+      
     </section>
   </body>
 </html>

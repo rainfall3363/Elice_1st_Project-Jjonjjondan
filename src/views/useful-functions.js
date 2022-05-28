@@ -61,3 +61,38 @@ export const setRegister = () => {
     register.href = '/account'; //임시 테스트 이동경로, 계정관리 페이지 구현 시 수정
   }
 };
+
+//LocalStorage에서 key에 해당하는 객체 반환. key가 없을 경우 list로 초기화 후 반환
+export const getLocalStorageList = (key) => {
+  const valueList = window.localStorage.getItem(key);
+  if (valueList === null) {
+    window.localStorage.setItem(key, JSON.stringify([]));
+    return JSON.parse(window.localStorage.getItem(key));
+  } else {
+    return JSON.parse(window.localStorage.getItem(key));
+  }
+};
+
+//localStorage에서 key에 해당하는 list 객체에 value를 push
+export const addLocalStorageList = (key, value) => {
+  const valueList = getLocalStorageList(key);
+  valueList.push(value);
+  window.localStorage.setItem(key, JSON.stringify(valueList));
+  return JSON.parse(window.localStorage.getItem(key));
+};
+
+//localStorage에서 해당 key의 value인 리스트 내 해당 id가 있는 요소 삭제
+export const deleteLocalStorageListById = (key, id) => {
+  const storageList = getLocalStorageList(key);
+  const remainStorageList = storageList.filter((e) => e.id !== id);
+  window.localStorage.setItem(key, JSON.stringify(remainStorageList));
+  console.log(getLocalStorageList(key));
+};
+
+//localStorage에서 해당 key의 값이 value인 요소 삭제
+export const deleteLocalStorageList = (key, value) => {
+  const storageList = getLocalStorageList(key);
+  const remainStorageList = storageList.filter((e) => e !== value);
+  window.localStorage.setItem(key, JSON.stringify(remainStorageList));
+  console.log(getLocalStorageList(key));
+};
