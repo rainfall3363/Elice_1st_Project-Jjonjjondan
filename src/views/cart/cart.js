@@ -1,5 +1,7 @@
 import {
   getLocalStorageList,
+  addLocalStorageList,
+  deleteLocalStorageListById,
   deleteLocalStorageList,
 } from '/useful-functions.js';
 
@@ -78,8 +80,8 @@ function allSelectCheckboxEvent() {
   const cartCheckboxElements = document.getElementsByClassName('cart-checkbox');
   const allSelectCheckboxElement = document.getElementById('allSelectCheckbox');
 
-  allSelectCheckboxElement.addEventListener('change', (event) => {
-    if (event.currentTarget.checked) {
+  allSelectCheckboxElement.addEventListener('change', (e) => {
+    if (e.currentTarget.checked) {
       for (let element of cartCheckboxElements) {
         element.checked = true;
       }
@@ -91,24 +93,39 @@ function allSelectCheckboxEvent() {
   });
 }
 
-function deleteButtonsEvent() {
-  const deleteButtons = document.getElementsByClassName('delete-button');
-  Array.from(deleteButtons).forEach((elem) =>
-    elem.addEventListener('click', function (e) {
+function selectCheckBoxEvent() {
+  const cartCheckboxElements = document.getElementsByClassName('cart-checkbox');
+  Array.from(cartCheckboxElements).forEach((element) =>
+    element.addEventListener('change', function (e) {
       let storageId = this.id.split('-')[1];
-      deleteLocalStorageList('cart', storageId);
+      if (e.currentTarget.checked) {
+        // checkList가 없다면 []로 초기화
+        getLocalStorageList('checkList');
+        addLocalStorageList('checkList', storageId);
+        element.checked = true;
+      } else {
+        deleteLocalStorageList('checkList', storageId);
+        element.checked = false;
+      }
+    })
+  );
+}
+
+function deleteButtonsEvent() {
+  const deleteButtonElements = document.getElementsByClassName('delete-button');
+  Array.from(deleteButtonElements).forEach((element) =>
+    element.addEventListener('click', function (e) {
+      let storageId = this.id.split('-')[1];
+      deleteLocalStorageListById('cart', storageId);
       renderCartMain();
     })
   );
 }
 
-function selectCheckBoxEvent() {
-  const cartCheckboxElements = document.getElementsByClassName('cart-checkbox');
-}
-
 function renderCartMain() {
   renderCartList();
   allSelectCheckboxEvent();
+  selectCheckBoxEvent();
   deleteButtonsEvent();
 }
 
