@@ -1,0 +1,31 @@
+main {
+  height: 85vh;
+}
+
+main > section {
+  width: 70vw;
+}
+
+div.header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+div.is-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  row-gap: 2rem;
+  column-gap: 2rem;
+}
+
+div.content {
+  height: 10vh;
+}
+
+h1 {
+  width: 100%;
+}
+
+i {
+  font-size: 3.5rem;
+}
