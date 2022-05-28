@@ -14,6 +14,7 @@ async function init() {
   addAllEvents();
 }
 
+// #tableBody에 주문 목록을 추가하는 함수
 async function renderOrders() {
   const list = await (await fetch('./orderlist.json')).json();
   const tableBody = document.querySelector('#tableBody');
@@ -24,6 +25,7 @@ async function renderOrders() {
   }
 }
 
+// 주문 테이블을 작성해 반환하는 함수
 function createOrderTable(data) {
   const productNameString = data.order.orderList.reduce((str, element) => {
     return (str += `<p>${element.productName} ${element.orderQuantity}개</p>`);
@@ -54,6 +56,7 @@ function addAllEvents() {
   modalBackground.addEventListener('click', closeCancelModal);
 }
 
+// 모달창을 여는 이벤트 처리 함수
 function openCancelModal(event) {
   const modalYesButton = document.querySelector('#modalYesButton');
   const modalCancelButton = document.querySelector('#modalCancelButton');
@@ -66,8 +69,7 @@ function openCancelModal(event) {
 
 function cancelOrder(orderId) {
   return async function (event) {
-    // 대충 비동기로 취소 처리하는 코드
-
+    // await으로 주문 취소 요청 보내는 코드
     event.stopPropagation();
     alert(`${orderId}주문에 대한 취소요청이 완료되었습니다.`);
     window.location.reload();
