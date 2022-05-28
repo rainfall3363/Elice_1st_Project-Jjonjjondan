@@ -1,3 +1,8 @@
+// plus minus 버튼 기능 완성하였고 localStorage에 update되도록 만들 예정입니다.
+// 결제정보는 localStorage에 order key를 만들어 object로 저장하여 관리할 예정입니다.
+// 백엔드에서 구현한 실제 제품 스키마를 적용하여 데이터를 뿌려줄 예정입니다.
+// 이후 주문서 작성 페이지 만들 예정입니다.
+
 import {
   getLocalStorageList,
   addLocalStorageList,
@@ -143,54 +148,47 @@ function deleteButtonsEvent() {
 function quantityPlusButtonEvent() {
   const plusMinusButton = document.getElementsByClassName('button is-rounded');
 
-  Array.from(plusMinusButton).forEach(
-    (element) => {
-      let buttonKind = element.id.split('-')[0];
-      let storeId = element.id.split('-')[1];
-      if (buttonKind === 'plus') {
-        element.addEventListener('click', function () {
-          const quantityInput = document.getElementById(
-            `quantityInput-${storeId}`
-          );
-          const minusButton = document.getElementById(`minus-${storeId}`);
-          let quantityValue = parseInt(quantityInput.value);
-          quantityValue++;
+  Array.from(plusMinusButton).forEach((element) => {
+    let buttonKind = element.id.split('-')[0];
+    let storeId = element.id.split('-')[1];
+    if (buttonKind === 'plus') {
+      element.addEventListener('click', function () {
+        const quantityInput = document.getElementById(
+          `quantityInput-${storeId}`
+        );
+        const minusButton = document.getElementById(`minus-${storeId}`);
+        let quantityValue = parseInt(quantityInput.value);
+        quantityValue++;
 
-          if (quantityValue >= 99) {
-            element.disabled = true;
-            quantityInput.value = `99`;
-          }
-          if (quantityValue >= 1 && quantityValue <= 99) {
-            minusButton.disabled = false;
-            quantityInput.value = `${quantityValue}`;
-          }
-        });
-      } else {
-        element.addEventListener('click', function () {
-          const quantityInput = document.getElementById(
-            `quantityInput-${storeId}`
-          );
-          const plusButton = document.getElementById(`plus-${storeId}`);
-          let quantityValue = parseInt(quantityInput.value);
-          quantityValue--;
+        if (quantityValue >= 99) {
+          element.disabled = true;
+          quantityInput.value = `99`;
+        }
+        if (quantityValue >= 1 && quantityValue <= 99) {
+          minusButton.disabled = false;
+          quantityInput.value = `${quantityValue}`;
+        }
+      });
+    } else {
+      element.addEventListener('click', function () {
+        const quantityInput = document.getElementById(
+          `quantityInput-${storeId}`
+        );
+        const plusButton = document.getElementById(`plus-${storeId}`);
+        let quantityValue = parseInt(quantityInput.value);
+        quantityValue--;
 
-          if (quantityValue <= 0) {
-            element.disabled = true;
-            quantityInput.value = `0`;
-          }
-          if (quantityValue >= 1 && quantityValue < 99) {
-            plusButton.disabled = false;
-            quantityInput.value = `${quantityValue}`;
-          }
-        });
-      }
+        if (quantityValue <= 0) {
+          element.disabled = true;
+          quantityInput.value = `0`;
+        }
+        if (quantityValue >= 1 && quantityValue < 99) {
+          plusButton.disabled = false;
+          quantityInput.value = `${quantityValue}`;
+        }
+      });
     }
-    // element.addEventListener('click', function (e) {
-    //   let storageId = this.id.split('-')[1];
-    //   deleteLocalStorageListById('cart', storageId);
-    //   renderCartMain();
-    // })
-  );
+  });
 }
 
 function renderCartMain() {
