@@ -10,6 +10,7 @@ let localStorageAddBtnElement = document.getElementById('localStorageAddBtn');
 localStorageAddBtnElement.addEventListener('click', function () {
   let productDummySchema = {
     id: prompt('id?'),
+    quantity: prompt('수량은?'),
     product: prompt('상품?'),
     price: prompt('가격?'),
   };
