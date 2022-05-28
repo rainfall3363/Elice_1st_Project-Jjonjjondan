@@ -83,10 +83,15 @@ function allSelectCheckboxEvent() {
   allSelectCheckboxElement.addEventListener('change', (e) => {
     if (e.currentTarget.checked) {
       for (let element of cartCheckboxElements) {
+        let storageId = element.id.split('-')[1];
+        getLocalStorageList('checkList');
+        addLocalStorageList('checkList', storageId);
         element.checked = true;
       }
     } else {
       for (let element of cartCheckboxElements) {
+        let storageId = element.id.split('-')[1];
+        deleteLocalStorageList('checkList', storageId);
         element.checked = false;
       }
     }
