@@ -73,6 +73,20 @@ export const getLocalStorageList = (key) => {
   }
 };
 
+//localStorage에서 id에 해당하는 object를 반환합니다.
+export const getLocalStorageListById = (key, id) => {
+  const valueList = getLocalStorageList(key);
+  const StorageList = valueList.filter((e) => e.id === id);
+
+  if (StorageList === null) {
+    StorageList.push({ id: id });
+    window.localStorage.setItem(key, JSON.stringify(StorageList));
+    return JSON.parse(window.localStorage.getItem(key));
+  } else {
+    return StorageList[0];
+  }
+};
+
 //localStorage에서 key에 해당하는 list 객체에 value를 push
 export const addLocalStorageList = (key, value) => {
   const valueList = getLocalStorageList(key);
@@ -94,6 +108,18 @@ export const deleteLocalStorageList = (key, value) => {
   const storageList = getLocalStorageList(key);
   const remainStorageList = storageList.filter((e) => e !== value);
   window.localStorage.setItem(key, JSON.stringify(remainStorageList));
+  return getLocalStorageList(key);
+};
+
+//localStorage에서 id에 해당하는 object quantity key의 value를 수정
+export const editQuantityLocalStorageListById = (key, id, value) => {
+  const storageList = getLocalStorageList(key);
+  storageList.forEach((e) => {
+    if (e.id === id) {
+      e.quantity = value;
+    }
+  });
+  window.localStorage.setItem(key, JSON.stringify(storageList));
   return getLocalStorageList(key);
 };
 

@@ -8,6 +8,8 @@ import {
   addLocalStorageList,
   deleteLocalStorageListById,
   deleteLocalStorageList,
+  getLocalStorageListById,
+  editQuantityLocalStorageListById,
 } from '/useful-functions.js';
 
 function makeProductsCard(productsCardsElement) {
@@ -156,16 +158,21 @@ function quantityPlusButtonEvent() {
           `quantityInput-${storeId}`
         );
         const minusButton = document.getElementById(`minus-${storeId}`);
-        let quantityValue = parseInt(quantityInput.value);
+
+        let quantityValue = parseInt(
+          getLocalStorageListById('cart', storeId).quantity
+        );
         quantityValue++;
 
         if (quantityValue >= 99) {
           element.disabled = true;
           quantityInput.value = `99`;
+          editQuantityLocalStorageListById('cart', storeId, `99`);
         }
         if (quantityValue >= 1 && quantityValue < 99) {
           minusButton.disabled = false;
           quantityInput.value = `${quantityValue}`;
+          editQuantityLocalStorageListById('cart', storeId, quantityValue);
         }
       });
     } else {
@@ -174,16 +181,20 @@ function quantityPlusButtonEvent() {
           `quantityInput-${storeId}`
         );
         const plusButton = document.getElementById(`plus-${storeId}`);
-        let quantityValue = parseInt(quantityInput.value);
+        let quantityValue = parseInt(
+          getLocalStorageListById('cart', storeId).quantity
+        );
         quantityValue--;
 
         if (quantityValue <= 0) {
           element.disabled = true;
           quantityInput.value = `0`;
+          editQuantityLocalStorageListById('cart', storeId, `0`);
         }
         if (quantityValue >= 1 && quantityValue < 99) {
           plusButton.disabled = false;
           quantityInput.value = `${quantityValue}`;
+          editQuantityLocalStorageListById('cart', storeId, quantityValue);
         }
       });
     }
