@@ -86,7 +86,7 @@ export const deleteLocalStorageListById = (key, id) => {
   const storageList = getLocalStorageList(key);
   const remainStorageList = storageList.filter((e) => e.id !== id);
   window.localStorage.setItem(key, JSON.stringify(remainStorageList));
-  console.log(getLocalStorageList(key));
+  return getLocalStorageList(key);
 };
 
 //localStorage에서 해당 key의 값이 value인 요소 삭제
@@ -94,7 +94,7 @@ export const deleteLocalStorageList = (key, value) => {
   const storageList = getLocalStorageList(key);
   const remainStorageList = storageList.filter((e) => e !== value);
   window.localStorage.setItem(key, JSON.stringify(remainStorageList));
-  console.log(getLocalStorageList(key));
+  return getLocalStorageList(key);
 };
 
 export const calculateTotalPrice = (price) => {
