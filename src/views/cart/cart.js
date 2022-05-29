@@ -45,6 +45,7 @@ function makeProductsCard(productsCardsElement) {
             min="1"
             max="99"
             value=${productsCardsElement.quantity}
+            disabled
           />
           <button class="button is-rounded" id="plus-${productsCardsElement.id}">
             <span class="icon">
