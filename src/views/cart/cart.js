@@ -10,13 +10,16 @@ import {
   deleteLocalStorageList,
   getLocalStorageListById,
   editQuantityLocalStorageListById,
+  addCommas,
 } from '/useful-functions.js';
 
 function makeProductsCard(productsCardsElement) {
   return `
     <div class="cart-product-item" id="productItem-${productsCardsElement.id}">
       <label class="checkbox">
-        <input type="checkbox" class="cart-checkbox" id="checkbox-${productsCardsElement.id}"/>
+        <input type="checkbox" class="cart-checkbox" id="checkbox-${
+          productsCardsElement.id
+        }"/>
       </label>
       <button class="delete-button" id="delete-${productsCardsElement.id}">
         <span class="icon">
@@ -31,9 +34,13 @@ function makeProductsCard(productsCardsElement) {
         />
       </figure>
       <div class="content">
-        <p id="title-${productsCardsElement.id}">${productsCardsElement.product}</p>
+        <p id="title-${productsCardsElement.id}">${
+    productsCardsElement.product
+  }</p>
         <div class="quantity">
-          <button class="button is-rounded" id="minus-${productsCardsElement.id}">
+          <button class="button is-rounded" id="minus-${
+            productsCardsElement.id
+          }">
             <span class="icon is-small">
               <i class="fas fa-thin fa-minus"></i>
             </span>
@@ -47,7 +54,9 @@ function makeProductsCard(productsCardsElement) {
             value=${productsCardsElement.quantity}
             disabled
           />
-          <button class="button is-rounded" id="plus-${productsCardsElement.id}">
+          <button class="button is-rounded" id="plus-${
+            productsCardsElement.id
+          }">
             <span class="icon">
               <i class="fas fa-lg fa-plus"></i>
             </span>
@@ -55,19 +64,25 @@ function makeProductsCard(productsCardsElement) {
         </div>
       </div>
       <div class="calulation">
-        <p id="unitPrice-${productsCardsElement.id}">${productsCardsElement.price}</p>
+        <p id="unitPrice-${productsCardsElement.id}">${addCommas(
+    productsCardsElement.price
+  )}원</p>
         <p>
           <span class="icon">
             <i class="fas fa-thin fa-xmark"></i>
           </span>
         </p>
-        <p id="quantity-${productsCardsElement.id}">제품 수량</p>
+        <p id="quantity-${productsCardsElement.id}">${
+    productsCardsElement.quantity
+  }개</p>
         <p>
           <span class="icon">
             <i class="fas fa-thin fa-equals"></i>
           </span>
         </p>
-        <p id="total-${productsCardsElement.id}">합산 값</p>
+        <p id="total-${productsCardsElement.id}">${addCommas(
+    productsCardsElement.price * productsCardsElement.quantity
+  )}원</p>
       </div>
     </div>
   `;
@@ -169,11 +184,13 @@ function quantityPlusButtonEvent() {
           element.disabled = true;
           quantityInput.value = `99`;
           editQuantityLocalStorageListById('cart', storeId, `99`);
+          renderCartMain();
         }
         if (quantityValue >= 1 && quantityValue < 99) {
           minusButton.disabled = false;
           quantityInput.value = `${quantityValue}`;
           editQuantityLocalStorageListById('cart', storeId, quantityValue);
+          renderCartMain();
         }
       });
     } else {
@@ -191,11 +208,13 @@ function quantityPlusButtonEvent() {
           element.disabled = true;
           quantityInput.value = `0`;
           editQuantityLocalStorageListById('cart', storeId, `0`);
+          renderCartMain();
         }
         if (quantityValue >= 1 && quantityValue < 99) {
           plusButton.disabled = false;
           quantityInput.value = `${quantityValue}`;
           editQuantityLocalStorageListById('cart', storeId, quantityValue);
+          renderCartMain();
         }
       });
     }
@@ -233,7 +252,6 @@ function setDummyData() {
 }
 
 function renderCartMain() {
-  setDummyData();
   renderCartList();
   allSelectCheckboxEvent();
   selectCheckBoxEvent();
@@ -241,5 +259,5 @@ function renderCartMain() {
   deletePartEvent();
   deleteButtonsEvent();
 }
-
+setDummyData();
 renderCartMain();
