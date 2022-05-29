@@ -163,7 +163,7 @@ function quantityPlusButtonEvent() {
           element.disabled = true;
           quantityInput.value = `99`;
         }
-        if (quantityValue >= 1 && quantityValue <= 99) {
+        if (quantityValue >= 1 && quantityValue < 99) {
           minusButton.disabled = false;
           quantityInput.value = `${quantityValue}`;
         }
