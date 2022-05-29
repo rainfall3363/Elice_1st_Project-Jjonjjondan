@@ -202,7 +202,38 @@ function quantityPlusButtonEvent() {
   });
 }
 
+function setDummyData() {
+  const dummyData = [
+    {
+      id: '7',
+      quantity: 98,
+      product: 'asdfg',
+      price: '32456',
+    },
+    {
+      id: '8',
+      quantity: 1,
+      product: 'asdfgh',
+      price: '34567',
+    },
+    {
+      id: '9',
+      quantity: 1,
+      product: 'sadfgh',
+      price: '2345',
+    },
+    {
+      id: '10',
+      quantity: 1,
+      product: 'asdfgh',
+      price: '234567',
+    },
+  ];
+  window.localStorage.setItem('cart', JSON.stringify(dummyData));
+}
+
 function renderCartMain() {
+  setDummyData();
   renderCartList();
   allSelectCheckboxEvent();
   selectCheckBoxEvent();
