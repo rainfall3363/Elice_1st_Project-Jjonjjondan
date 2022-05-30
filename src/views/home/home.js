@@ -34,7 +34,7 @@ async function categoryList() {
       'beforeend',
       `
       <div class="slideBox">
-      <a href="/products/${categoryId}" class="slidesAtag">
+      <a href="/products/?categoryId=${categoryId}" class="slidesAtag">
         <img src="${imageUrl}" style="width: 50rem; height: 30rem";>
       </a>
       <p class="brandName">Camping</p>
