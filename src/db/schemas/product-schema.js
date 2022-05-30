@@ -20,7 +20,7 @@ const ProductSchema = new Schema(
       required: false,
     },
     category: {
-      type: Number, // 카테고리:1 -> 남자셔츠, 2 -> 여자셔츠 ...
+      type: String,
       required: false,
     },
     image: {
