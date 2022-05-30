@@ -104,7 +104,7 @@ orderRouter.patch('/statusUpdate', async function (req, res, next) {
 
     // body data 로부터 업데이트할 주문 정보를 추출함.
     const orderId = req.query.orderId;
-    const orderStatus = req.body.order.orderStatus;
+    const orderStatus = req.body.status;
 
     if (!orderStatus) {
       throw new Error('입력한 상태 값이 없습니다. 다시 입력해주세요.');
