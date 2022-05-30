@@ -20,8 +20,9 @@ productRouter.post('/productRegister', async (req, res, next) => {
     const price = req.body.price;
     const description = req.body.description;
     const maker = req.body.maker;
-    const category = req.body.category;
+    const categoryName = req.body.categoryName;
     const image = req.body.image;
+    const inventory = req.body.inventory;
 
     // 위 데이터를 상품 db에 추가하기
     const newProduct = await productService.addProduct({
@@ -29,8 +30,9 @@ productRouter.post('/productRegister', async (req, res, next) => {
       price,
       description,
       maker,
-      category,
+      categoryName,
       image,
+      inventory,
     });
 
     // 추가된 상품의 db 데이터를 프론트에 다시 보내줌
@@ -68,7 +70,7 @@ productRouter.get('/productInfo', async function (req, res, next) {
 
 // 상품 정보 수정
 // (예를 들어 /api/products/abc12345 로 요청하면 req.params.productId는 'abc12345' 문자열로 됨)
-productRouter.patch('/users/:productId', async function (req, res, next) {
+productRouter.patch('/products/:productId', async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -86,8 +88,9 @@ productRouter.patch('/users/:productId', async function (req, res, next) {
     const price = req.body.price;
     const description = req.body.description;
     const maker = req.body.maker;
-    const category = req.body.category;
+    const categoryName = req.body.categoryName;
     const image = req.body.image;
+    const inventory = req.body.inventory;
 
     // 위 데이터가 undefined가 아니라면, 즉, 프론트에서 업데이트를 위해
     // 보내주었다면, 업데이트용 객체에 삽입함.
@@ -96,8 +99,9 @@ productRouter.patch('/users/:productId', async function (req, res, next) {
       ...(price && { price }),
       ...(description && { description }),
       ...(maker && { maker }),
-      ...(category && { category }),
+      ...(categoryName && { categoryName }),
       ...(image && { image }),
+      ...(inventory && { inventory }),
     };
 
     // 상품 정보를 업데이트함.

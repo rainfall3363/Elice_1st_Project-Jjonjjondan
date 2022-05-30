@@ -10,7 +10,8 @@ class ProductService {
 
   // 상품 등록
   async addProduct(productInfo) {
-    const { title, price, description, maker, category, image } = productInfo;
+    const { title, price, description, maker, categoryName, image, inventory } =
+      productInfo;
 
     // 상품명 중복 확인
     const product = await this.productModel.findByTitle(title);
@@ -35,9 +36,9 @@ class ProductService {
   // 상품 상세정보 불러오기
   async getProductInfo(productId) {
     const product = await this.productModel.findByProductId(productId);
-    const { title, price, description, maker, category, image } = product;
+    const { title, price, description, maker, categoryName, image } = product;
 
-    return { title, price, description, maker, category, image };
+    return { title, price, description, maker, categoryName, image };
   }
 
   // 상품정보 수정
