@@ -10,16 +10,6 @@ export class OrderModel {
     return createdNewOrder;
   }
 
-  async update({ orderNum, status }) {
-    // status ("주문 접수", "배송 중", "배송 완료")
-    // 객체로 다른 정보는 그대로인 상태로, status만 변경된 상태로 받아와야 할 듯
-    const filter = { _id: orderNum };
-    const option = { returnOriginal: false };
-
-    const updatedOrder = await Order.findOneAndUpdate(filter, status, option);
-    return updatedOrder;
-  }
-
   // 관리자 주문 관리용
   async findAll() {
     const orders = await Order.find({});
@@ -27,22 +17,29 @@ export class OrderModel {
   }
 
   async findByUserId(userId) {
-    const orders = await Order.findOne({ userId });
+    const orders = await Order.find({ userId: userId });
     // 한 유저에 여러 개의 주문이 존재할 수 있다
-    // 여러 개의 주문이 있다면, 여러 개의 주문이 담긴 배열이 리턴 될 것
-    // 하나의 주문만 있어도 하나의 요소가 담긴 배열이 리턴 되야함
+    // 객체 담은 객체 리턴, 근데 배열은 아님
     return orders;
   }
 
-  async findByOrderNum(orderNum) {
-    const orders = await Order.findOne({ _id: orderNum });
-    // 여러 개의 주문일 수도 있음
-    // one의 결과가 아마 배열
+  async findByOrderId(orderId) {
+    const orders = await Order.findOne({ _id: orderId });
+    // orders 안에 배열을 꺼내서 가공해서 사용해야함
     return orders;
   }
 
-  async delete(orderNum) {
-    const orders = await Order.findOneAndDelete({ _id: orderNum });
+  async update({ orderId, update }) {
+    // status ("주문 접수", "배송 중", "배송 완료")
+    const filter = { _id: orderId };
+    const option = { returnOriginal: false };
+
+    const updatedOrder = await Order.findOneAndUpdate(filter, update, option);
+    return updatedOrder;
+  }
+
+  async delete(orderId) {
+    const orders = await Order.findOneAndDelete({ _id: orderId });
     // 삭제한 주문의 주문 정보를 리턴 함
     return orders;
   }

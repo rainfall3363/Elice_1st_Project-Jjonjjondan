@@ -28,17 +28,17 @@ const OrderSchema = new Schema(
       orderList: {
         type: [
           new Schema({
-            productCode: { type: String, required: true },
+            productId: { type: String, required: true },
             productName: { type: String, required: true },
-            orderQuantity: { type: Number, required: true },
+            quantity: { type: Number, required: true },
             price: { type: Number, required: true },
           }),
         ],
         required: true,
       },
+      request: { type: String, required: true },
+      status: { type: String, required: true, default: '상품 준비 중' },
     },
-    request: { type: String, required: true },
-    orderStatus: { type: String, required: true, default: '상품 준비 중' },
   },
   {
     collection: 'orders',
