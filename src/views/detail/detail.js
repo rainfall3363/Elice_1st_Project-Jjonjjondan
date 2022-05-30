@@ -1,9 +1,14 @@
-import { getLocalStorageList, addLocalStorageList } from '/useful-functions.js';
+import {
+  getLocalStorageList,
+  getLocalStorageListById,
+  addLocalStorageList,
+  editQuantityLocalStorageListById,
+} from '/useful-functions.js';
 
 let localStorageGetBtnElement = document.getElementById('localStorageGetBtn');
 localStorageGetBtnElement.addEventListener('click', function () {
   let cartList = getLocalStorageList('cart');
-  console.log(cartList);
+  // console.log(cartList);
 });
 
 let localStorageAddBtnElement = document.getElementById('localStorageAddBtn');
@@ -15,6 +20,21 @@ localStorageAddBtnElement.addEventListener('click', function () {
     price: prompt('가격?'),
   };
 
-  let cartList = addLocalStorageList('cart', productDummySchema);
-  console.log(cartList);
+  const valueList = getLocalStorageList('cart');
+  const storeId = productDummySchema.id;
+  const StorageList = valueList.filter((e) => e.id == storeId);
+
+  if (StorageList === null) {
+    addLocalStorageList('cart', productDummySchema);
+  } else {
+    let quantityValue = parseInt(
+      getLocalStorageListById('cart', storeId).quantity
+    );
+    quantityValue++;
+    if (quantityValue >= 99) {
+      editQuantityLocalStorageListById('cart', storeId, 99);
+    } else {
+      editQuantityLocalStorageListById('cart', storeId, quantityValue);
+    }
+  }
 });
