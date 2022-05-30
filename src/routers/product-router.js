@@ -44,7 +44,7 @@ productRouter.post('/productRegister', async (req, res, next) => {
 });
 
 // 전체 상품 목록을 가져옴 (배열 형태임)
-productRouter.get('/productlist', async function (req, res, next) {
+productRouter.get('/productList', async function (req, res, next) {
   try {
     // 전체 상품 목록을 얻음
     const products = await productService.getProducts();
@@ -59,7 +59,7 @@ productRouter.get('/productlist', async function (req, res, next) {
 productRouter.get('/productInfo', async function (req, res, next) {
   try {
     const productInfo = await productService.getProductInfo(
-      req.currentProductId
+      req.query.productId
     );
 
     res.status(200).json(productInfo);

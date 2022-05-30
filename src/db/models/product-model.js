@@ -5,8 +5,8 @@ const Product = model('product', ProductSchema);
 
 export class ProductModel {
   // 상품 상세
-  async findByTitle(title) {
-    const product = await Product.findOne({ title });
+  async findByProductId(productId) {
+    const product = await Product.findOne({ _id: productId });
     return product;
   }
   // 상품 추가
