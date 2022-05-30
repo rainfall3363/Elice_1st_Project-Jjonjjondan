@@ -8,7 +8,6 @@ import {
 let localStorageGetBtnElement = document.getElementById('localStorageGetBtn');
 localStorageGetBtnElement.addEventListener('click', function () {
   let cartList = getLocalStorageList('cart');
-  // console.log(cartList);
 });
 
 let localStorageAddBtnElement = document.getElementById('localStorageAddBtn');

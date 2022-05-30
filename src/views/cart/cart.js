@@ -100,7 +100,6 @@ function renderCartList() {
 }
 
 function makeOrderSummary(orderSummary) {
-  console.log(orderSummary.productsCount);
   return `
     <div class="box order-summary">
       <div class="header">
@@ -142,7 +141,6 @@ function makeOrderSummary(orderSummary) {
 function renderOrderSummary() {
   const orderSummary = document.getElementById('orderSummary');
   const getOrderLocalStorageObj = getLocalStorageList('order');
-  console.log(getOrderLocalStorageObj);
   orderSummary.innerHTML = makeOrderSummary(getOrderLocalStorageObj);
 }
 
@@ -156,7 +154,6 @@ function updateOrderSummary() {
     const checkList = getLocalStorageList('checkList');
 
     const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
-    // console.log(checkedCartList);
     orderObject = {
       ids: checkedCartList.map((e) => e.id),
       productsCount: checkedCartList.length,
@@ -174,7 +171,6 @@ function updateOrderSummary() {
   }
   window.localStorage.setItem('order', JSON.stringify(orderObject));
   renderOrderSummary();
-  // console.log(cartList);
 }
 
 function allSelectCheckboxEvent() {
