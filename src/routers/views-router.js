@@ -16,6 +16,7 @@ viewsRouter.use('/account/updateInfo', serveStatic('updateInfo'));
 viewsRouter.use('/account/orders', serveStatic('orders'));
 viewsRouter.use('/admin', serveStatic('admin'));
 viewsRouter.use('/admin/orders', serveStatic('adminOrders'));
+viewsRouter.use('/admin/products', serveStatic('adminProducts'));
 
 // views 폴더의 최상단 파일인 rabbit.png, api.js 등을 쓸 수 있게 함
 viewsRouter.use('/', serveStatic(''));
