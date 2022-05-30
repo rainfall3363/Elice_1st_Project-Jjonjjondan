@@ -67,9 +67,19 @@ userRouter.get('/userlist', loginRequired, async function (req, res, next) {
   try {
     // 전체 사용자 목록을 얻음
     const users = await userService.getUsers();
-
     // 사용자 목록(배열)을 JSON 형태로 프론트에 보냄
     res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 특정 사용자 정보 불러오기
+userRouter.get('/userInfo', loginRequired, async function (req, res, next) {
+  try {
+    const userInfo = await userService.getUserInfo(req.currentUserId);
+
+    res.status(200).json(userInfo);
   } catch (error) {
     next(error);
   }
@@ -78,7 +88,7 @@ userRouter.get('/userlist', loginRequired, async function (req, res, next) {
 // 사용자 정보 수정
 // (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
 userRouter.patch(
-  '/users/:userId',
+  '/users/update',
   loginRequired,
   async function (req, res, next) {
     try {
@@ -91,7 +101,7 @@ userRouter.patch(
       }
 
       // params로부터 id를 가져옴
-      const userId = req.params.userId;
+      const userId = req.currentUserId;
 
       // body data 로부터 업데이트할 사용자 정보를 추출함.
       const fullName = req.body.fullName;
@@ -128,6 +138,21 @@ userRouter.patch(
 
       // 업데이트 이후의 유저 데이터를 프론트에 보내 줌
       res.status(200).json(updatedUserInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+// 사용자 정보 삭제
+userRouter.delete(
+  '/userDelete',
+  loginRequired,
+  async function (req, res, next) {
+    try {
+      const deletedUserInfo = await userService.deleteUser(req.currentUserId);
+
+      res.status(200).json(deletedUserInfo);
     } catch (error) {
       next(error);
     }

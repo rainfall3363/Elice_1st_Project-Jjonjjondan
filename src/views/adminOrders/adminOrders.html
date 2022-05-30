@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>쇼핑-데모</title>
+    <!-- 아이콘 -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/elice-rabbit-favicon.png"
+    />
+    <!-- bulma css 관련 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <!-- 폰트 어썸: 아이콘 -->
+    <script
+      defer
+      src="https://kit.fontawesome.com/7630448495.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 구글 OAuth -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- 카카오 OAuth -->
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="adminOrders.css" />
+    <script src="adminOrders.js" type="module" defer></script>
+  </head>
+  <body>
+    <!-- 헤더 -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="container mt-3">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="/">
+            <img src="/elice-rabbit.png" width="30" height="30" />
+            <span class="has-text-link">쇼핑-데모</span>
+          </a>
+
+          <a
+            role="button"
+            class="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-end breadcrumb my-auto" aria-label="breadcrumbs">
+            <ul id="navbar">
+              <li><a href="/login" id="loginId">로그인</a></li>
+              <li>
+                <a href="/admin" aria-current="page">
+                  <span class="icon">
+                    <i class="fas fa-cog"></i>
+                  </span>
+                  <span>페이지 관리</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main
+      class="is-flex is-justify-content-center is-align-items-center is-flex-direction-column"
+    >
+      <!-- 주문 목록 테이블 -->
+      <section class="section">
+        <div class="header">
+          <h1 class="title pb-3">전체 주문 목록</h1>
+        </div>
+        <table class="table">
+          <thead class="notification is-info is-light">
+            <tr>
+              <th>주문 번호</th>
+              <th>날짜</th>
+              <th>주문 상품</th>
+              <th>주문 총액</th>
+              <th>상태</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </section>
+
+      <!-- 주문 취소 모달창 -->
+      <div id="modal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <div
+            class="box is-flex is-justify-content-center is-align-items-space-evenly is-flex-direction-column"
+          >
+            <span class="mb-4">
+              주문 취소시 복구할 수 없습니다. 정말 취소하시겠습니까?
+            </span>
+            <button id="modalYesButton" class="button is-danger">네</button>
+            <button id="modalCancelButton" class="button">아니오</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

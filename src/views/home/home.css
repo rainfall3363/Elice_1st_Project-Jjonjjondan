@@ -1,4 +1,4 @@
-.div-container {
+/* .div-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,4 +16,88 @@
   border: 1px solid blue;
   padding: 10px;
   margin-left: 3rem;
+} */
+
+/* 슬라이드 css */
+
+* {
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+#slideContainer {
+  position: relative;
+  max-width: 50rem;
+  margin: 5rem auto;
+}
+
+.slideBox {
+  display: none;
+  text-align: center;
+}
+
+.slideBox {
+  animation-name: slideBox;
+  animation-duration: 1.5s;
+}
+
+@keyframes slideBox {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  #prev,
+  #next {
+    font-size: 11px;
+  }
+}
+
+#prev,
+#next {
+  cursor: pointer;
+  position: absolute;
+  top: 39%;
+  width: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  text-align: center;
+}
+
+#next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+#prev:hover,
+#next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.brandName {
+  font-size: 1rem;
+  text-align: left;
+  margin: 0px 0px 5px 0px;
+}
+
+.categoryName {
+  font-size: 2rem;
+  font-weight: bolder;
+  text-align: left;
+  margin: 0px 0px 5px 0px;
+}
+
+.categoryDescription {
+  color: #aaa;
+  text-align: left;
+  margin: 0px 0px 5px 0px;
+  font-size: 1rem;
 }

@@ -27,3 +27,103 @@ export const convertToNumber = (string) => {
 export const wait = (ms) => {
   return new Promise((r) => setTimeout(r, ms));
 };
+
+//로그인 시 로그인 글씨 로그아웃으로 변경
+//세션 스토리지 내 토큰 활용
+export const loginUser = () => {
+  const data = sessionStorage.getItem('token');
+  const login = document.getElementById('loginId');
+  if (data) {
+    login.innerText = '로그아웃';
+  }
+};
+
+//로그아웃 클릭 시 로그인으로 변경
+export const logoutUser = () => {
+  const data = sessionStorage.getItem('token');
+  const login = document.getElementById('loginId');
+  if (data) {
+    login.addEventListener('click', (logout) => {
+      logout.preventDefault();
+      login.innerText = '로그인';
+      sessionStorage.clear();
+      location.href = '/';
+    });
+  }
+};
+
+//로그인 시 회원가입 텍스트 계정관리로 변경
+export const setRegister = () => {
+  const data = sessionStorage.getItem('token');
+  const register = document.getElementById('registerId');
+  if (data) {
+    register.innerText = '마이페이지';
+    register.href = '/account'; //임시 테스트 이동경로, 계정관리 페이지 구현 시 수정
+  }
+};
+
+//LocalStorage에서 key에 해당하는 객체 반환. key가 없을 경우 list로 초기화 후 반환
+export const getLocalStorageList = (key) => {
+  const valueList = window.localStorage.getItem(key);
+  if (valueList === null) {
+    window.localStorage.setItem(key, JSON.stringify([]));
+    return JSON.parse(window.localStorage.getItem(key));
+  } else {
+    return JSON.parse(window.localStorage.getItem(key));
+  }
+};
+
+//localStorage에서 id에 해당하는 object를 반환합니다.
+export const getLocalStorageListById = (key, id) => {
+  const valueList = getLocalStorageList(key);
+  const StorageList = valueList.filter((e) => e.id === id);
+
+  if (StorageList === null) {
+    StorageList.push({ id: id });
+    window.localStorage.setItem(key, JSON.stringify(StorageList));
+    return JSON.parse(window.localStorage.getItem(key));
+  } else {
+    return StorageList[0];
+  }
+};
+
+//localStorage에서 key에 해당하는 list 객체에 value를 push
+export const addLocalStorageList = (key, value) => {
+  const valueList = getLocalStorageList(key);
+  valueList.push(value);
+  window.localStorage.setItem(key, JSON.stringify(valueList));
+  return JSON.parse(window.localStorage.getItem(key));
+};
+
+//localStorage에서 해당 key의 value인 리스트 내 해당 id가 있는 요소 삭제
+export const deleteLocalStorageListById = (key, id) => {
+  const storageList = getLocalStorageList(key);
+  const remainStorageList = storageList.filter((e) => e.id !== id);
+  window.localStorage.setItem(key, JSON.stringify(remainStorageList));
+  return getLocalStorageList(key);
+};
+
+//localStorage에서 해당 key의 값이 value인 요소 삭제
+export const deleteLocalStorageList = (key, value) => {
+  const storageList = getLocalStorageList(key);
+  const remainStorageList = storageList.filter((e) => e !== value);
+  window.localStorage.setItem(key, JSON.stringify(remainStorageList));
+  return getLocalStorageList(key);
+};
+
+//localStorage에서 id에 해당하는 object quantity key의 value를 수정
+export const editQuantityLocalStorageListById = (key, id, value) => {
+  const storageList = getLocalStorageList(key);
+  storageList.forEach((e) => {
+    if (e.id === id) {
+      e.quantity = value;
+    }
+  });
+  window.localStorage.setItem(key, JSON.stringify(storageList));
+  return getLocalStorageList(key);
+};
+
+export const calculateTotalPrice = (price) => {
+  const DELIVERY_FEE = 3000;
+  return addCommas(Number(price) + DELIVERY_FEE);
+};

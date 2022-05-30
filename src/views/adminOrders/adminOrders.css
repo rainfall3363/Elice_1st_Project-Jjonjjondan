@@ -1,0 +1,27 @@
+main {
+  height: 85vh;
+}
+
+main > section {
+  width: 70vw;
+}
+
+div.header {
+  width: 100%;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+}
+
+.modal-content {
+  height: 13rem;
+  width: 30rem;
+}
+
+.box {
+  height: 100%;
+}
