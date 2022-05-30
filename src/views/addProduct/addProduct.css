@@ -1,0 +1,13 @@
+main > section {
+  width: 60vw;
+}
+
+.title {
+  width: 60vw;
+  border-bottom: 1px solid #ddd;
+}
+
+.photo_input {
+  border: none;
+  font-size: 2rem;
+}
