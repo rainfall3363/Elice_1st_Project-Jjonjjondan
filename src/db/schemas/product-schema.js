@@ -19,13 +19,17 @@ const ProductSchema = new Schema(
       type: String,
       required: false,
     },
-    category: {
+    categoryName: {
       type: String,
-      required: false,
+      required: true,
     },
     image: {
       type: String,
       required: false,
+    },
+    inventory: {
+      type: Number,
+      required: true,
     },
   },
   {
