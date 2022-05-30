@@ -16,31 +16,31 @@ async function init() {
 
 // #tableBody에 주문 목록을 추가하는 함수
 async function renderOrders() {
-  const list = await (await fetch('./orderlist.json')).json();
+  const orders = await Api.get('/api/ordersByUserId');
   const tableBody = document.querySelector('#tableBody');
 
-  for (let data in list) {
-    const html = createOrderTable(list[data]);
+  for (const order of orders) {
+    const html = createOrderTable(order);
     tableBody.insertAdjacentHTML('beforeend', html);
   }
 }
 
 // 주문 테이블을 작성해 반환하는 함수
-function createOrderTable(data) {
-  const productNameString = data.order.orderList.reduce((str, element) => {
-    return (str += `<p>${element.productName} ${element.orderQuantity}개</p>`);
+function createOrderTable(order) {
+  const productNameString = order.order.orderList.reduce((str, element) => {
+    return (str += `<p>${element.productName} ${element.quantity}개</p>`);
   }, ``);
 
   return `
   <tr>
-    <th>${data.order.orderNumber}
-    <td>${data.createdAt}</td>
+    <th>${order._id}
+    <td>${order.createdAt}</td>
     <td>
       ${productNameString}
     </td>
-    <td>${data.orderStatus}</td>
+    <td>${order.order.status}</td>
     <td>
-      <button class="button is-danger is-outlined cancel-button" data-id="${data.order.orderNumber}">취소하기</button>
+      <button class="button is-danger is-outlined cancel-button" data-id="${order._id}">취소하기</button>
     </td>
   </tr>
   `;
@@ -69,10 +69,14 @@ function openCancelModal(event) {
 
 function cancelOrder(orderId) {
   return async function (event) {
-    // await으로 주문 취소 요청 보내는 코드
-    event.stopPropagation();
-    alert(`${orderId}주문에 대한 취소요청이 완료되었습니다.`);
-    window.location.reload();
+    try {
+      await Api.delete('/api/orderCancel', `?orderId=${orderId}`);
+      event.stopPropagation();
+      alert(`${orderId} 주문에 대한 취소요청이 완료되었습니다.`);
+      window.location.reload();
+    } catch {
+      alert('주문 취소에 실패했습니다. 다시 한번 시도해주세요.');
+    }
   };
 }
 
