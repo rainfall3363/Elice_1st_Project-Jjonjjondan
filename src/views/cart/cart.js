@@ -10,13 +10,16 @@ import {
   deleteLocalStorageList,
   getLocalStorageListById,
   editQuantityLocalStorageListById,
+  addCommas,
 } from '/useful-functions.js';
 
 function makeProductsCard(productsCardsElement) {
   return `
     <div class="cart-product-item" id="productItem-${productsCardsElement.id}">
       <label class="checkbox">
-        <input type="checkbox" class="cart-checkbox" id="checkbox-${productsCardsElement.id}"/>
+        <input type="checkbox" class="cart-checkbox" id="checkbox-${
+          productsCardsElement.id
+        }"/>
       </label>
       <button class="delete-button" id="delete-${productsCardsElement.id}">
         <span class="icon">
@@ -31,9 +34,13 @@ function makeProductsCard(productsCardsElement) {
         />
       </figure>
       <div class="content">
-        <p id="title-${productsCardsElement.id}">${productsCardsElement.product}</p>
+        <p id="title-${productsCardsElement.id}">${
+    productsCardsElement.product
+  }</p>
         <div class="quantity">
-          <button class="button is-rounded" id="minus-${productsCardsElement.id}">
+          <button class="button is-rounded" id="minus-${
+            productsCardsElement.id
+          }">
             <span class="icon is-small">
               <i class="fas fa-thin fa-minus"></i>
             </span>
@@ -47,7 +54,9 @@ function makeProductsCard(productsCardsElement) {
             value=${productsCardsElement.quantity}
             disabled
           />
-          <button class="button is-rounded" id="plus-${productsCardsElement.id}">
+          <button class="button is-rounded" id="plus-${
+            productsCardsElement.id
+          }">
             <span class="icon">
               <i class="fas fa-lg fa-plus"></i>
             </span>
@@ -55,19 +64,25 @@ function makeProductsCard(productsCardsElement) {
         </div>
       </div>
       <div class="calulation">
-        <p id="unitPrice-${productsCardsElement.id}">${productsCardsElement.price}</p>
+        <p id="unitPrice-${productsCardsElement.id}">${addCommas(
+    productsCardsElement.price
+  )}원</p>
         <p>
           <span class="icon">
             <i class="fas fa-thin fa-xmark"></i>
           </span>
         </p>
-        <p id="quantity-${productsCardsElement.id}">제품 수량</p>
+        <p id="quantity-${productsCardsElement.id}">${
+    productsCardsElement.quantity
+  }개</p>
         <p>
           <span class="icon">
             <i class="fas fa-thin fa-equals"></i>
           </span>
         </p>
-        <p id="total-${productsCardsElement.id}">합산 값</p>
+        <p id="total-${productsCardsElement.id}">${addCommas(
+    productsCardsElement.price * productsCardsElement.quantity
+  )}원</p>
       </div>
     </div>
   `;
@@ -84,6 +99,80 @@ function renderCartList() {
   productsCardsElement.innerHTML = resultCards;
 }
 
+function makeOrderSummary(orderSummary) {
+  return `
+    <div class="box order-summary">
+      <div class="header">
+        <p>결제정보</p>
+      </div>
+      <div class="order-info">
+        <div class="info">
+          <p>상품수</p>
+          <p id="productsCount">${addCommas(
+            parseInt(orderSummary.productsCount)
+          )}</p>
+        </div>
+        <div class="info">
+          <p>상품금액</p>
+          <p id="productsTotal">${addCommas(
+            parseInt(orderSummary.productsTotal)
+          )}</p>
+        </div>
+        <div class="info">
+          <p>배송비</p>
+          <p id="deliveryFee">${addCommas(3000)}</p>
+        </div>
+      </div>
+      <div class="total">
+        <p class="total-label">총 결제금액</p>
+        <p class="total-price" id="orderTotal">${addCommas(
+          parseInt(orderSummary.productsTotal) + 3000
+        )}</p>
+      </div>
+      <div class="purchase">
+        <button class="button is-info" id="purchaseButton">
+          구매하기
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderOrderSummary() {
+  const orderSummary = document.getElementById('orderSummary');
+  const getOrderLocalStorageObj = getLocalStorageList('order');
+  orderSummary.innerHTML = makeOrderSummary(getOrderLocalStorageObj);
+}
+
+function updateOrderSummary() {
+  const orderLocalStorage = window.localStorage.getItem('order');
+  const isOrder = orderLocalStorage !== null;
+  let orderObject = {};
+
+  if (isOrder) {
+    const cartList = getLocalStorageList('cart');
+    const checkList = getLocalStorageList('checkList');
+
+    const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
+    orderObject = {
+      ids: checkedCartList.map((e) => e.id),
+      productsCount: checkedCartList.length,
+      productsTotal: checkedCartList.reduce(
+        (acc, e) => acc + parseInt(e.price) * parseInt(e.quantity),
+        0
+      ),
+    };
+  } else {
+    orderObject = {
+      ids: [],
+      productsCount: 0,
+      productsTotal: 0,
+    };
+  }
+  window.localStorage.setItem('order', JSON.stringify(orderObject));
+  renderOrderSummary();
+}
+
 function allSelectCheckboxEvent() {
   const cartCheckboxElements = document.getElementsByClassName('cart-checkbox');
   const allSelectCheckboxElement = document.getElementById('allSelectCheckbox');
@@ -94,12 +183,14 @@ function allSelectCheckboxEvent() {
         let storageId = element.id.split('-')[1];
         getLocalStorageList('checkList');
         addLocalStorageList('checkList', storageId);
+        updateOrderSummary();
         element.checked = true;
       }
     } else {
       for (const element of cartCheckboxElements) {
         let storageId = element.id.split('-')[1];
         deleteLocalStorageList('checkList', storageId);
+        updateOrderSummary();
         element.checked = false;
       }
     }
@@ -115,9 +206,11 @@ function selectCheckBoxEvent() {
         // checkList가 없다면 []로 초기화
         getLocalStorageList('checkList');
         addLocalStorageList('checkList', storageId);
+        updateOrderSummary();
         element.checked = true;
       } else {
         deleteLocalStorageList('checkList', storageId);
+        updateOrderSummary();
         element.checked = false;
       }
     })
@@ -169,11 +262,13 @@ function quantityPlusButtonEvent() {
           element.disabled = true;
           quantityInput.value = `99`;
           editQuantityLocalStorageListById('cart', storeId, `99`);
+          renderCartMain();
         }
         if (quantityValue >= 1 && quantityValue < 99) {
           minusButton.disabled = false;
           quantityInput.value = `${quantityValue}`;
           editQuantityLocalStorageListById('cart', storeId, quantityValue);
+          renderCartMain();
         }
       });
     } else {
@@ -191,15 +286,47 @@ function quantityPlusButtonEvent() {
           element.disabled = true;
           quantityInput.value = `0`;
           editQuantityLocalStorageListById('cart', storeId, `0`);
+          renderCartMain();
         }
         if (quantityValue >= 1 && quantityValue < 99) {
           plusButton.disabled = false;
           quantityInput.value = `${quantityValue}`;
           editQuantityLocalStorageListById('cart', storeId, quantityValue);
+          renderCartMain();
         }
       });
     }
   });
+}
+
+function setDummyData() {
+  const dummyData = [
+    {
+      id: '7',
+      quantity: 98,
+      product: 'asdfg',
+      price: '32456',
+    },
+    {
+      id: '8',
+      quantity: 1,
+      product: 'asdfgh',
+      price: '34567',
+    },
+    {
+      id: '9',
+      quantity: 1,
+      product: 'sadfgh',
+      price: '2345',
+    },
+    {
+      id: '10',
+      quantity: 1,
+      product: 'asdfgh',
+      price: '234567',
+    },
+  ];
+  window.localStorage.setItem('cart', JSON.stringify(dummyData));
 }
 
 function renderCartMain() {
@@ -210,5 +337,5 @@ function renderCartMain() {
   deletePartEvent();
   deleteButtonsEvent();
 }
-
+setDummyData();
 renderCartMain();
