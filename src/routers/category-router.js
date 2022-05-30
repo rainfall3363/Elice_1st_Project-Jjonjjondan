@@ -38,10 +38,10 @@ categoryRouter.post('/categoryRegister', async (req, res, next) => {
 });
 
 // 전체 카테고리 목록을 가져옴 (배열 형태임)
-categoryRouter.get('/categorylist', async function (req, res, next) {
+categoryRouter.get('/categoryList', async function (req, res, next) {
   try {
     // 전체 카테고리 목록을 얻음
-    const categories = await categoryService.getcategories();
+    const categories = await categoryService.getCategories();
     // 카테고리 목록(배열)을 JSON 형태로 프론트에 보냄
     res.status(200).json(categories);
   } catch (error) {
@@ -64,41 +64,44 @@ categoryRouter.get('/categoryInfo', async function (req, res, next) {
 
 // 카테고리 정보 수정
 // (예를 들어 /api/categories/abc12345 로 요청하면 req.params.categoryId는 'abc12345' 문자열로 됨)
-categoryRouter.patch('/users/:categoryId', async function (req, res, next) {
-  try {
-    // content-type 을 application/json 로 프론트에서
-    // 설정 안 하고 요청하면, body가 비어 있게 됨.
-    if (is.emptyObject(req.body)) {
-      throw new Error(
-        'headers의 Content-Type을 application/json으로 설정해주세요'
-      );
+categoryRouter.patch(
+  '/categories/:categoryId',
+  async function (req, res, next) {
+    try {
+      // content-type 을 application/json 로 프론트에서
+      // 설정 안 하고 요청하면, body가 비어 있게 됨.
+      if (is.emptyObject(req.body)) {
+        throw new Error(
+          'headers의 Content-Type을 application/json으로 설정해주세요'
+        );
+      }
+
+      // params로부터 id를 가져옴
+      const categoryId = req.params.categoryId;
+
+      // body data 로부터 업데이트할 카테고리 정보를 추출함.
+      const categoryName = req.body.categoryName;
+      const imageUrl = req.body.imageUrl;
+      const description = req.body.description;
+
+      // 위 데이터가 undefined가 아니라면, 즉, 프론트에서 업데이트를 위해
+      // 보내주었다면, 업데이트용 객체에 삽입함.
+      const toUpdate = {
+        ...(categoryName && { categoryName }),
+        ...(imageUrl && { imageUrl }),
+        ...(description && { description }),
+      };
+
+      // 카테고리 정보를 업데이트함.
+      const updatedcategoryInfo = await categoryService.setCategory(toUpdate);
+
+      // 업데이트 이후의 카테고리 데이터를 프론트에 보내 줌
+      res.status(200).json(updatedcategoryInfo);
+    } catch (error) {
+      next(error);
     }
-
-    // params로부터 id를 가져옴
-    const categoryId = req.params.categoryId;
-
-    // body data 로부터 업데이트할 카테고리 정보를 추출함.
-    const categoryName = req.body.categoryName;
-    const imageUrl = req.body.imageUrl;
-    const description = req.body.description;
-
-    // 위 데이터가 undefined가 아니라면, 즉, 프론트에서 업데이트를 위해
-    // 보내주었다면, 업데이트용 객체에 삽입함.
-    const toUpdate = {
-      ...(categoryName && { categoryName }),
-      ...(imageUrl && { imageUrl }),
-      ...(description && { description }),
-    };
-
-    // 카테고리 정보를 업데이트함.
-    const updatedcategoryInfo = await categoryService.setCategory(toUpdate);
-
-    // 업데이트 이후의 카테고리 데이터를 프론트에 보내 줌
-    res.status(200).json(updatedcategoryInfo);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 // 카테고리 정보 삭제
 categoryRouter.delete('/categoryDelete', async function (req, res, next) {

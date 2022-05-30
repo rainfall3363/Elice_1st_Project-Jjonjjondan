@@ -4,11 +4,11 @@ import { Schema } from 'mongoose';
 const CategorySchema = new Schema(
   {
     categoryId: {
-      type: String,
+      type: String, // objectId로 들어갈 예정이라 string으로 설정
       required: true,
     },
     categoryName: {
-      type: Number,
+      type: String,
       required: true,
     },
     imageUrl: {
