@@ -19,7 +19,7 @@ async function renderUserInfo() {
   addUserInfo(user);
 }
 
-async function addUserInfo(user) {
+function addUserInfo(user) {
   const userName = document.querySelector('#userName');
   const userEmail = document.querySelector('#userEmail');
   const userPhoneNumber = document.querySelector('#userPhoneNumber');
