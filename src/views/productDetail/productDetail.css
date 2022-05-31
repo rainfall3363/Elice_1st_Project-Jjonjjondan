@@ -1,0 +1,137 @@
+#brandSection {
+  width: 100vw;
+  height: 70vh;
+  margin-top: 7rem;
+  padding-bottom: 10%;
+}
+
+#productContent {
+  display: flex;
+  justify-content: center;
+}
+
+#imgBox {
+  width: 50vw;
+  height: 70vh;
+  margin-right: 3%;
+}
+
+#productImage {
+  object-fit: cover;
+  width: 40vw;
+  height: 70vh;
+  margin-left: 15%;
+  vertical-align: middle;
+  border-radius: 3%;
+}
+
+#contents {
+  width: 50vw;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  margin-left: 3%;
+  margin-right: 4rem;
+  border-top: solid rgb(149, 146, 146);
+}
+
+#title {
+  font-size: 3rem;
+  font-weight: bolder;
+  margin-bottom: 0.5rem;
+}
+
+#price {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+#description {
+  margin-top: 3rem;
+}
+
+#innercontents {
+  width: 45vw;
+  height: 62vh;
+}
+
+#cartandbuyButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+#inputCart {
+  margin-right: 4%;
+  margin-bottom: 4%;
+}
+
+@media (max-width: 768px) {
+  #brandSection {
+    width: 100vw;
+    height: 80vh;
+    margin-top: 7rem;
+    padding-bottom: 10%;
+  }
+
+  #productContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #imgBox {
+    position: relative;
+    width: 70vw;
+    height: 55vh;
+  }
+
+  #productImage {
+    position: absolute;
+    object-fit: cover;
+    width: 70vw;
+    height: 50vh;
+    vertical-align: middle;
+    border-radius: 3%;
+    margin-left: 0%;
+  }
+
+  #contents {
+    width: 70vw;
+    height: 70vh;
+    border-top: solid rgb(149, 146, 146);
+    margin-left: 6%;
+  }
+
+  #title {
+    font-size: 3rem;
+    font-weight: bolder;
+    margin-bottom: 0.5rem;
+  }
+
+  #price {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  #description {
+    margin-top: 3rem;
+  }
+
+  #innercontents {
+    width: 45vw;
+    height: 62vh;
+  }
+
+  #cartandbuyButtons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #inputCart {
+    margin-right: 4%;
+    margin-bottom: 4%;
+  }
+  #buyNow {
+    margin-bottom: 4%;
+  }
+}
