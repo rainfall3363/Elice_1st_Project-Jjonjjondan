@@ -78,6 +78,7 @@ categoryRouter.patch(
           'headers의 Content-Type을 application/json으로 설정해주세요'
         );
       }
+      const categoryId = req.params.categoryId;
 
       // body data 로부터 업데이트할 카테고리 정보를 추출함.
       const categoryName = req.body.categoryName;
@@ -93,7 +94,10 @@ categoryRouter.patch(
       };
 
       // 카테고리 정보를 업데이트함.
-      const updatedcategoryInfo = await categoryService.setCategory(toUpdate);
+      const updatedcategoryInfo = await categoryService.setCategory(
+        categoryId,
+        toUpdate
+      );
 
       // 업데이트 이후의 카테고리 데이터를 프론트에 보내 줌
       res.status(200).json(updatedcategoryInfo);
