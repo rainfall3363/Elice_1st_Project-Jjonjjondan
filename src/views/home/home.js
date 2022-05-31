@@ -3,15 +3,21 @@
 // 코드 예시를 남겨 두었습니다.
 
 import * as Api from '/api.js';
-import { setRegister } from '/useful-functions.js';
-import { logoutUser } from '/useful-functions.js';
-import { loginUser } from '/useful-functions.js';
-import { randomId } from '/useful-functions.js';
+import {
+  setRegister,
+  loginUser,
+  logoutUser,
+  changetoAdmin,
+} from '/useful-functions.js';
 
-loginUser();
-logoutUser();
-setRegister();
-categoryList();
+init();
+
+async function init() {
+  loginUser();
+  logoutUser();
+  categoryList();
+  changetoAdmin();
+}
 
 async function categoryList() {
   const slideContainer = document.getElementById('slideContainer');

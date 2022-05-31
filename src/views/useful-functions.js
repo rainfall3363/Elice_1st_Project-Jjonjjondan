@@ -1,3 +1,5 @@
+import * as Api from '/api.js';
+
 // 문자열+숫자로 이루어진 랜덤 5글자 반환
 export const randomId = () => {
   return Math.random().toString(36).substring(2, 7);
@@ -59,6 +61,17 @@ export const setRegister = () => {
   if (data) {
     register.innerText = '마이페이지';
     register.href = '/account'; //임시 테스트 이동경로, 계정관리 페이지 구현 시 수정
+  }
+};
+
+//로그인 시 관리자면 회원가입 텍스트 페이지 관리로 변경
+export const changetoAdmin = async () => {
+  const register = document.getElementById('registerId');
+  const userInfo = await Api.get('/api/userInfo');
+  const role = userInfo.role;
+  if (role === 'admin') {
+    register.innerText = '페이지 관리';
+    register.href = '/admin';
   }
 };
 

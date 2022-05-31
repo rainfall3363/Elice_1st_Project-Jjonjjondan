@@ -1,12 +1,20 @@
 import * as Api from '/api.js';
-import { setRegister } from '/useful-functions.js';
-import { logoutUser } from '/useful-functions.js';
-import { loginUser } from '/useful-functions.js';
-import { addCommas } from '/useful-functions.js';
+import {
+  setRegister,
+  loginUser,
+  logoutUser,
+  addCommas,
+  changetoAdmin,
+} from '/useful-functions.js';
 
-loginUser();
-logoutUser();
-setRegister();
+init();
+
+async function init() {
+  loginUser();
+  logoutUser();
+  setRegister();
+  changetoAdmin();
+}
 
 //query String 값 가져오기
 const params = new URLSearchParams(document.location.search);
