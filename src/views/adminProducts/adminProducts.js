@@ -21,7 +21,7 @@ async function renderProducts() {
 
 function createProductTable(product) {
   const maker = product.maker !== '' ? product.maker : 'X';
-
+  // 카테고리 이름으로 변경해야함
   return `
     <tr>
       <th>${product.title}
@@ -29,12 +29,14 @@ function createProductTable(product) {
       <td>
         ${maker}
       </td>
-      <td>${product.category}</td>
+      <td>${product.categoryName}</td>
       <td>
-        <button class="button is-link is-outlined update-button" data-id="${product._id}">수정</button>
+        <a href="/admin/products/update/${product._id}">
+          <button id="submitButton" class="button is-link is-outlined update-button" data-id="${product._id}">수정</button>
+        </a>
       </td>
       <td>
-        <button class="button is-danger is-outlined cancel-button" data-id="${product._id}">삭제</button>
+        <button id="deleteButton" class="button is-danger is-outlined cancel-button" data-id="${product._id}">삭제</button>
       </td>
     </tr>
   `;
