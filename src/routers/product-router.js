@@ -79,6 +79,7 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
         'headers의 Content-Type을 application/json으로 설정해주세요'
       );
     }
+    const productId = req.params.productId;
 
     // body data 로부터 업데이트할 상품 정보를 추출함.
     const title = req.body.title;
@@ -102,7 +103,10 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
     };
 
     // 상품 정보를 업데이트함.
-    const updatedProductInfo = await productService.setProduct(toUpdate);
+    const updatedProductInfo = await productService.setProduct(
+      productId,
+      toUpdate
+    );
 
     // 업데이트 이후의 상품 데이터를 프론트에 보내 줌
     res.status(200).json(updatedProductInfo);
