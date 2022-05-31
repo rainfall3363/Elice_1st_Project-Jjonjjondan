@@ -1,3 +1,7 @@
+main {
+  height: 85vh;
+}
+
 main > section {
   width: 60vw;
 }

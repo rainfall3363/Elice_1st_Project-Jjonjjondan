@@ -74,11 +74,16 @@
       class="is-flex is-justify-content-center is-align-items-center is-flex-direction-column"
     >
       <h1 class="title pb-5">신규 상품 등록</h1>
-      <section>
+      <section id="productFormSection">
         <div class="field">
           <label class="label">상품명</label>
           <div class="control has-icons-left">
-            <input class="input" type="text" placeholder="상품명" />
+            <input
+              id="productName"
+              class="input"
+              type="text"
+              placeholder="상품명"
+            />
             <span class="icon is-small is-left">
               <i class="fas fa-tag"></i>
             </span>
@@ -89,7 +94,12 @@
           <div class="column">
             <label class="label">가격</label>
             <div class="control has-icons-left">
-              <input class="input" type="text" placeholder="가격" />
+              <input
+                id="productPrice"
+                class="input"
+                type="text"
+                placeholder="가격"
+              />
               <span class="icon is-small is-left">
                 <i class="fas fa-dollar-sign"></i>
               </span>
@@ -98,7 +108,12 @@
           <div class="column">
             <label class="label">제조사</label>
             <div class="control has-icons-left">
-              <input class="input" type="text" placeholder="제조사" />
+              <input
+                id="productMaker"
+                class="input"
+                type="text"
+                placeholder="제조사"
+              />
               <span class="icon is-small is-left">
                 <i class="fas fa-industry"></i>
               </span>
@@ -106,12 +121,16 @@
           </div>
         </div>
 
-        <!-- 카테고리 -->
         <div class="field columns">
           <div class="column">
             <label class="label">재고</label>
             <div class="control has-icons-left">
-              <input class="input" type="text" placeholder="재고" />
+              <input
+                id="productStock"
+                class="input"
+                type="text"
+                placeholder="재고"
+              />
               <span class="icon is-small is-left">
                 <i class="fas fa-sort-amount-down"></i>
               </span>
@@ -123,21 +142,22 @@
               <div class="select">
                 <select id="categorySelect">
                   <option>카테고리를 선택해주세요</option>
-                  <!-- js로 추가 -->
                 </select>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 재고 -->
-
-        <!-- 이미지 -->
         <div class="field">
           <div class="file has-name is-fullwidth is-flex-direction-column">
             <label class="label">이미지 업로드</label>
             <label class="file-label">
-              <input class="file-input" type="file" name="resume" />
+              <input
+                id="productImage"
+                class="file-input"
+                type="file"
+                name="resume"
+              />
               <span class="file-cta">
                 <span class="file-icon">
                   <i class="fas fa-upload"></i>
@@ -152,16 +172,22 @@
         <div class="field">
           <label class="label">상품 설명</label>
           <div class="control">
-            <textarea class="textarea" placeholder="상품 설명"></textarea>
+            <textarea
+              id="productDescription"
+              class="textarea"
+              placeholder="상품 설명"
+            ></textarea>
           </div>
         </div>
 
         <div class="field is-grouped">
           <div class="control">
-            <button class="button is-link">상품 추가</button>
+            <button id="postButton" class="button is-link">상품 추가</button>
           </div>
           <div class="control">
-            <button class="button is-danger is-light">취소</button>
+            <button id="cancelButton" class="button is-danger is-light">
+              취소
+            </button>
           </div>
         </div>
       </section>
