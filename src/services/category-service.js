@@ -8,10 +8,10 @@ class CategoryService {
 
   // 카테고리 등록
   async addCategory(categoryInfo) {
-    const { categoryId, categoryName, imageUrl, description } = categoryInfo;
-
+    // 객체 destructuring
+    const { categoryId } = categoryInfo;
     // 카테고리id 중복 확인
-    const category = await this.categoryModel.findCategory(categoryId);
+    const category = await this.categoryModel.findByCategoryId(categoryId);
     if (category) {
       throw new Error('이미 등록된 카테고리입니다.');
     }

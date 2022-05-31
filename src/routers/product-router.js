@@ -56,10 +56,10 @@ productRouter.get('/productList', async function (req, res, next) {
 });
 
 // 특정 상품 정보 불러오기
-productRouter.get('/productInfo', async function (req, res, next) {
+productRouter.get('/productInfo/:productId', async function (req, res, next) {
   try {
     const productInfo = await productService.getProductInfo(
-      req.query.productId
+      req.params.productId
     );
 
     res.status(200).json(productInfo);
@@ -79,9 +79,6 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
         'headers의 Content-Type을 application/json으로 설정해주세요'
       );
     }
-
-    // params로부터 id를 가져옴
-    const productId = req.params.productId;
 
     // body data 로부터 업데이트할 상품 정보를 추출함.
     const title = req.body.title;
@@ -115,16 +112,21 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
 });
 
 // 상품 정보 삭제
-productRouter.delete('/productDelete', async function (req, res, next) {
-  try {
-    const deletedProductInfo = await productService.deleteProduct(
-      req.currentProductId
-    );
+productRouter.delete(
+  '/productDelete/:productId',
+  async function (req, res, next) {
+    try {
+      const deletedProductInfo = await productService.deleteProduct(
+        req.params.productId
+      );
 
-    res.status(200).json(deletedProductInfo);
-  } catch (error) {
-    next(error);
+      res
+        .status(200)
+        .json({ deletedProductInfo, log: '상품이 정상적으로 삭제되었습니다' });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export { productRouter };
