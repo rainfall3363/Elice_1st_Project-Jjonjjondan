@@ -1,8 +1,11 @@
 import * as Api from '/api.js';
-import { setRegister } from '/useful-functions.js';
-import { logoutUser } from '/useful-functions.js';
-import { loginUser } from '/useful-functions.js';
-import { addCommas } from '/useful-functions.js';
+import {
+  setRegister,
+  loginUser,
+  logoutUser,
+  addCommas,
+  changetoAdmin,
+} from '/useful-functions.js';
 
 init();
 
@@ -10,6 +13,7 @@ async function init() {
   loginUser();
   logoutUser();
   setRegister();
+  changetoAdmin();
   await renderProduct();
   await buttonEvents();
 }
