@@ -20,15 +20,15 @@ export class CategoryModel {
     return category;
   }
   // 카테고리 수정
-  async update({ productId, update }) {
-    const filter = { _id: productId };
+  async update({ categoryId, update }) {
+    const filter = { _id: categoryId };
     const option = { returnOriginal: false };
     const updatedCategory = await User.findOneAndUpdate(filter, update, option);
     return updatedCategory;
   }
   // 카테고리 삭제
   async delete(categoryId) {
-    const category = await Category.findOneAndDeleteOne({ _id: productId });
+    const category = await Category.findOneAndDelete({ _id: categoryId });
     return category;
   }
 }

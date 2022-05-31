@@ -9,6 +9,12 @@ export class ProductModel {
     const product = await Product.findOne({ _id: productId });
     return product;
   }
+  // 상품명으로 찾기
+  async findByTitle(title) {
+    const product = await Product.findOne({ title });
+    return product;
+  }
+
   // 상품 추가
   async create(productInfo) {
     const createdNewProduct = await Product.create(productInfo);
@@ -30,7 +36,7 @@ export class ProductModel {
   }
   // 상품 삭제
   async delete(productId) {
-    const product = await Product.findOneAndDeleteOne({ _id: productId });
+    const product = await Product.deleteOne({ _id: productId });
     return product;
   }
 }

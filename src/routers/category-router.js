@@ -50,17 +50,20 @@ categoryRouter.get('/categoryList', async function (req, res, next) {
 });
 
 // 특정 카테고리 정보 불러오기
-categoryRouter.get('/categoryInfo', async function (req, res, next) {
-  try {
-    const categoryInfo = await categoryService.getCategoryInfo(
-      req.currentCategoryId
-    );
+categoryRouter.get(
+  '/categoryInfo/:categoryId',
+  async function (req, res, next) {
+    try {
+      const categoryInfo = await categoryService.getCategoryInfo(
+        req.params.categoryId
+      );
 
-    res.status(200).json(categoryInfo);
-  } catch (error) {
-    next(error);
+      res.status(200).json(categoryInfo);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // 카테고리 정보 수정
 // (예를 들어 /api/categories/abc12345 로 요청하면 req.params.categoryId는 'abc12345' 문자열로 됨)
@@ -75,9 +78,6 @@ categoryRouter.patch(
           'headers의 Content-Type을 application/json으로 설정해주세요'
         );
       }
-
-      // params로부터 id를 가져옴
-      const categoryId = req.params.categoryId;
 
       // body data 로부터 업데이트할 카테고리 정보를 추출함.
       const categoryName = req.body.categoryName;
@@ -104,16 +104,19 @@ categoryRouter.patch(
 );
 
 // 카테고리 정보 삭제
-categoryRouter.delete('/categoryDelete', async function (req, res, next) {
-  try {
-    const deletedCategoryInfo = await categoryService.deleteCategory(
-      req.currentCategoryId
-    );
+categoryRouter.delete(
+  '/categoryDelete/:categoryId',
+  async function (req, res, next) {
+    try {
+      const deletedCategoryInfo = await categoryService.deleteCategory(
+        req.params.categoryId
+      );
 
-    res.status(200).json(deletedCategoryInfo);
-  } catch (error) {
-    next(error);
+      res.status(200).json(deletedCategoryInfo);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export { categoryRouter };
