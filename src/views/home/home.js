@@ -15,6 +15,7 @@ init();
 async function init() {
   loginUser();
   logoutUser();
+  setRegister();
   categoryList();
   changetoAdmin();
 }
