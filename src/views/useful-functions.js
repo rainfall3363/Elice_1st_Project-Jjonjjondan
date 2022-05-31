@@ -163,6 +163,34 @@ export const editQuantityLocalStorageListById = (key, id, value) => {
   return getLocalStorageList(key);
 };
 
+//productDetail에서 장바구니 추가시 localStorage 기능
+export const inputCart = (productId, productDetailData) => {
+  productDetailData.id = productId;
+  const cartList = getLocalStorageList('cart');
+  //cart localStorage에 productId가 없다면 0 있다면 해당 productId가 있는 element 개수를 반환
+  const isId = cartList
+    .map((cartElement) => cartElement.id == productId)
+    .reduce((acc, e) => acc + e);
+
+  //만약 해당 제품 id가 cart localStorage에 없다면 상품 상세 정보를 cart에 추가
+  if (!isId) {
+    addLocalStorageList('cart', productDetailData);
+  } else {
+    //만약 해당 제품 id가 cart localStorage에 있다면 수량 증분만 진행
+    let quantityValue = parseInt(
+      getLocalStorageListById('cart', productId).quantity
+    );
+    quantityValue++;
+    //최대 수량이 99이므로 99이상인 경우 처리
+    if (quantityValue >= 99) {
+      editQuantityLocalStorageListById('cart', productId, 99);
+    } else {
+      editQuantityLocalStorageListById('cart', productId, quantityValue);
+    }
+  }
+  return getLocalStorageList('cart');
+};
+
 export const calculateTotalPrice = (price) => {
   const DELIVERY_FEE = 3000;
   return addCommas(Number(price) + DELIVERY_FEE);
