@@ -20,7 +20,7 @@ viewsRouter.use('/admin/products', serveStatic('adminProducts'));
 viewsRouter.use('/admin/products/add', serveStatic('addProduct'));
 viewsRouter.use('/admin/products/update', serveStatic('updateProduct'));
 viewsRouter.use('/products', serveStatic('products'));
-
+viewsRouter.use('/productDetail', serveStatic('productDetail'));
 // views 폴더의 최상단 파일인 rabbit.png, api.js 등을 쓸 수 있게 함
 viewsRouter.use('/', serveStatic(''));
 
