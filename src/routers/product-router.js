@@ -120,13 +120,10 @@ productRouter.delete(
   '/productDelete/:productId',
   async function (req, res, next) {
     try {
-      const deletedProductInfo = await productService.deleteProduct(
-        req.params.productId
-      );
+      const productId = req.params.productId;
+      const deletedProductInfo = await productService.deleteProduct(productId);
 
-      res
-        .status(200)
-        .json({ deletedProductInfo, log: '상품이 정상적으로 삭제되었습니다' });
+      res.status(200).json(deletedProductInfo);
     } catch (error) {
       next(error);
     }
