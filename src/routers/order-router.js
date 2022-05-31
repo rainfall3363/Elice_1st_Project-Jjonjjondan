@@ -17,18 +17,18 @@ orderRouter.post('/putOrder', async (req, res, next) => {
       );
     }
 
-    // req (request)의 body 에서 데이터 가져오기
-    const ordererUserId = req.body.orderer.userId;
-    const ordererFullName = req.body.orderer.fullName;
-    const ordererPhoneNumber = req.body.orderer.phoneNumber;
-    const recipientFullName = req.body.recipient.fullName;
-    const recipientPhoneNumber = req.body.recipient.phoneNumber;
+    // req (request)의 body에서 데이터 가져오기
+    const ordererUserId = req.body.ordererUserId;
+    const ordererFullName = req.body.ordererFullName;
+    const ordererPhoneNumber = req.body.ordererPhoneNumber;
+    const recipientFullName = req.body.recipientFullName;
+    const recipientPhoneNumber = req.body.recipientPhoneNumber;
     // address는 객체 형태 (postalCode, address1, address2)
-    const recipientAddress = req.body.recipient.address;
+    const recipientAddress = req.body.recipientAddress;
     // orderList는 배열을 담고 있다
-    const orderList = req.body.order.orderList;
-    const request = req.body.order.request;
-    const orderStatus = req.body.order.status;
+    const orderList = req.body.orderList;
+    const orderRequest = req.body.orderRequest;
+    const orderStatus = req.body.orderStatus;
 
     // 위 데이터를 유저 db에 추가하기
     const newOrder = await orderService.putOrder({
@@ -39,7 +39,7 @@ orderRouter.post('/putOrder', async (req, res, next) => {
       recipientPhoneNumber,
       recipientAddress,
       orderList,
-      request,
+      orderRequest,
       orderStatus,
     });
 
@@ -54,9 +54,9 @@ orderRouter.post('/putOrder', async (req, res, next) => {
 // 관리자 권한 설정 필요
 orderRouter.get('/allOrderList', async function (req, res, next) {
   try {
-    // 전체 사용자 목록을 얻음
+    // 전체 주문 목록을 얻음
     const orders = await orderService.getAllOrders();
-    // 사용자 목록(배열)을 JSON 형태로 프론트에 보냄
+    // 주문 목록(배열)을 JSON 형태로 프론트에 보냄
     res.status(200).json(orders);
   } catch (error) {
     next(error);
@@ -80,9 +80,9 @@ orderRouter.get(
 
 // 주문 번호로 주문 조회
 // 주소 설정 전체 통일, 다듬기
-orderRouter.get('/ordersByOrderId', async function (req, res, next) {
+orderRouter.get('/ordersByOrderId/:orderId', async function (req, res, next) {
   try {
-    const orders = await orderService.getOrdersByOrderId(req.query.orderId);
+    const orders = await orderService.getOrdersByOrderId(req.params.orderId);
 
     res.status(200).json(orders);
   } catch (error) {
@@ -92,7 +92,7 @@ orderRouter.get('/ordersByOrderId', async function (req, res, next) {
 
 // 주문 상태 수정
 // 관리자 권한 설정 필요
-orderRouter.patch('/statusUpdate', async function (req, res, next) {
+orderRouter.patch('/statusUpdate/:orderId', async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -102,15 +102,15 @@ orderRouter.patch('/statusUpdate', async function (req, res, next) {
       );
     }
 
-    // body data 로부터 업데이트할 주문 정보를 추출함.
-    const orderId = req.query.orderId;
+    // body data로부터 업데이트할 주문 정보를 추출함.
+    const orderId = req.params.orderId;
     const orderStatus = req.body.status;
 
     if (!orderStatus) {
       throw new Error('입력한 상태 값이 없습니다. 다시 입력해주세요.');
     }
 
-    const toUpdate = { ...{ orderStatus } };
+    const toUpdate = { order: { status: orderStatus } };
 
     // 주문 상태를 업데이트함.
     const updatedOrderStatus = await orderService.setOrderStatus(
@@ -125,9 +125,9 @@ orderRouter.patch('/statusUpdate', async function (req, res, next) {
 });
 
 // 주문 삭제
-orderRouter.delete('/orderCancel', async function (req, res, next) {
+orderRouter.delete('/orderCancel/:orderId', async function (req, res, next) {
   try {
-    const canceledOrder = await orderService.cancelOrder(req.query.orderId);
+    const canceledOrder = await orderService.cancelOrder(req.params.orderId);
 
     res.status(200).json(canceledOrder);
   } catch (error) {

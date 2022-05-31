@@ -27,12 +27,17 @@ const OrderSchema = new Schema(
     order: {
       orderList: {
         type: [
-          new Schema({
-            productId: { type: String, required: true },
-            productName: { type: String, required: true },
-            quantity: { type: Number, required: true },
-            price: { type: Number, required: true },
-          }),
+          new Schema(
+            {
+              productId: { type: String, required: true },
+              productName: { type: String, required: true },
+              quantity: { type: Number, required: true },
+              price: { type: Number, required: true },
+            },
+            {
+              _id: false,
+            }
+          ),
         ],
         required: true,
       },
