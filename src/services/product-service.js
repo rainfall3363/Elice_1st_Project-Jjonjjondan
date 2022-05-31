@@ -36,9 +36,10 @@ class ProductService {
   // 상품 상세정보 불러오기
   async getProductInfo(productId) {
     const product = await this.productModel.findByProductId(productId);
-    const { title, price, description, maker, categoryName, image } = product;
+    const { title, price, description, maker, categoryName, image, inventory } =
+      product;
 
-    return { title, price, description, maker, categoryName, image };
+    return { title, price, description, maker, categoryName, image, inventory };
   }
 
   // 상품정보 수정
