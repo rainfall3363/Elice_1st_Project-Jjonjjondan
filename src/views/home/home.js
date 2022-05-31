@@ -11,15 +11,6 @@ import { randomId } from '/useful-functions.js';
 loginUser();
 logoutUser();
 setRegister();
-
-// async function getDataFromApi() {
-//   // 예시 URI입니다. 현재 주어진 프로젝트 코드에는 없는 URI입니다.
-//   const data = await Api.get('/api/user/data');
-//   const random = randomId();
-
-//   console.log({ data });
-//   console.log({ random });
-// }
 categoryList();
 
 async function categoryList() {
@@ -30,9 +21,10 @@ async function categoryList() {
     const description = data[i].description;
     const imageUrl = data[i].imageURL;
     const categoryName = data[i].categoryName;
-    slideContainer.insertAdjacentHTML(
-      'beforeend',
-      `
+    if (categoryId) {
+      slideContainer.insertAdjacentHTML(
+        'beforeend',
+        `
       <div class="slideBox">
       <a href="/products/?categoryId=${categoryId}" class="slidesAtag">
         <img src="${imageUrl}" style="width: 50rem; height: 30rem";>
@@ -42,7 +34,8 @@ async function categoryList() {
       <p class="categoryDescription">${description}</p>
       </div>
       `
-    );
+      );
+    }
   }
 
   //이미지 자동 슬라이드
