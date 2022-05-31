@@ -112,8 +112,9 @@ categoryRouter.delete(
   '/categoryDelete/:categoryId',
   async function (req, res, next) {
     try {
+      const categoryId = req.params.categoryId;
       const deletedCategoryInfo = await categoryService.deleteCategory(
-        req.params.categoryId
+        categoryId
       );
 
       res.status(200).json(deletedCategoryInfo);

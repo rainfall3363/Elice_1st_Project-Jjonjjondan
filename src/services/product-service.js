@@ -63,13 +63,11 @@ class ProductService {
 
   // 상품 삭제
   async deleteProduct(productId) {
-    const product = await this.productModel.findByProductId(productId);
+    const product = await this.productModel.delete(productId);
     if (!product) {
       throw new Error('해당 상품 정보가 없습니다. 유효한 ID가 아닙니다.');
     }
-    const deletedProductInfo = await this.productModel.deleteOne(productId);
-
-    return deletedProductInfo;
+    return product;
   }
 }
 
