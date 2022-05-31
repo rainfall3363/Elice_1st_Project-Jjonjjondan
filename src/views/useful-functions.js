@@ -59,13 +59,14 @@ export const setRegister = async () => {
   const register = document.getElementById('registerId');
   const userInfo = await Api.get('/api/userInfo');
   const role = userInfo.role;
+  console.log(role);
   if (role === 'basic-user') {
     register.innerText = '';
     register.insertAdjacentHTML(
       'beforeend',
       `
     <li>
-    <a href="/admin" aria-current="page">
+    <a href="/account" aria-current="page">
       <span class="icon">
       <i class="fas fa-user"></i>
       </span>
@@ -74,7 +75,6 @@ export const setRegister = async () => {
   </li>
   `
     );
-    register.href = '/account'; //임시 테스트 이동경로, 계정관리 페이지 구현 시 수정
   }
 };
 
