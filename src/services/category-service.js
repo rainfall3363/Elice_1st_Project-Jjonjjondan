@@ -58,13 +58,11 @@ class CategoryService {
 
   // 카테고리 삭제
   async deleteCategory(categoryId) {
-    const category = await this.categoryModel.findByCategoryId(categoryId);
+    const category = await this.categoryModel.delete(categoryId);
     if (!category) {
       throw new Error('해당 카테고리 정보가 없습니다.');
     }
-    const deletedCategoryInfo = await this.categoryModel.deleteOne(categoryId);
-
-    return deletedCategoryInfo;
+    return category;
   }
 }
 
