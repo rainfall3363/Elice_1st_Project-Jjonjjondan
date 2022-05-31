@@ -55,11 +55,25 @@ export const logoutUser = () => {
 };
 
 //로그인 시 회원가입 텍스트 계정관리로 변경
-export const setRegister = () => {
-  const data = sessionStorage.getItem('token');
+export const setRegister = async () => {
   const register = document.getElementById('registerId');
-  if (data) {
-    register.innerText = '마이페이지';
+  const userInfo = await Api.get('/api/userInfo');
+  const role = userInfo.role;
+  if (role === 'basic-user') {
+    register.innerText = '';
+    register.insertAdjacentHTML(
+      'beforeend',
+      `
+    <li>
+    <a href="/admin" aria-current="page">
+      <span class="icon">
+      <i class="fas fa-user"></i>
+      </span>
+      <span>계정관리</span>
+    </a>
+  </li>
+  `
+    );
     register.href = '/account'; //임시 테스트 이동경로, 계정관리 페이지 구현 시 수정
   }
 };
@@ -70,7 +84,20 @@ export const changetoAdmin = async () => {
   const userInfo = await Api.get('/api/userInfo');
   const role = userInfo.role;
   if (role === 'admin') {
-    register.innerText = '페이지 관리';
+    register.innerText = '';
+    register.insertAdjacentHTML(
+      'beforeend',
+      `
+    <li>
+    <a href="/admin" aria-current="page">
+      <span class="icon">
+        <i class="fas fa-cog"></i>
+      </span>
+      <span>페이지 관리</span>
+    </a>
+  </li>
+  `
+    );
     register.href = '/admin';
   }
 };

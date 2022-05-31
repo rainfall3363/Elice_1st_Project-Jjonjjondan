@@ -1,19 +1,13 @@
-* {
-  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-}
-
-#navbar {
-  margin-bottom: 5rem;
-}
-
-/* #productSection {
-} */
-
 .box {
   display: flex;
   align-items: flex-start;
   width: 1000px;
   margin: auto;
+}
+
+#blank {
+  display: block;
+  height: 7rem;
 }
 
 #product {

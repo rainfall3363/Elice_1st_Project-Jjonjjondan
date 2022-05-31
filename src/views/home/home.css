@@ -1,13 +1,10 @@
 /* 슬라이드 css */
-
-* {
-  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-}
-
 #slideContainer {
   position: relative;
   max-width: 50rem;
-  margin: 5rem auto;
+  margin-top: 7rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .slideBox {
