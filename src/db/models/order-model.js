@@ -25,12 +25,11 @@ export class OrderModel {
 
   async findByOrderId(orderId) {
     const orders = await Order.findOne({ _id: orderId });
-    // orders 안에 배열을 꺼내서 가공해서 사용해야함
+    // orders 안에서 꺼내서 가공해서 사용해야함
     return orders;
   }
 
   async update({ orderId, update }) {
-    // status ("주문 접수", "배송 중", "배송 완료")
     const filter = { _id: orderId };
     const option = { returnOriginal: false };
 
@@ -40,7 +39,7 @@ export class OrderModel {
 
   async delete(orderId) {
     const orders = await Order.findOneAndDelete({ _id: orderId });
-    // 삭제한 주문의 주문 정보를 리턴 함
+    // 삭제한 주문의 주문 정보를 리턴함
     return orders;
   }
 }
