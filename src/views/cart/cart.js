@@ -337,5 +337,5 @@ function renderCartMain() {
   deletePartEvent();
   deleteButtonsEvent();
 }
-setDummyData();
+// setDummyData();
 renderCartMain();
