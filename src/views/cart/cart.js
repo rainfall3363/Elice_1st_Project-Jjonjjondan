@@ -4,6 +4,8 @@
 // 이후 주문서 작성 페이지 만들 예정입니다.
 
 import {
+  loginUser,
+  logoutUser,
   getLocalStorageList,
   addLocalStorageList,
   deleteLocalStorageListById,
@@ -257,6 +259,8 @@ function setDummyData() {
 }
 
 function renderCartMain() {
+  loginUser();
+  logoutUser();
   renderCartList();
   allSelectCheckboxEvent();
   selectCheckBoxEvent();
