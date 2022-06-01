@@ -35,7 +35,7 @@ function makeProductsCard(productsCardsElement) {
       </figure>
       <div class="content">
         <p id="title-${productsCardsElement.id}">${
-    productsCardsElement.product
+    productsCardsElement.title
   }</p>
         <div class="quantity">
           <button class="button is-rounded" id="minus-${
@@ -304,25 +304,25 @@ function setDummyData() {
     {
       id: '7',
       quantity: 98,
-      product: 'asdfg',
+      title: 'asdfg',
       price: '32456',
     },
     {
       id: '8',
       quantity: 1,
-      product: 'asdfgh',
+      title: 'asdfgh',
       price: '34567',
     },
     {
       id: '9',
       quantity: 1,
-      product: 'sadfgh',
+      title: 'sadfgh',
       price: '2345',
     },
     {
       id: '10',
       quantity: 1,
-      product: 'asdfgh',
+      title: 'asdfgh',
       price: '234567',
     },
   ];
@@ -337,5 +337,5 @@ function renderCartMain() {
   deletePartEvent();
   deleteButtonsEvent();
 }
-setDummyData();
+// setDummyData();
 renderCartMain();

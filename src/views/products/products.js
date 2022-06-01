@@ -14,6 +14,7 @@ async function init() {
   logoutUser();
   setRegister();
   changetoAdmin();
+  productsData();
 }
 
 //query String 값 가져오기
@@ -22,19 +23,20 @@ const categoryName = params.get('categoryName');
 //데이터 받아오기
 async function productsData() {
   const productSection = document.getElementById('productSection');
-  const data = await Api.get('/api/productlist');
-  await data.forEach((elem) => {
-    const category = elem.categoryName;
-    const title = elem.title;
-    const imageURL = elem.image;
-    const maker = elem.maker;
-    const price = addCommas(Number(elem.price));
-    const productId = elem._id;
+  try {
+    const data = await Api.get('/api/product/list');
+    await data.forEach((elem) => {
+      const category = elem.categoryName;
+      const title = elem.title;
+      const imageURL = elem.image;
+      const maker = elem.maker;
+      const price = addCommas(Number(elem.price));
+      const productId = elem._id;
 
-    if (category === categoryName) {
-      productSection.insertAdjacentHTML(
-        'beforeend',
-        `
+      if (category === categoryName) {
+        productSection.insertAdjacentHTML(
+          'beforeend',
+          `
     <a href="/productDetail?productId=${productId}">
     <div class="box">
     <div id="product">
@@ -48,8 +50,11 @@ async function productsData() {
     </div>
     </a>
     `
-      );
-    }
-  });
+        );
+      }
+    });
+  } catch (err) {
+    console.error(err.stack);
+    alert(`상품 정보를 불러오는 데 실패하였습니다.${err.message}`);
+  }
 }
-productsData();

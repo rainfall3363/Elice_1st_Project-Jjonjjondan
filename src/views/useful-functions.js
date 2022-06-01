@@ -56,15 +56,17 @@ export const logoutUser = () => {
 
 //로그인 시 회원가입 텍스트 계정관리로 변경
 export const setRegister = async () => {
-  const register = document.getElementById('registerId');
-  const userInfo = await Api.get('/api/userInfo');
-  const role = userInfo.role;
-  console.log(role);
-  if (role === 'basic-user') {
-    register.innerText = '';
-    register.insertAdjacentHTML(
-      'beforeend',
-      `
+  try {
+    const data = sessionStorage.getItem('token');
+    const register = document.getElementById('registerId');
+    if (data) {
+      const userInfo = await Api.get('/api/user/info');
+      const role = userInfo.role;
+      if (role === 'basic-user') {
+        register.innerText = '';
+        register.insertAdjacentHTML(
+          'beforeend',
+          `
     <li>
     <a href="/account" aria-current="page">
       <span class="icon">
@@ -74,20 +76,27 @@ export const setRegister = async () => {
     </a>
   </li>
   `
-    );
+        );
+      }
+    }
+  } catch (err) {
+    console.error(err.stack);
   }
 };
 
 //로그인 시 관리자면 회원가입 텍스트 페이지 관리로 변경
 export const changetoAdmin = async () => {
-  const register = document.getElementById('registerId');
-  const userInfo = await Api.get('/api/userInfo');
-  const role = userInfo.role;
-  if (role === 'admin') {
-    register.innerText = '';
-    register.insertAdjacentHTML(
-      'beforeend',
-      `
+  try {
+    const data = sessionStorage.getItem('token');
+    const register = document.getElementById('registerId');
+    if (data) {
+      const userInfo = await Api.get('/api/user/info');
+      const role = userInfo.role;
+      if (role === 'admin') {
+        register.innerText = '';
+        register.insertAdjacentHTML(
+          'beforeend',
+          `
     <li>
     <a href="/admin" aria-current="page">
       <span class="icon">
@@ -97,8 +106,12 @@ export const changetoAdmin = async () => {
     </a>
   </li>
   `
-    );
-    register.href = '/admin';
+        );
+        register.href = '/admin';
+      }
+    }
+  } catch (err) {
+    console.error(err.stack);
   }
 };
 
@@ -161,6 +174,40 @@ export const editQuantityLocalStorageListById = (key, id, value) => {
   });
   window.localStorage.setItem(key, JSON.stringify(storageList));
   return getLocalStorageList(key);
+};
+
+//productDetail에서 장바구니 추가시 localStorage 기능
+export const inputCart = (productDetailData) => {
+  console.log(productDetailData);
+  productDetailData.quantity = 1;
+  const cartList = getLocalStorageList('cart');
+  //cart localStorage에 productId가 없다면 0 있다면 해당 productId가 있는 element 개수를 반환
+  const isId = cartList.filter(
+    (cartElement) => cartElement.id == productDetailData.id
+  ).length;
+
+  //만약 해당 제품 id가 cart localStorage에 없다면 상품 상세 정보를 cart에 추가
+  if (!isId) {
+    addLocalStorageList('cart', productDetailData);
+  } else {
+    //만약 해당 제품 id가 cart localStorage에 있다면 수량 증분만 진행
+    let quantityValue = parseInt(
+      getLocalStorageListById('cart', productDetailData.id).quantity
+    );
+    quantityValue++;
+    //최대 수량이 99이므로 99이상인 경우 처리
+    if (quantityValue >= 99) {
+      editQuantityLocalStorageListById('cart', productDetailData.id, 99);
+    } else {
+      editQuantityLocalStorageListById(
+        'cart',
+        productDetailData.id,
+        quantityValue
+      );
+    }
+  }
+  alert('장바구니에 추가되었습니다.');
+  return getLocalStorageList('cart');
 };
 
 export const calculateTotalPrice = (price) => {
