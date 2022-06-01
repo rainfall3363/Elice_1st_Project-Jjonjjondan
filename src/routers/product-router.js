@@ -5,7 +5,7 @@ import { productService } from '../services';
 const productRouter = Router();
 
 // 상품등록 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
-productRouter.post('/productRegister', async (req, res, next) => {
+productRouter.post('/register', async (req, res, next) => {
   try {
     // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
     // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
@@ -44,7 +44,7 @@ productRouter.post('/productRegister', async (req, res, next) => {
 });
 
 // 전체 상품 목록을 가져옴 (배열 형태임)
-productRouter.get('/productList', async function (req, res, next) {
+productRouter.get('/list', async function (req, res, next) {
   try {
     // 전체 상품 목록을 얻음
     const products = await productService.getProducts();
@@ -56,7 +56,7 @@ productRouter.get('/productList', async function (req, res, next) {
 });
 
 // 특정 상품 정보 불러오기
-productRouter.get('/productInfo/:productId', async function (req, res, next) {
+productRouter.get('/info/:productId', async function (req, res, next) {
   try {
     const productInfo = await productService.getProductInfo(
       req.params.productId
@@ -70,7 +70,7 @@ productRouter.get('/productInfo/:productId', async function (req, res, next) {
 
 // 상품 정보 수정
 // (예를 들어 /api/products/abc12345 로 요청하면 req.params.productId는 'abc12345' 문자열로 됨)
-productRouter.patch('/products/:productId', async function (req, res, next) {
+productRouter.patch('/update/:productId', async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -116,18 +116,15 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
 });
 
 // 상품 정보 삭제
-productRouter.delete(
-  '/productDelete/:productId',
-  async function (req, res, next) {
-    try {
-      const productId = req.params.productId;
-      const deletedProductInfo = await productService.deleteProduct(productId);
+productRouter.delete('/delete/:productId', async function (req, res, next) {
+  try {
+    const productId = req.params.productId;
+    const deletedProductInfo = await productService.deleteProduct(productId);
 
-      res.status(200).json(deletedProductInfo);
-    } catch (error) {
-      next(error);
-    }
+    res.status(200).json(deletedProductInfo);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 export { productRouter };
