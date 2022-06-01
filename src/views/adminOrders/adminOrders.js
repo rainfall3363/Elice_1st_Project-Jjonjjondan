@@ -16,7 +16,7 @@ async function init() {
 
 async function renderOrders() {
   const tableBody = document.querySelector('#tableBody');
-  const orders = await Api.get('/api/allOrderList');
+  const orders = await Api.get('/api/order/list');
 
   for (const order of orders) {
     const html = createOrderTable(order);
@@ -93,11 +93,9 @@ function openCancelModal(event) {
 async function patchStatus(event) {
   const status = event.target.value;
   try {
-    await Api.patch(
-      '/api/statusUpdate',
-      `?orderId=${event.target.dataset['id']}`,
-      { status }
-    );
+    await Api.patch('/api/order/update', event.target.dataset['id'], {
+      status,
+    });
   } catch {
     alert('주문 상태 수정에 실패했습니다. 다시 한번 시도해주세요.');
     window.location.reload();
@@ -107,7 +105,7 @@ async function patchStatus(event) {
 function cancelOrder(orderId) {
   return async function (event) {
     try {
-      await Api.delete('/api/orderCancel', `?orderId=${orderId}`);
+      await Api.delete('/api/order/delete', orderId);
       event.stopPropagation();
       alert(`${orderId} 주문에 대한 취소요청이 완료되었습니다.`);
       window.location.reload();

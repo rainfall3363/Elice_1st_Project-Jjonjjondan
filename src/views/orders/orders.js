@@ -16,7 +16,7 @@ async function init() {
 
 // #tableBody에 주문 목록을 추가하는 함수
 async function renderOrders() {
-  const orders = await Api.get('/api/ordersByUserId');
+  const orders = await Api.get('/api/order/info/userId');
   const tableBody = document.querySelector('#tableBody');
 
   for (const order of orders) {
@@ -70,7 +70,7 @@ function openCancelModal(event) {
 function cancelOrder(orderId) {
   return async function (event) {
     try {
-      await Api.delete('/api/orderCancel', `?orderId=${orderId}`);
+      await Api.delete('/api/order/delete', orderId);
       event.stopPropagation();
       alert(`${orderId} 주문에 대한 취소요청이 완료되었습니다.`);
       window.location.reload();
