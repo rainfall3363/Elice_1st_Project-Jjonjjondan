@@ -24,8 +24,8 @@ async function render() {
     '#productDescription'
   );
 
-  const categoryList = await Api.get('/api/categoryList');
-  const productInfo = await Api.get(`/api/productInfo/${productId}`);
+  const categoryList = await Api.get('/api/category/list');
+  const productInfo = await Api.get('/api/product/info', productId);
   const fragment = new DocumentFragment();
 
   productName.value = productInfo.title;
@@ -79,7 +79,11 @@ async function updateProduct() {
   }
 
   try {
-    const result = await Api.patch('/api/products', productId, newProduct);
+    const result = await Api.patch(
+      '/api/product/update',
+      productId,
+      newProduct
+    );
     if (result) {
       alert(SUCCESS_MESSAGE);
       window.location.href = '/admin/products';

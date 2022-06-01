@@ -28,7 +28,7 @@ function addAllevents() {
 }
 
 async function getUserInfo() {
-  const user = await Api.get('/api/userInfo');
+  const user = await Api.get('/api/user/info');
   role = user.role;
   renderUserInfo(user);
 }
@@ -158,7 +158,7 @@ async function updateUserInfo() {
   };
 
   try {
-    const result = await Api.patch(`/api/users/update`, '', data);
+    const result = await Api.patch(`/api/user/update`, '', data);
     if (result) {
       alert('회원님의 정보가 정상적으로 수정되었습니다.');
       window.location.href = '/account';
