@@ -153,6 +153,7 @@ function deletePartEvent() {
     checkList.forEach((storageId) => {
       deleteLocalStorageListById('cart', storageId);
       deleteLocalStorageList('checkList', storageId);
+      updateOrderSummary();
       renderCartMain();
     });
   });
@@ -164,6 +165,7 @@ function deleteButtonsEvent() {
     element.addEventListener('click', function (e) {
       let storageId = this.id.split('-')[1];
       deleteLocalStorageListById('cart', storageId);
+      updateOrderSummary();
       renderCartMain();
     })
   );
