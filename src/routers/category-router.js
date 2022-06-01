@@ -16,14 +16,12 @@ categoryRouter.post('/categoryRegister', async (req, res, next) => {
     }
 
     // req (request)의 body 에서 데이터 가져오기
-    const categoryId = req.body.categoryId;
     const categoryName = req.body.categoryName;
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
 
     // 위 데이터를 카테고리 db에 추가하기
     const newCategory = await categoryService.addCategory({
-      categoryId,
       categoryName,
       imageUrl,
       description,
