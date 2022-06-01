@@ -59,7 +59,6 @@ export const setRegister = async () => {
   const register = document.getElementById('registerId');
   const userInfo = await Api.get('/api/userInfo');
   const role = userInfo.role;
-  console.log(role);
   if (role === 'basic-user') {
     register.innerText = '';
     register.insertAdjacentHTML(
@@ -168,9 +167,9 @@ export const inputCart = (productId, productDetailData) => {
   productDetailData.id = productId;
   const cartList = getLocalStorageList('cart');
   //cart localStorage에 productId가 없다면 0 있다면 해당 productId가 있는 element 개수를 반환
-  const isId = cartList
-    .map((cartElement) => cartElement.id == productId)
-    .reduce((acc, e) => acc + e);
+  const isId = cartList.filter(
+    (cartElement) => cartElement.id == productId
+  ).length;
 
   //만약 해당 제품 id가 cart localStorage에 없다면 상품 상세 정보를 cart에 추가
   if (!isId) {
@@ -188,6 +187,7 @@ export const inputCart = (productId, productDetailData) => {
       editQuantityLocalStorageListById('cart', productId, quantityValue);
     }
   }
+  alert('장바구니에 추가되었습니다.');
   return getLocalStorageList('cart');
 };
 

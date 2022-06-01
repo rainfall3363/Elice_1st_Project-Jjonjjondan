@@ -5,6 +5,7 @@ import {
   logoutUser,
   addCommas,
   changetoAdmin,
+  inputCart,
 } from '/useful-functions.js';
 
 init();
@@ -14,39 +15,46 @@ async function init() {
   logoutUser();
   setRegister();
   changetoAdmin();
-  await renderProduct();
-  await buttonEvents();
+  const data = await productData();
+  await renderProduct(data);
+  await buttonEvents(data);
 }
 
-//query String 값 가져오기
-const params = new URLSearchParams(document.location.search);
-const productId = params.get('productId');
+// query String 값 가져오기
+
+async function productData() {
+  const params = new URLSearchParams(document.location.search);
+  const productId = params.get('productId');
+  const data = await Api.get(`/api/productInfo/${productId}`);
+  data.id = productId;
+  return data;
+}
 
 //개별 상품 렌더링
-async function renderProduct() {
+async function renderProduct(productData) {
   const brandSection = await document.getElementById('brandSection');
-  const data = await Api.get(`/api/productInfo/${productId}`);
-  const title = data.title;
-  const imageURL = data.image;
-  const maker = data.maker;
-  const price = addCommas(Number(data.price));
-  const description = data.description;
+  // const data = await Api.get(`/api/productInfo/${productId}`);
+  // const title = data.title;
+  // const imageURL = data.image;
+  // const maker = data.maker;
+  // const price = addCommas(Number(data.price));
+  // const description = data.description;
 
   brandSection.insertAdjacentHTML(
     'beforeend',
     `
   <section id="productContent">
   <div id="imgBox">
-    <img id="productImage" src="${imageURL}" alt="">
+    <img id="productImage" src="${productData.image}" alt="">
   </div>
   <div id="contents">
     <div id="innercontents">
       <ul>
-        <li id="brand">${maker}</li>
+        <li id="brand">${productData.maker}</li>
       </ul>
-      <p id="title">${title}</p>
-      <p id="price">${price}원</p>
-      <p id="description">${description}</p>
+      <p id="title">${productData.title}</p>
+      <p id="price">${addCommas(Number(productData.price))}원</p>
+      <p id="description">${productData.description}</p>
     </div>
   <div id="cartandbuyButtons">
     <button id="inputCart" class="button is-info is-outlined button is-medium is-fullwidth">장바구니 담기</button>
@@ -58,21 +66,23 @@ async function renderProduct() {
   );
 }
 
-//장바구니 버튼, 바로구매 버튼
-function buttonEvents() {
+//장바구니 버튼, 바로구매 버튼 클릭 시 이벤트
+function buttonEvents(data) {
   const inputCartbutton = document.getElementById('inputCart');
   const buyNowbutton = document.getElementById('buyNow');
 
-  inputCartbutton.addEventListener('click', inputCart);
+  inputCartbutton.addEventListener('click', inputcartbuttondata(data));
   buyNowbutton.addEventListener('click', buyNow);
 }
 
-//장바구니 클릭 시 알림
-function inputCart() {
-  alert('장바구니에 추가되었습니다.');
+//장바구니 버튼 클릭 시 로컬스토리지에 해당 상품 정보 저장
+function inputcartbuttondata(data) {
+  return function () {
+    inputCart(data.id, data);
+  };
 }
 
 //바로 구매 클릭 시 이동
 function buyNow() {
-  console.log(2);
+  window.location.href = '/order';
 }
