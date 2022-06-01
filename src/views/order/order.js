@@ -75,13 +75,35 @@ function updateOrderSummary() {
   renderOrderSummary();
 }
 
-updateOrderSummary();
-
 async function renderUserInfo() {
-  const user = await Api.get('/api/userInfo');
-  return user;
+  try {
+    const result = await Api.get('/api/userInfo');
+    return result;
+  } catch {
+    alert('로그인 하세요.');
+    window.location.href = '/login/';
+  }
 }
 
-const userInfo = await renderUserInfo();
+function renderDeliveryInfo(userInfo) {
+  const receiverName = document.getElementById('receiverName');
+  const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
+  const postalCode = document.getElementById('postalCode');
+  const address1 = document.getElementById('address1');
+  const address2 = document.getElementById('address2');
 
-console.log(userInfo);
+  receiverName.value = userInfo.fullName;
+  receiverPhoneNumber.value = userInfo.phoneNumber;
+  postalCode.value = userInfo.address.postalCode;
+  address1.value = userInfo.address.address1;
+  address2.value = userInfo.address.address2;
+}
+
+async function init() {
+  updateOrderSummary();
+  const userInfo = await renderUserInfo();
+  renderDeliveryInfo(userInfo);
+}
+
+init();
+// console.log(userInfo);
