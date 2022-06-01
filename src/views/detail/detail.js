@@ -1,10 +1,4 @@
-import {
-  getLocalStorageList,
-  getLocalStorageListById,
-  addLocalStorageList,
-  editQuantityLocalStorageListById,
-  inputCart,
-} from '/useful-functions.js';
+import { getLocalStorageList, inputCart } from '/useful-functions.js';
 
 let localStorageGetBtnElement = document.getElementById('localStorageGetBtn');
 localStorageGetBtnElement.addEventListener('click', function () {
