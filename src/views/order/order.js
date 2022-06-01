@@ -1,3 +1,4 @@
+import * as Api from '/api.js';
 import { getLocalStorageList, addCommas } from '/useful-functions.js';
 
 function makeOrderSummary(orderSummary) {
@@ -75,3 +76,12 @@ function updateOrderSummary() {
 }
 
 updateOrderSummary();
+
+async function renderUserInfo() {
+  const user = await Api.get('/api/userInfo');
+  return user;
+}
+
+const userInfo = await renderUserInfo();
+
+console.log(userInfo);
