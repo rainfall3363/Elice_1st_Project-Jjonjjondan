@@ -32,7 +32,7 @@ function makeProductsCard(productsCardsElement) {
       <figure class="image is-96x96">
         <img
           id="image-${productsCardsElement.id}"
-          src="https://ifh.cc/g/o5yDfg.jpg"
+          src="${productsCardsElement.image}"
           alt="product-image"
         />
       </figure>
