@@ -16,34 +16,43 @@ async function init() {
   loginUser();
   logoutUser();
   setRegister();
-  categoryList();
   changetoAdmin();
+  const data = await categoryData();
+  categoryRender(data);
 }
 
-async function categoryList() {
-  const slideContainer = document.getElementById('slideContainer');
-  const data = await Api.get('/api/categorylist');
-  for (let i = 0; i < data.length; i++) {
-    const categoryId = data[i].categoryId;
-    const description = data[i].description;
-    const imageUrl = data[i].imageURL;
-    const categoryName = data[i].categoryName;
+async function categoryData() {
+  try {
+    const data = await Api.get('/api/category/list');
+    return data;
+  } catch (err) {
+    console.error(err.stack);
+    alert(`카테고리 정보를 불러오는 데 실패하였습니다.${err.message}`);
+  }
+}
+
+function categoryRender(data) {
+  data.forEach((elem) => {
+    const description = elem.description;
+    const imageURL = elem.imageUrl;
+    const categoryName = elem.categoryName;
     if (categoryName) {
+      const slideContainer = document.getElementById('slideContainer');
       slideContainer.insertAdjacentHTML(
         'beforeend',
         `
-      <div class="slideBox">
-      <a href="/products?categoryName=${categoryName}" class="slidesAtag">
-        <img src="${imageUrl}" style="width: 50rem; height: 30rem";>
-      </a>
-      <p class="brandName">Camping</p>
-      <h3 class="categoryName">${categoryName}</h3>
-      <p class="categoryDescription">${description}</p>
-      </div>
-      `
+          <div class="slideBox">
+          <a href="/products?categoryName=${categoryName}" class="slidesAtag">
+            <img src="${imageURL}" style="width: 50rem; height: 30rem";>
+          </a>
+          <p class="brandName">Camping</p>
+          <h3 class="categoryName">${categoryName}</h3>
+          <p class="categoryDescription">${description}</p>
+          </div>
+          `
       );
     }
-  }
+  });
 
   //이미지 자동 슬라이드
   let autoslideIndex = 0;

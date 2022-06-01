@@ -56,14 +56,17 @@ export const logoutUser = () => {
 
 //로그인 시 회원가입 텍스트 계정관리로 변경
 export const setRegister = async () => {
-  const register = document.getElementById('registerId');
-  const userInfo = await Api.get('/api/userInfo');
-  const role = userInfo.role;
-  if (role === 'basic-user') {
-    register.innerText = '';
-    register.insertAdjacentHTML(
-      'beforeend',
-      `
+  try {
+    const data = sessionStorage.getItem('token');
+    const register = document.getElementById('registerId');
+    if (data) {
+      const userInfo = await Api.get('/api/user/info');
+      const role = userInfo.role;
+      if (role === 'basic-user') {
+        register.innerText = '';
+        register.insertAdjacentHTML(
+          'beforeend',
+          `
     <li>
     <a href="/account" aria-current="page">
       <span class="icon">
@@ -73,20 +76,27 @@ export const setRegister = async () => {
     </a>
   </li>
   `
-    );
+        );
+      }
+    }
+  } catch (err) {
+    console.error(err.stack);
   }
 };
 
 //로그인 시 관리자면 회원가입 텍스트 페이지 관리로 변경
 export const changetoAdmin = async () => {
-  const register = document.getElementById('registerId');
-  const userInfo = await Api.get('/api/userInfo');
-  const role = userInfo.role;
-  if (role === 'admin') {
-    register.innerText = '';
-    register.insertAdjacentHTML(
-      'beforeend',
-      `
+  try {
+    const data = sessionStorage.getItem('token');
+    const register = document.getElementById('registerId');
+    if (data) {
+      const userInfo = await Api.get('/api/user/info');
+      const role = userInfo.role;
+      if (role === 'admin') {
+        register.innerText = '';
+        register.insertAdjacentHTML(
+          'beforeend',
+          `
     <li>
     <a href="/admin" aria-current="page">
       <span class="icon">
@@ -96,8 +106,12 @@ export const changetoAdmin = async () => {
     </a>
   </li>
   `
-    );
-    register.href = '/admin';
+        );
+        register.href = '/admin';
+      }
+    }
+  } catch (err) {
+    console.error(err.stack);
   }
 };
 

@@ -20,26 +20,23 @@ async function init() {
   await buttonEvents(data);
 }
 
-// query String 값 가져오기
-
+/**상품 정보 불러오기*/
 async function productData() {
-  const params = new URLSearchParams(document.location.search);
-  const productId = params.get('productId');
-  const data = await Api.get(`/api/productInfo/${productId}`);
-  data.id = productId;
-  return data;
+  try {
+    const params = new URLSearchParams(document.location.search);
+    const productId = params.get('productId');
+    const data = await Api.get(`/api/product/info/${productId}`);
+    data.id = productId;
+    return data;
+  } catch (err) {
+    console.error(err.stack);
+    alert('상품 정보를 가져오는 데 실패하였습니다.');
+  }
 }
 
 //개별 상품 렌더링
 async function renderProduct(productData) {
   const brandSection = await document.getElementById('brandSection');
-  // const data = await Api.get(`/api/productInfo/${productId}`);
-  // const title = data.title;
-  // const imageURL = data.image;
-  // const maker = data.maker;
-  // const price = addCommas(Number(data.price));
-  // const description = data.description;
-
   brandSection.insertAdjacentHTML(
     'beforeend',
     `
@@ -78,7 +75,7 @@ function buttonEvents(data) {
 //장바구니 버튼 클릭 시 로컬스토리지에 해당 상품 정보 저장
 function inputcartbuttondata(data) {
   return function () {
-    inputCart(data.id, data);
+    inputCart(data);
   };
 }
 
