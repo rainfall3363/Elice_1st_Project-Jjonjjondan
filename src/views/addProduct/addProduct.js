@@ -16,7 +16,7 @@ async function init() {
 }
 
 async function render() {
-  const categoryList = await Api.get('/api/categoryList');
+  const categoryList = await Api.get('/api/category/list');
   const fragment = new DocumentFragment();
 
   categoryList.forEach((category) => {
@@ -61,7 +61,7 @@ async function addNewProduct() {
   }
 
   try {
-    const result = await Api.post('/api/productRegister', newProduct);
+    const result = await Api.post('/api/product/register', newProduct);
     if (result) {
       alert(SUCCESS_MESSAGE);
       window.location.href = '/admin/products';

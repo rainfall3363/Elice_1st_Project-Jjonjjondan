@@ -15,7 +15,7 @@ function addAllEvents() {
 }
 
 async function renderUserInfo() {
-  const user = await Api.get('/api/userInfo');
+  const user = await Api.get('/api/user/info');
   addUserInfo(user);
 }
 
@@ -35,7 +35,7 @@ function addUserInfo(user) {
 
 async function deleteUserInfo() {
   try {
-    const result = await Api.delete('/api/userDelete');
+    const result = await Api.delete('/api/user/delete');
     alert(`${result.fullName}님의 계정이 탈퇴되었습니다.`);
     sessionStorage.removeItem('token');
     window.location.href = '/';

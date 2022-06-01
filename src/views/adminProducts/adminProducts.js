@@ -13,7 +13,7 @@ async function init() {
 }
 
 async function renderProducts() {
-  const products = await Api.get('/api/productlist');
+  const products = await Api.get('/api/product/list');
   const tableBody = document.querySelector('#tableBody');
 
   for (const product of products) {
@@ -72,7 +72,7 @@ function openDeleteModal(event) {
 function deleteProduct(productId) {
   return async function (event) {
     try {
-      await Api.delete('/api/productDelete', productId);
+      await Api.delete('/api/product/delete', productId);
       event.stopPropagation();
       alert(`상품 삭제 요청이 정상적으로 처리되었습니다.`);
       window.location.reload();
