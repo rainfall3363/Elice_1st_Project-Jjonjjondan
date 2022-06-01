@@ -7,7 +7,7 @@ import { orderService } from '../services';
 const orderRouter = Router();
 
 // 주문 생성 api
-orderRouter.post('/putOrder', async (req, res, next) => {
+orderRouter.post('/register', async (req, res, next) => {
   try {
     // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
     // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
@@ -52,7 +52,7 @@ orderRouter.post('/putOrder', async (req, res, next) => {
 
 // 전체 주문 목록 (객체가 여러 개 들어있음)
 // 관리자 권한 설정 필요
-orderRouter.get('/allOrderList', async function (req, res, next) {
+orderRouter.get('/list', async function (req, res, next) {
   try {
     // 전체 주문 목록을 얻음
     const orders = await orderService.getAllOrders();
@@ -64,23 +64,18 @@ orderRouter.get('/allOrderList', async function (req, res, next) {
 });
 
 // 유저 ID로 주문 조회
-orderRouter.get(
-  '/ordersByUserId',
-  loginRequired,
-  async function (req, res, next) {
-    try {
-      const orders = await orderService.getOrdersByUserId(req.currentUserId);
+orderRouter.get('/info/userId', loginRequired, async function (req, res, next) {
+  try {
+    const orders = await orderService.getOrdersByUserId(req.currentUserId);
 
-      res.status(200).json(orders);
-    } catch (error) {
-      next(error);
-    }
+    res.status(200).json(orders);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 // 주문 번호로 주문 조회
-// 주소 설정 전체 통일, 다듬기
-orderRouter.get('/ordersByOrderId/:orderId', async function (req, res, next) {
+orderRouter.get('/info/:orderId', async function (req, res, next) {
   try {
     const orders = await orderService.getOrdersByOrderId(req.params.orderId);
 
@@ -91,8 +86,7 @@ orderRouter.get('/ordersByOrderId/:orderId', async function (req, res, next) {
 });
 
 // 주문 상태 수정
-// 관리자 권한 설정 필요
-orderRouter.patch('/statusUpdate/:orderId', async function (req, res, next) {
+orderRouter.patch('/update/:orderId', async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -125,7 +119,7 @@ orderRouter.patch('/statusUpdate/:orderId', async function (req, res, next) {
 });
 
 // 주문 삭제
-orderRouter.delete('/orderCancel/:orderId', async function (req, res, next) {
+orderRouter.delete('/delete/:orderId', async function (req, res, next) {
   try {
     const canceledOrder = await orderService.cancelOrder(req.params.orderId);
 
