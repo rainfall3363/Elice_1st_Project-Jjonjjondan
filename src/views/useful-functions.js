@@ -165,6 +165,7 @@ export const editQuantityLocalStorageListById = (key, id, value) => {
 //productDetail에서 장바구니 추가시 localStorage 기능
 export const inputCart = (productId, productDetailData) => {
   productDetailData.id = productId;
+  productDetailData.quantity = 1;
   const cartList = getLocalStorageList('cart');
   //cart localStorage에 productId가 없다면 0 있다면 해당 productId가 있는 element 개수를 반환
   const isId = cartList.filter(
