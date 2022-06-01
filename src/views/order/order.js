@@ -1,9 +1,15 @@
 import * as Api from '/api.js';
-import { updateOrderSummary } from '/useful-functions.js';
+import {
+  updateOrderSummary,
+  loginUser,
+  logoutUser,
+} from '/useful-functions.js';
 
 init();
 
 async function init() {
+  loginUser();
+  logoutUser();
   updateOrderSummary();
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
