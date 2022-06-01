@@ -3,10 +3,6 @@ import { Schema } from 'mongoose';
 // categoryName: (남성의류, 여성의류, 남성잡화,...), imageUrl, description
 const CategorySchema = new Schema(
   {
-    categoryId: {
-      type: String, // objectId로 들어갈 예정이라 string으로 설정
-      required: true,
-    },
     categoryName: {
       type: String,
       required: true,

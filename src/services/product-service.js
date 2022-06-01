@@ -10,9 +10,7 @@ class ProductService {
 
   // 상품 등록
   async addProduct(productInfo) {
-    const { title, price, description, maker, categoryName, image, inventory } =
-      productInfo;
-
+    const { title } = productInfo;
     // 상품명 중복 확인
     const product = await this.productModel.findByTitle(title);
     if (product) {
@@ -23,7 +21,6 @@ class ProductService {
 
     // db에 저장
     const createdNewProduct = await this.productModel.create(productInfo);
-
     return createdNewProduct;
   }
 
