@@ -265,26 +265,28 @@ export const updateOrderSummary = () => {
   const isOrder = orderLocalStorage !== null;
   let orderObject = {};
 
-  if (isOrder) {
-    const cartList = getLocalStorageList('cart');
-    const checkList = getLocalStorageList('checkList');
-
-    const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
-    orderObject = {
-      ids: checkedCartList.map((e) => e.id),
-      productsCount: checkedCartList.length,
-      productsTotal: checkedCartList.reduce(
-        (acc, e) => acc + parseInt(e.price) * parseInt(e.quantity),
-        0
-      ),
-    };
-  } else {
+  //만약 order localStorage가 없다면 초기화
+  if (!isOrder) {
     orderObject = {
       ids: [],
       productsCount: 0,
       productsTotal: 0,
     };
   }
+
+  const cartList = getLocalStorageList('cart');
+  const checkList = getLocalStorageList('checkList');
+
+  const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
+  orderObject = {
+    ids: checkedCartList.map((e) => e.id),
+    productsCount: checkedCartList.length,
+    productsTotal: checkedCartList.reduce(
+      (acc, e) => acc + parseInt(e.price) * parseInt(e.quantity),
+      0
+    ),
+  };
+
   window.localStorage.setItem('order', JSON.stringify(orderObject));
   renderOrderSummary();
 };

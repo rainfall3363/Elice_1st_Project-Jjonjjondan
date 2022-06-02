@@ -264,6 +264,7 @@ function renderCartMain() {
   loginUser();
   logoutUser();
   renderCartList();
+  updateOrderSummary();
   allSelectCheckboxEvent();
   selectCheckBoxEvent();
   quantityPlusButtonEvent();
