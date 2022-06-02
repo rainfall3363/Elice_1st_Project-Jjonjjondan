@@ -1,6 +1,7 @@
 import {
   loginUser,
   logoutUser,
+  setRegister,
   getLocalStorageList,
   addLocalStorageList,
   deleteLocalStorageListById,
@@ -24,6 +25,7 @@ renderCartMain();
 function renderCartMain() {
   loginUser();
   logoutUser();
+  setRegister();
   renderCartList();
   updateOrderSummary(localStorageKeyObj);
   allSelectCheckboxEvent();
