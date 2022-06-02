@@ -1,4 +1,8 @@
-import { loginUser, logoutUser } from '../../../useful-functions.js';
+import {
+  loginUser,
+  logoutUser,
+  checkAdmin,
+} from '../../../useful-functions.js';
 import * as Api from '../../../api.js';
 
 const productFormSection = document.querySelector('#productFormSection');
@@ -9,6 +13,7 @@ const FAIL_MESSAGE = '신규 상품 등록에 실패했습니다. 다시 한 번
 init();
 
 async function init() {
+  await checkAdmin();
   loginUser();
   logoutUser();
   await render();
@@ -16,15 +21,20 @@ async function init() {
 }
 
 async function render() {
-  const categoryList = await Api.get('/api/category/list');
-  const fragment = new DocumentFragment();
+  try {
+    const categoryList = await Api.get('/api/category/list');
+    const fragment = new DocumentFragment();
 
-  categoryList.forEach((category) => {
-    const option = document.createElement('option');
-    option.innerText = category.categoryName;
-    fragment.appendChild(option);
-  });
-  categorySelect.appendChild(fragment);
+    categoryList.forEach((category) => {
+      const option = document.createElement('option');
+      option.innerText = category.categoryName;
+      fragment.appendChild(option);
+    });
+    categorySelect.appendChild(fragment);
+  } catch {
+    alert('카테고리 정보를 불러오는 데 실패했습니다. 다시 시도해 주세요.');
+    window.location.reload();
+  }
 }
 
 function addAllEvents() {
@@ -87,11 +97,11 @@ function checkIntegrity({
 }
 
 function handleCancel() {
-  const action = confirm(
+  const cancelFlag = confirm(
     '작성한 정보가 모두 사라집니다. 나가려면 확인을 눌러주세요.'
   );
 
-  if (action) {
+  if (cancelFlag) {
     window.location.href = '/admin/products';
   }
 }
