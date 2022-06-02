@@ -42,12 +42,19 @@ function addUserInfo(user) {
 }
 
 async function deleteUserInfo() {
-  try {
-    const result = await Api.delete('/api/user/delete');
-    alert(`${result.fullName}님의 계정이 탈퇴되었습니다.`);
-    sessionStorage.removeItem('token');
-    window.location.href = '/';
-  } catch (err) {
-    alert('회원 탈퇴처리가 정상적으로 진행되지 않았습니다. 다시 시도해주세요.');
+  const deleteFlag = confirm(
+    '탈퇴시 삭제된 정보는 다시 복구되지 않습니다. 탈퇴 하시겠습니까?'
+  );
+  if (deleteFlag) {
+    try {
+      const result = await Api.delete('/api/user/delete');
+      alert(`${result.fullName}님의 계정이 탈퇴되었습니다.`);
+      sessionStorage.removeItem('token');
+      window.location.href = '/';
+    } catch (err) {
+      alert(
+        '회원 탈퇴처리가 정상적으로 진행되지 않았습니다. 다시 시도해주세요.'
+      );
+    }
   }
 }
