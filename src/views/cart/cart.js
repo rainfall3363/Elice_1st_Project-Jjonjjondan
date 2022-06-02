@@ -130,6 +130,7 @@ function allSelectCheckboxEvent() {
         getLocalStorageList('checkList');
         addLocalStorageList('checkList', storageId);
         updateOrderSummary(localStorageKeyObj);
+        toPurchaseEvent();
         element.checked = true;
       }
     } else {
@@ -137,6 +138,7 @@ function allSelectCheckboxEvent() {
         let storageId = element.id.split('-')[1];
         deleteLocalStorageList('checkList', storageId);
         updateOrderSummary(localStorageKeyObj);
+        toPurchaseEvent();
         element.checked = false;
       }
     }
@@ -153,10 +155,12 @@ function selectCheckBoxEvent() {
         getLocalStorageList('checkList');
         addLocalStorageList('checkList', storageId);
         updateOrderSummary(localStorageKeyObj);
+        toPurchaseEvent();
         element.checked = true;
       } else {
         deleteLocalStorageList('checkList', storageId);
         updateOrderSummary(localStorageKeyObj);
+        toPurchaseEvent();
         element.checked = false;
       }
     })
@@ -245,5 +249,12 @@ function quantityPlusButtonEvent() {
         }
       });
     }
+  });
+}
+
+function toPurchaseEvent() {
+  const purchaseButton = document.getElementById('purchaseButton');
+  purchaseButton.addEventListener('click', function () {
+    window.location.href = '/order';
   });
 }
