@@ -13,6 +13,7 @@ async function init() {
   logoutUser();
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
+  searchAddressEvent();
   const localStorageKeyObj = getLocalStorageKeyObj();
   updateOrderSummary(localStorageKeyObj);
   postOrderInfo();
@@ -46,6 +47,50 @@ function renderDeliveryInfo(userInfo) {
     address1.value = userInfo.address.address1;
     address2.value = userInfo.address.address2;
   }
+}
+
+// 주소검색 API 사용 함수
+function searchAddress() {
+  const postalCodeInput = document.getElementById('postalCode');
+  const address1Input = document.getElementById('address1');
+  const address2Input = document.getElementById('address2');
+
+  new daum.Postcode({
+    oncomplete: function (data) {
+      let addr = '';
+      let extraAddr = '';
+
+      if (data.userSelectedType === 'R') {
+        addr = data.roadAddress;
+      } else {
+        addr = data.jibunAddress;
+      }
+
+      if (data.userSelectedType === 'R') {
+        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+          extraAddr += data.bname;
+        }
+        if (data.buildingName !== '' && data.apartment === 'Y') {
+          extraAddr +=
+            extraAddr !== '' ? ', ' + data.buildingName : data.buildingName;
+        }
+        if (extraAddr !== '') {
+          extraAddr = ' (' + extraAddr + ')';
+        }
+      }
+
+      postalCodeInput.value = data.zonecode;
+      address1Input.value = `${addr} ${extraAddr}`;
+      address2Input.value = '';
+      address2Input.placeholder = '상세 주소 입력';
+      address2Input.focus();
+    },
+  }).open();
+}
+
+function searchAddressEvent() {
+  const searchAddressButton = document.getElementById('searchAddressButton');
+  searchAddressButton.addEventListener('click', searchAddress);
 }
 
 function postOrderInfo() {}
