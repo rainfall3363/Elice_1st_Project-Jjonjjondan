@@ -11,6 +11,20 @@ import {
   updateOrderSummary,
 } from '/useful-functions.js';
 
+renderCartMain();
+
+function renderCartMain() {
+  loginUser();
+  logoutUser();
+  renderCartList();
+  updateOrderSummary();
+  allSelectCheckboxEvent();
+  selectCheckBoxEvent();
+  quantityPlusButtonEvent();
+  deletePartEvent();
+  deleteButtonsEvent();
+}
+
 function makeProductsCard(productsCardsElement) {
   return `
     <div class="cart-product-item" id="productItem-${productsCardsElement.id}">
@@ -224,17 +238,3 @@ function quantityPlusButtonEvent() {
     }
   });
 }
-
-function renderCartMain() {
-  loginUser();
-  logoutUser();
-  renderCartList();
-  updateOrderSummary();
-  allSelectCheckboxEvent();
-  selectCheckBoxEvent();
-  quantityPlusButtonEvent();
-  deletePartEvent();
-  deleteButtonsEvent();
-}
-
-renderCartMain();
