@@ -1,8 +1,3 @@
-// plus minus 버튼 기능 완성하였고 localStorage에 update되도록 만들 예정입니다.
-// 결제정보는 localStorage에 order key를 만들어 object로 저장하여 관리할 예정입니다.
-// 백엔드에서 구현한 실제 제품 스키마를 적용하여 데이터를 뿌려줄 예정입니다.
-// 이후 주문서 작성 페이지 만들 예정입니다.
-
 import {
   loginUser,
   logoutUser,
@@ -230,36 +225,6 @@ function quantityPlusButtonEvent() {
   });
 }
 
-function setDummyData() {
-  const dummyData = [
-    {
-      id: '7',
-      quantity: 98,
-      title: 'asdfg',
-      price: '32456',
-    },
-    {
-      id: '8',
-      quantity: 1,
-      title: 'asdfgh',
-      price: '34567',
-    },
-    {
-      id: '9',
-      quantity: 1,
-      title: 'sadfgh',
-      price: '2345',
-    },
-    {
-      id: '10',
-      quantity: 1,
-      title: 'asdfgh',
-      price: '234567',
-    },
-  ];
-  window.localStorage.setItem('cart', JSON.stringify(dummyData));
-}
-
 function renderCartMain() {
   loginUser();
   logoutUser();
@@ -271,5 +236,5 @@ function renderCartMain() {
   deletePartEvent();
   deleteButtonsEvent();
 }
-// setDummyData();
+
 renderCartMain();
