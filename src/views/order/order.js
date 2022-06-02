@@ -10,10 +10,12 @@ init();
 async function init() {
   loginUser();
   logoutUser();
-  // updateOrderSummary('buynowOrder','')
-  updateOrderSummary();
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
+  const localStorageKeyObj = getLocalStorageKeyObj();
+  updateOrderSummary(localStorageKeyObj);
+  postOrderInfo();
+  deleteBuyNowStorage();
 }
 
 async function renderUserInfo() {
@@ -44,5 +46,9 @@ function renderDeliveryInfo(userInfo) {
     address2.value = userInfo.address.address2;
   }
 }
+
+function postOrderInfo() {}
+
+function deleteBuyNowStorage() {}
 
 // console.log(userInfo);

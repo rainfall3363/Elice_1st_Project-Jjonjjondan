@@ -16,6 +16,8 @@ localStorageKeyObj.order = 'order';
 localStorageKeyObj.cart = 'cart';
 localStorageKeyObj.checkList = 'checkList';
 
+setLocalStorageKeyObj(localStorageKeyObj);
+
 renderCartMain();
 
 function renderCartMain() {

@@ -10,6 +10,11 @@ import {
   addLocalStorageList,
 } from '/useful-functions.js';
 
+const localStorageKeyObj = {};
+localStorageKeyObj.order = 'buyNowOrder';
+localStorageKeyObj.cart = 'buyNowCart';
+localStorageKeyObj.checkList = 'buyNowCheckList';
+
 init();
 
 async function init() {
@@ -85,8 +90,10 @@ function inputcartbuttondata(data) {
 function buyNow(data) {
   return function () {
     //만약 해당 key가 없다면 add함수 속 get함수로 초기화
-    addLocalStorageList('buyNowCart', data);
-    addLocalStorageList('buyNowCheckList', data.id);
+    addLocalStorageList(localStorageKeyObj.cart, data);
+    addLocalStorageList(localStorageKeyObj.checkList, data.id);
+    // updateOrderSummary('buynowOrder','')
+    setLocalStorageKeyObj(localStorageKeyObj);
 
     window.location.href = '/order';
   };
