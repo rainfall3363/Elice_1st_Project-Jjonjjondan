@@ -8,6 +8,7 @@
 
 :root {
   --orange: #ff7800;
+  --orange-dark: #ce6102;
   --yellow: #ffe300;
   --white: #f7f7f7;
 }
@@ -18,4 +19,12 @@
 
 .is-font-orange {
   color: var(--orange) !important;
+}
+
+.is-font-white {
+  color: var(--white) !important;
+}
+
+.is-background-orange {
+  background-color: var(--orange);
 }
