@@ -6,8 +6,8 @@ import {
   addCommas,
   changetoAdmin,
   inputCart,
-  getLocalStorageList,
   addLocalStorageList,
+  setLocalStorageKeyObj,
 } from '/useful-functions.js';
 
 const localStorageKeyObj = {};
@@ -34,6 +34,7 @@ async function productData() {
     const productId = params.get('productId');
     const data = await Api.get(`/api/product/info/${productId}`);
     data.id = productId;
+    data.quantity = 1;
     return data;
   } catch (err) {
     console.error(err.stack);
