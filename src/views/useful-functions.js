@@ -70,9 +70,9 @@ export const setRegister = async () => {
     <li>
     <a href="/account" aria-current="page">
       <span class="icon">
-      <i class="fas fa-user"></i>
+      <i class="fas fa-user is-font-orange"></i>
       </span>
-      <span>계정관리</span>
+      <span class="is-font-orange">계정관리</span>
     </a>
   </li>
   `
@@ -100,9 +100,9 @@ export const changetoAdmin = async () => {
     <li>
     <a href="/admin" aria-current="page">
       <span class="icon">
-        <i class="fas fa-cog"></i>
+        <i class="fas fa-cog is-font-orange"></i>
       </span>
-      <span>페이지 관리</span>
+      <span class="is-font-orange">페이지 관리</span>
     </a>
   </li>
   `
