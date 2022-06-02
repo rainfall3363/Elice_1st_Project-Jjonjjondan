@@ -1,29 +1,37 @@
 import * as Api from '../api.js';
 import { loginUser, logoutUser } from '../useful-functions.js';
 
-const deleteButton = document.querySelector('#deleteButton');
+const userInformation = document.querySelector('#userInformation');
 
-(() => {
-  renderUserInfo();
+init();
+
+function init() {
   loginUser();
   logoutUser();
+  renderUserInfo();
   addAllEvents();
-})();
+}
 
 function addAllEvents() {
+  const deleteButton = document.querySelector('#deleteButton');
   deleteButton.addEventListener('click', deleteUserInfo);
 }
 
 async function renderUserInfo() {
-  const user = await Api.get('/api/user/info');
-  addUserInfo(user);
+  try {
+    const user = await Api.get('/api/user/info');
+    addUserInfo(user);
+  } catch (error) {
+    alert('회원 정보를 불러오는 데 실패했습니다. 다시 한번 시도해 주세요.');
+    window.location.reload();
+  }
 }
 
 function addUserInfo(user) {
-  const userName = document.querySelector('#userName');
-  const userEmail = document.querySelector('#userEmail');
-  const userPhoneNumber = document.querySelector('#userPhoneNumber');
-  const userAddress = document.querySelector('#userAddress');
+  const userName = userInformation.querySelector('#userName');
+  const userEmail = userInformation.querySelector('#userEmail');
+  const userPhoneNumber = userInformation.querySelector('#userPhoneNumber');
+  const userAddress = userInformation.querySelector('#userAddress');
 
   userName.innerText = user.fullName;
   userEmail.innerText = user.email;
