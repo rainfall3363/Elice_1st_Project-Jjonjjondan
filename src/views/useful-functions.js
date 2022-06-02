@@ -178,7 +178,6 @@ export const editQuantityLocalStorageListById = (key, id, value) => {
 
 //productDetail에서 장바구니 추가시 localStorage 기능
 export const inputCart = (productDetailData) => {
-  console.log(productDetailData);
   productDetailData.quantity = 1;
   const cartList = getLocalStorageList('cart');
   //cart localStorage에 productId가 없다면 0 있다면 해당 productId가 있는 element 개수를 반환
@@ -266,26 +265,28 @@ export const updateOrderSummary = () => {
   const isOrder = orderLocalStorage !== null;
   let orderObject = {};
 
-  if (isOrder) {
-    const cartList = getLocalStorageList('cart');
-    const checkList = getLocalStorageList('checkList');
-
-    const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
-    orderObject = {
-      ids: checkedCartList.map((e) => e.id),
-      productsCount: checkedCartList.length,
-      productsTotal: checkedCartList.reduce(
-        (acc, e) => acc + parseInt(e.price) * parseInt(e.quantity),
-        0
-      ),
-    };
-  } else {
+  //만약 order localStorage가 없다면 초기화
+  if (!isOrder) {
     orderObject = {
       ids: [],
       productsCount: 0,
       productsTotal: 0,
     };
   }
+
+  const cartList = getLocalStorageList('cart');
+  const checkList = getLocalStorageList('checkList');
+
+  const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
+  orderObject = {
+    ids: checkedCartList.map((e) => e.id),
+    productsCount: checkedCartList.length,
+    productsTotal: checkedCartList.reduce(
+      (acc, e) => acc + parseInt(e.price) * parseInt(e.quantity),
+      0
+    ),
+  };
+
   window.localStorage.setItem('order', JSON.stringify(orderObject));
   renderOrderSummary();
 };
