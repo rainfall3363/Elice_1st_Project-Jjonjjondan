@@ -6,6 +6,9 @@ import {
   getLocalStorageKeyObj,
 } from '/useful-functions.js';
 
+const FAIL_MESSAGE =
+  '주문에 실패했습니다. 입력 사항을 다시 한 번 확인하고 시도해주세요.';
+
 init();
 
 async function init() {
@@ -39,10 +42,10 @@ function renderDeliveryInfo(userInfo) {
   const address2 = document.getElementById('address2');
 
   receiverName.value = userInfo.fullName;
-  if ('phoneNumber' in userInfo) {
+  if (userInfo.hasOwnProperty('phoneNumber')) {
     receiverPhoneNumber.value = userInfo.phoneNumber;
   }
-  if ('address' in userInfo) {
+  if (userInfo.hasOwnProperty('address')) {
     postalCode.value = userInfo.address.postalCode;
     address1.value = userInfo.address.address1;
     address2.value = userInfo.address.address2;
@@ -93,7 +96,53 @@ function searchAddressEvent() {
   searchAddressButton.addEventListener('click', searchAddress);
 }
 
-function postOrderInfo() {}
+async function postOrderInfo() {
+  // const newOrder = {
+  //   orderer: {
+  //     userId: '628c691d587f8e4eda07ef61ㅁㅁㅁ',
+  //     fullName: '테스트',
+  //     phoneNumber: '01012345678',
+  //   },
+  //   recipient: {
+  //     fullName: '김재민',
+  //     phoneNumber: '01012345567',
+  //     address: {
+  //       postalCode: '12234',
+  //       address1: '대전시 대덕구 중리동 232-23',
+  //       address2: 'ㅇㅇ빌 ㅇㅇㅇ호',
+  //     },
+  //   },
+  //   order: {
+  //     status: '상품 배송중',
+  //     orderList: [],
+  //   },
+  // };
+
+  const newOrder = {
+    ordererUserId: '628c691d587f8e4eda07ef61',
+    ordererFullName: '테스트',
+    ordererPhoneNumber: '01012345678',
+    recipientFullName: '김재민',
+    recipientPhoneNumber: '01012345567',
+    recipientAddress: {
+      postalCode: '12234',
+      address1: '대전광역시 대덕구 중리동',
+      address2: '무슨빌 3층 303호',
+    },
+    orderList: [],
+    orderRequest: '문앞요',
+    orderStatus: '상품 배송중',
+  };
+
+  try {
+    const result = await Api.post('/api/order/register', newOrder);
+    if (result) {
+      window.location.href = '/completeOrder';
+    }
+  } catch {
+    alert(FAIL_MESSAGE);
+  }
+}
 
 function deleteBuyNowStorage() {
   window.localStorage.setItem('localStorageKeyObj', JSON.stringify({}));
