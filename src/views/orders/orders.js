@@ -30,11 +30,12 @@ function createOrderTable(order) {
   const productNameString = order.order.orderList.reduce((str, element) => {
     return (str += `<p>${element.productName} ${element.quantity}개</p>`);
   }, ``);
+  const orderDate = order.createdAt.slice(0, 10).replaceAll('-', '');
 
   return `
   <tr>
     <th>${order._id}
-    <td>${order.createdAt}</td>
+    <td>${orderDate}</td>
     <td>
       ${productNameString}
     </td>
