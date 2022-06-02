@@ -115,6 +115,18 @@ export const changetoAdmin = async () => {
   }
 };
 
+export const setLocalStorageKeyObj = (localStorageKeyObj) => {
+  window.localStorage.setItem(
+    'localStorageKeyObj',
+    JSON.stringify(localStorageKeyObj)
+  );
+  return window.localStorage.getItem('localStorageKeyObj');
+};
+
+export const getLocalStorageKeyObj = () => {
+  return window.localStorage.getItem('localStorageKeyObj');
+};
+
 //LocalStorage에서 key에 해당하는 객체 반환. key가 없을 경우 list로 초기화 후 반환
 export const getLocalStorageList = (key) => {
   const valueList = window.localStorage.getItem(key);
