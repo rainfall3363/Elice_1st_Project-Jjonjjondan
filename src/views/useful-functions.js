@@ -120,11 +120,11 @@ export const setLocalStorageKeyObj = (localStorageKeyObj) => {
     'localStorageKeyObj',
     JSON.stringify(localStorageKeyObj)
   );
-  return window.localStorage.getItem('localStorageKeyObj');
+  return getLocalStorageKeyObj();
 };
 
 export const getLocalStorageKeyObj = () => {
-  return window.localStorage.getItem('localStorageKeyObj');
+  return JSON.parse(window.localStorage.getItem('localStorageKeyObj'));
 };
 
 //LocalStorage에서 key에 해당하는 객체 반환. key가 없을 경우 list로 초기화 후 반환
@@ -265,14 +265,15 @@ function makeOrderSummary(orderSummary) {
     `;
 }
 
-function renderOrderSummary(localStorageKeyOrder) {
+function renderOrderSummary(localStorageKeyObj) {
   const orderSummary = document.getElementById('orderSummary');
-  const getOrderLocalStorageObj = getLocalStorageList(localStorageKeyOrder);
-  orderSummary.innerHTML = makeOrderSummary(getOrderLocalStorageObj);
+  const orderLocalStorageObj = getLocalStorageList(localStorageKeyObj.order);
+  orderSummary.innerHTML = makeOrderSummary(orderLocalStorageObj);
 }
 
 // 결제정보 렌더링
 export const updateOrderSummary = (localStorageKeyObj) => {
+  console.log(localStorageKeyObj);
   const orderLocalStorage = window.localStorage.getItem(
     localStorageKeyObj.order
   );
@@ -292,6 +293,7 @@ export const updateOrderSummary = (localStorageKeyObj) => {
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
 
   const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
+  console.log(checkedCartList);
   orderObject = {
     ids: checkedCartList.map((e) => e.id),
     productsCount: checkedCartList.length,
@@ -305,5 +307,5 @@ export const updateOrderSummary = (localStorageKeyObj) => {
     localStorageKeyObj.order,
     JSON.stringify(orderObject)
   );
-  renderOrderSummary(localStorageKeyObj.order);
+  renderOrderSummary(localStorageKeyObj);
 };

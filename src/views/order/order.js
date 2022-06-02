@@ -3,6 +3,7 @@ import {
   updateOrderSummary,
   loginUser,
   logoutUser,
+  getLocalStorageKeyObj,
 } from '/useful-functions.js';
 
 init();
@@ -15,7 +16,7 @@ async function init() {
   const localStorageKeyObj = getLocalStorageKeyObj();
   updateOrderSummary(localStorageKeyObj);
   postOrderInfo();
-  deleteBuyNowStorage();
+  // deleteBuyNowStorage();
 }
 
 async function renderUserInfo() {
@@ -49,6 +50,8 @@ function renderDeliveryInfo(userInfo) {
 
 function postOrderInfo() {}
 
-function deleteBuyNowStorage() {}
+function deleteBuyNowStorage() {
+  window.localStorage.setItem('localStorageKeyObj', JSON.stringify({}));
+}
 
 // console.log(userInfo);

@@ -9,6 +9,7 @@ import {
   editQuantityLocalStorageListById,
   addCommas,
   updateOrderSummary,
+  setLocalStorageKeyObj,
 } from '/useful-functions.js';
 
 const localStorageKeyObj = {};
