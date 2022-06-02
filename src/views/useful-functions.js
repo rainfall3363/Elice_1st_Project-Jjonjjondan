@@ -240,8 +240,8 @@ function makeOrderSummary(orderSummary) {
         </div>
         <div class="total">
           <p class="total-label">총 결제금액</p>
-          <p class="total-price" id="orderTotal">${addCommas(
-            parseInt(orderSummary.productsTotal) + 3000
+          <p class="total-price" id="orderTotal">${calculateTotalPrice(
+            orderSummary.productsTotal
           )}</p>
         </div>
         <div class="purchase">
@@ -253,15 +253,17 @@ function makeOrderSummary(orderSummary) {
     `;
 }
 
-function renderOrderSummary() {
+function renderOrderSummary(localStorageKeyOrder) {
   const orderSummary = document.getElementById('orderSummary');
-  const getOrderLocalStorageObj = getLocalStorageList('order');
+  const getOrderLocalStorageObj = getLocalStorageList(localStorageKeyOrder);
   orderSummary.innerHTML = makeOrderSummary(getOrderLocalStorageObj);
 }
 
 // 결제정보 렌더링
-export const updateOrderSummary = () => {
-  const orderLocalStorage = window.localStorage.getItem('order');
+export const updateOrderSummary = (localStorageKeyObj) => {
+  const orderLocalStorage = window.localStorage.getItem(
+    localStorageKeyObj.order
+  );
   const isOrder = orderLocalStorage !== null;
   let orderObject = {};
 
@@ -274,8 +276,8 @@ export const updateOrderSummary = () => {
     };
   }
 
-  const cartList = getLocalStorageList('cart');
-  const checkList = getLocalStorageList('checkList');
+  const cartList = getLocalStorageList(localStorageKeyObj.cart);
+  const checkList = getLocalStorageList(localStorageKeyObj.checkList);
 
   const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
   orderObject = {
@@ -287,6 +289,9 @@ export const updateOrderSummary = () => {
     ),
   };
 
-  window.localStorage.setItem('order', JSON.stringify(orderObject));
-  renderOrderSummary();
+  window.localStorage.setItem(
+    localStorageKeyObj.order,
+    JSON.stringify(orderObject)
+  );
+  renderOrderSummary(localStorageKeyObj.order);
 };

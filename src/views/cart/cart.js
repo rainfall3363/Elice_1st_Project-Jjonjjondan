@@ -11,13 +11,18 @@ import {
   updateOrderSummary,
 } from '/useful-functions.js';
 
+const localStorageKeyObj = {};
+localStorageKeyObj.order = 'order';
+localStorageKeyObj.cart = 'cart';
+localStorageKeyObj.checkList = 'checkList';
+
 renderCartMain();
 
 function renderCartMain() {
   loginUser();
   logoutUser();
   renderCartList();
-  updateOrderSummary();
+  updateOrderSummary(localStorageKeyObj);
   allSelectCheckboxEvent();
   selectCheckBoxEvent();
   quantityPlusButtonEvent();
@@ -121,14 +126,14 @@ function allSelectCheckboxEvent() {
         let storageId = element.id.split('-')[1];
         getLocalStorageList('checkList');
         addLocalStorageList('checkList', storageId);
-        updateOrderSummary();
+        updateOrderSummary(localStorageKeyObj);
         element.checked = true;
       }
     } else {
       for (const element of cartCheckboxElements) {
         let storageId = element.id.split('-')[1];
         deleteLocalStorageList('checkList', storageId);
-        updateOrderSummary();
+        updateOrderSummary(localStorageKeyObj);
         element.checked = false;
       }
     }
@@ -144,11 +149,11 @@ function selectCheckBoxEvent() {
         // checkList가 없다면 []로 초기화
         getLocalStorageList('checkList');
         addLocalStorageList('checkList', storageId);
-        updateOrderSummary();
+        updateOrderSummary(localStorageKeyObj);
         element.checked = true;
       } else {
         deleteLocalStorageList('checkList', storageId);
-        updateOrderSummary();
+        updateOrderSummary(localStorageKeyObj);
         element.checked = false;
       }
     })
@@ -162,7 +167,7 @@ function deletePartEvent() {
     checkList.forEach((storageId) => {
       deleteLocalStorageListById('cart', storageId);
       deleteLocalStorageList('checkList', storageId);
-      updateOrderSummary();
+      updateOrderSummary(localStorageKeyObj);
       renderCartMain();
     });
   });
@@ -175,7 +180,7 @@ function deleteButtonsEvent() {
       let storageId = this.id.split('-')[1];
       deleteLocalStorageListById('cart', storageId);
       deleteLocalStorageList('checkList', storageId);
-      updateOrderSummary();
+      updateOrderSummary(localStorageKeyObj);
       renderCartMain();
     })
   );
