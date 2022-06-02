@@ -273,7 +273,6 @@ function renderOrderSummary(localStorageKeyObj) {
 
 // 결제정보 렌더링
 export const updateOrderSummary = (localStorageKeyObj) => {
-  console.log(localStorageKeyObj);
   const orderLocalStorage = window.localStorage.getItem(
     localStorageKeyObj.order
   );
@@ -293,7 +292,6 @@ export const updateOrderSummary = (localStorageKeyObj) => {
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
 
   const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
-  console.log(checkedCartList);
   orderObject = {
     ids: checkedCartList.map((e) => e.id),
     productsCount: checkedCartList.length,
