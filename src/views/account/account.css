@@ -38,6 +38,9 @@ i {
 .option a {
   width: 200px;
   height: 5rem;
+  background-color: var(--orange);
+  color: var(--white);
+  border-radius: 20px;
 }
 
 .option i {
