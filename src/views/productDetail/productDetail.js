@@ -6,7 +6,14 @@ import {
   addCommas,
   changetoAdmin,
   inputCart,
+  addLocalStorageList,
+  setLocalStorageKeyObj,
 } from '/useful-functions.js';
+
+const localStorageKeyObj = {};
+localStorageKeyObj.order = 'buyNowOrder';
+localStorageKeyObj.cart = 'buyNowCart';
+localStorageKeyObj.checkList = 'buyNowCheckList';
 
 init();
 
@@ -27,6 +34,7 @@ async function productData() {
     const productId = params.get('productId');
     const data = await Api.get(`/api/product/info/${productId}`);
     data.id = productId;
+    data.quantity = 1;
     return data;
   } catch (err) {
     console.error(err.stack);
@@ -69,7 +77,7 @@ function buttonEvents(data) {
   const buyNowbutton = document.getElementById('buyNow');
 
   inputCartbutton.addEventListener('click', inputcartbuttondata(data));
-  buyNowbutton.addEventListener('click', buyNow);
+  buyNowbutton.addEventListener('click', buyNow(data));
 }
 
 //장바구니 버튼 클릭 시 로컬스토리지에 해당 상품 정보 저장
@@ -80,6 +88,17 @@ function inputcartbuttondata(data) {
 }
 
 //바로 구매 클릭 시 이동
-function buyNow() {
-  window.location.href = '/order';
+function buyNow(data) {
+  return function () {
+    //만약 해당 key가 없다면 add함수 속 get함수로 초기화
+    addLocalStorageList(localStorageKeyObj.cart, data);
+    addLocalStorageList(localStorageKeyObj.checkList, data.id);
+    // updateOrderSummary('buynowOrder','')
+    setLocalStorageKeyObj(localStorageKeyObj);
+
+    window.location.href = '/order';
+  };
+  // //order.js에서 결제 주문 버튼 누르고 완료시
+  // deleteLocalStorageList('checkList', data.id);
+  // deleteLocalStorageListById('cart', data.id);
 }

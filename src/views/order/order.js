@@ -3,6 +3,7 @@ import {
   updateOrderSummary,
   loginUser,
   logoutUser,
+  getLocalStorageKeyObj,
 } from '/useful-functions.js';
 
 init();
@@ -10,14 +11,17 @@ init();
 async function init() {
   loginUser();
   logoutUser();
-  updateOrderSummary();
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
+  const localStorageKeyObj = getLocalStorageKeyObj();
+  updateOrderSummary(localStorageKeyObj);
+  postOrderInfo();
+  // deleteBuyNowStorage();
 }
 
 async function renderUserInfo() {
   try {
-    const result = await Api.get('/api/userInfo');
+    const result = await Api.get('/api/user/info');
     return result;
   } catch {
     alert('로그인 하세요.');
@@ -34,10 +38,20 @@ function renderDeliveryInfo(userInfo) {
   const address2 = document.getElementById('address2');
 
   receiverName.value = userInfo.fullName;
-  receiverPhoneNumber.value = userInfo.phoneNumber;
-  postalCode.value = userInfo.address.postalCode;
-  address1.value = userInfo.address.address1;
-  address2.value = userInfo.address.address2;
+  if ('phoneNumber' in userInfo) {
+    receiverPhoneNumber.value = userInfo.phoneNumber;
+  }
+  if ('address' in userInfo) {
+    postalCode.value = userInfo.address.postalCode;
+    address1.value = userInfo.address.address1;
+    address2.value = userInfo.address.address2;
+  }
+}
+
+function postOrderInfo() {}
+
+function deleteBuyNowStorage() {
+  window.localStorage.setItem('localStorageKeyObj', JSON.stringify({}));
 }
 
 // console.log(userInfo);
