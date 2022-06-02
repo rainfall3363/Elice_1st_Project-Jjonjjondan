@@ -1,4 +1,4 @@
-import { loginUser, logoutUser } from '../../useful-functions.js';
+import { loginUser, logoutUser, checkAdmin } from '../../useful-functions.js';
 import * as Api from '../../api.js';
 
 const categoryModal = document.querySelector('#categoryModal');
@@ -7,6 +7,7 @@ const deleteModal = document.querySelector('#deleteModal');
 init();
 
 async function init() {
+  await checkAdmin();
   loginUser();
   logoutUser();
   await render();
@@ -15,11 +16,17 @@ async function init() {
 
 async function render() {
   const categoryContainer = document.querySelector('#categoryContainer');
-  const categoryList = await Api.get('/api/category/list');
-  categoryList.forEach((category) => {
-    const html = createCategoryElement(category);
-    categoryContainer.insertAdjacentHTML('beforeend', html);
-  });
+  try {
+    const categoryList = await Api.get('/api/category/list');
+
+    categoryList.forEach((category) => {
+      const html = createCategoryElement(category);
+      categoryContainer.insertAdjacentHTML('beforeend', html);
+    });
+  } catch {
+    alert('카테고리 목록을 불러오는 데 실패했습니다. 다시 시도해 주세요.');
+    window.location.href = '/admin';
+  }
 }
 
 function createCategoryElement(category) {
@@ -76,10 +83,15 @@ async function openCategoryModal(event) {
 
   const categoryId = event.target.dataset['id'];
   if (categoryId) {
-    const categoryData = await Api.get('/api/category/info', categoryId);
-    categoryName.value = categoryData.categoryName;
-    categoryDescription.value = categoryData.description;
-    saveButton.dataset['id'] = categoryId;
+    try {
+      const categoryData = await Api.get('/api/category/info', categoryId);
+      categoryName.value = categoryData.categoryName;
+      categoryDescription.value = categoryData.description;
+      saveButton.dataset['id'] = categoryId;
+    } catch {
+      alert('카테고리 정보를 받아오는 데 실패했습니다.');
+      categoryModal.classList.remove('is-active');
+    }
   } else {
     categoryName.value = '';
     categoryDescription.value = '';
@@ -116,7 +128,7 @@ async function addNewCategory(event) {
       alert('새로운 카테고리 생성에 성공하였습니다.');
       window.location.reload();
     } catch (error) {
-      alert('새로운 카테고리 생성에 실패하였습니다.' + error);
+      alert(`새로운 카테고리 생성에 실패하였습니다: ${error}`);
     }
   } else {
     try {
@@ -124,7 +136,7 @@ async function addNewCategory(event) {
       alert('카테고리 수정에 성공하였습니다.');
       window.location.reload();
     } catch (error) {
-      alert('카테고리 수정에 실패하였습니다.' + error);
+      alert(`카테고리 수정에 실패하였습니다. ${error}`);
     }
   }
 }
@@ -133,8 +145,8 @@ function openDeleteModal(event) {
   const deleteButton = deleteModal.querySelector('#deleteButton');
   const deleteCancelButton = deleteModal.querySelector('#deleteCancelButton');
   const modalBackground = deleteModal.querySelector('.modal-background');
-  deleteButton.setAttribute('data-id', event.target.dataset['id']);
 
+  deleteButton.setAttribute('data-id', event.target.dataset['id']);
   deleteButton.addEventListener('click', deleteCategory);
   deleteCancelButton.addEventListener('click', closeDeleteModal);
   modalBackground.addEventListener('click', closeDeleteModal);

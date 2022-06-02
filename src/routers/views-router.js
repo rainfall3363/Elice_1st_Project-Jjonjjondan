@@ -12,7 +12,7 @@ viewsRouter.use('/login', serveStatic('login'));
 viewsRouter.use('/cart', serveStatic('cart'));
 viewsRouter.use('/detail', serveStatic('detail'));
 viewsRouter.use('/account', serveStatic('account'));
-viewsRouter.use('/account/updateInfo', serveStatic('updateInfo'));
+viewsRouter.use('/account/update', serveStatic('updateInfo'));
 viewsRouter.use('/account/orders', serveStatic('orders'));
 viewsRouter.use('/admin', serveStatic('admin'));
 viewsRouter.use('/admin/orders', serveStatic('adminOrders'));

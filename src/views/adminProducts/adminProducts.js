@@ -1,4 +1,4 @@
-import { loginUser, logoutUser } from '../../useful-functions.js';
+import { loginUser, logoutUser, checkAdmin } from '../../useful-functions.js';
 import * as Api from '../../api.js';
 
 const deleteModal = document.querySelector('#deleteModal');
@@ -6,6 +6,7 @@ const deleteModal = document.querySelector('#deleteModal');
 init();
 
 async function init() {
+  await checkAdmin();
   loginUser();
   logoutUser();
   await renderProducts();
@@ -13,12 +14,18 @@ async function init() {
 }
 
 async function renderProducts() {
-  const products = await Api.get('/api/product/list');
   const tableBody = document.querySelector('#tableBody');
 
-  for (const product of products) {
-    const html = createProductTable(product);
-    tableBody.insertAdjacentHTML('beforeend', html);
+  try {
+    const products = await Api.get('/api/product/list');
+
+    products.forEach((product) => {
+      const html = createProductTable(product);
+      tableBody.insertAdjacentHTML('beforeend', html);
+    });
+  } catch (error) {
+    alert('상품 목록을 가져오는 데 실패했습니다. 다시 시도해 주세요.');
+    window.location.href = '/admin';
   }
 }
 
@@ -33,6 +40,7 @@ function createProductTable(product) {
         ${maker}
       </td>
       <td>${product.categoryName}</td>
+      <td>${product.inventory}</td>
       <td>
         <a href="/admin/products/update/${product._id}">
           <button class="button submit-button is-link is-outlined update-button" data-id="${product._id}">수정</button>
@@ -47,7 +55,7 @@ function createProductTable(product) {
 
 function addAllEvents() {
   const deleteButtonList = document.querySelectorAll('.delete-button');
-  const modalBackground = document.querySelector('.modal-background');
+  const modalBackground = deleteModal.querySelector('.modal-background');
 
   deleteButtonList.forEach((node) => {
     node.addEventListener('click', openDeleteModal);
@@ -56,10 +64,8 @@ function addAllEvents() {
 }
 
 function openDeleteModal(event) {
-  const modalYesButton = document.querySelector('#modalYesButton');
-  const modalCancelButton = document.querySelector('#modalCancelButton');
-
-  console.dir(event.target);
+  const modalYesButton = deleteModal.querySelector('#modalYesButton');
+  const modalCancelButton = deleteModal.querySelector('#modalCancelButton');
 
   modalYesButton.addEventListener(
     'click',

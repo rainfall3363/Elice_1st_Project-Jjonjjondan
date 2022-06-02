@@ -21,7 +21,8 @@ getUserInfo();
 addAllevents();
 
 function addAllevents() {
-  passwordCheckInput.addEventListener('input', checkPassword);
+  passwordInput.addEventListener('input', checkPasswordInput);
+  passwordCheckInput.addEventListener('input', checkPasswordCorrect);
   searchAddressButton.addEventListener('click', searchAddress);
   submitButton1.addEventListener('click', checkCurrentPassword);
   cancelButton1.addEventListener('click', handleCancel);
@@ -45,19 +46,37 @@ function renderUserInfo(user) {
   }
 }
 
-// 비밀번호 변경 시 변경 비밀번호와 비밀번호 확인이 일치하는 지 확인하는 함수
-function checkPassword() {
+function checkPasswordInput() {
   const passwordCorrect = document.querySelector('#passwordCorrect');
   const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
 
-  if (!passwordCheckInput.value) {
+  if (passwordInput.value === '') {
+    passwordCorrect.classList.add('is-hidden');
+    passwordNotCorrect.classList.add('is-hidden');
+    passwordInput.classList.remove('is-danger');
+    passwordInput.classList.remove('is-success');
+    passwordCheckInput.classList.remove('is-danger');
+    passwordCheckInput.classList.remove('is-success');
+    passwordCheckInput.value = '';
+    submitButton1.disabled = false;
+  } else {
+    submitButton1.disabled = true;
+  }
+}
+
+// 비밀번호 변경 시 변경 비밀번호와 비밀번호 확인이 일치하는 지 확인하는 함수
+function checkPasswordCorrect() {
+  const passwordCorrect = document.querySelector('#passwordCorrect');
+  const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
+
+  if (passwordCheckInput.value === '' && passwordInput.value === '') {
     passwordInput.classList.remove('is-danger');
     passwordInput.classList.remove('is-success');
     passwordCheckInput.classList.remove('is-danger');
     passwordCheckInput.classList.remove('is-success');
     passwordCorrect.classList.add('is-hidden');
     passwordNotCorrect.classList.add('is-hidden');
-    submitButton1.disabled = true;
+    submitButton1.disabled = false;
   } else {
     if (passwordInput.value === passwordCheckInput.value) {
       passwordCorrect.classList.remove('is-hidden');
@@ -103,7 +122,6 @@ function searchAddress() {
         if (extraAddr !== '') {
           extraAddr = ' (' + extraAddr + ')';
         }
-      } else {
       }
 
       postalCodeInput.value = data.zonecode;
@@ -138,10 +156,6 @@ async function updateUserInfo() {
   const address2 = address2Input.value;
   const currentPassword = currentPasswordInput.value;
 
-  if (!userName || !phoneNumber || !postalCode || !address2) {
-    return alert('배송지 정보를 모두 입력해 주세요.');
-  }
-
   const address = {
     postalCode,
     address1,
@@ -169,5 +183,10 @@ async function updateUserInfo() {
 }
 
 function handleCancel() {
-  window.location.href = '/account';
+  const confirmFlag = confirm(
+    '작성하신 정보가 전부 삭제됩니다. 나가시려면 확인을 눌러주세요.'
+  );
+  if (confirmFlag) {
+    window.location.href = '/account';
+  }
 }

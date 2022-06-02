@@ -2,12 +2,14 @@ import {
   loginUser,
   logoutUser,
   calculateTotalPrice,
+  checkAdmin,
 } from '../../useful-functions.js';
 import * as Api from '../../api.js';
 
 init();
 
 async function init() {
+  await checkAdmin();
   loginUser();
   logoutUser();
   await renderOrders();
@@ -16,11 +18,16 @@ async function init() {
 
 async function renderOrders() {
   const tableBody = document.querySelector('#tableBody');
-  const orders = await Api.get('/api/order/list');
+  try {
+    const orders = await Api.get('/api/order/list');
 
-  for (const order of orders) {
-    const html = createOrderTable(order);
-    tableBody.insertAdjacentHTML('beforeend', html);
+    orders.forEach((order) => {
+      const html = createOrderTable(order);
+      tableBody.insertAdjacentHTML('beforeend', html);
+    });
+  } catch {
+    alert('주문 정보를 불러오는 데 실패했습니다. 다시 시도해 주세요.');
+    window.location.href = '/admin';
   }
 }
 
