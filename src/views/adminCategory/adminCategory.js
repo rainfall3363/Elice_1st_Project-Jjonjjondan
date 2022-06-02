@@ -1,4 +1,4 @@
-import { loginUser, logoutUser } from '../../useful-functions.js';
+import { loginUser, logoutUser, checkAdmin } from '../../useful-functions.js';
 import * as Api from '../../api.js';
 
 const categoryModal = document.querySelector('#categoryModal');
@@ -7,6 +7,7 @@ const deleteModal = document.querySelector('#deleteModal');
 init();
 
 async function init() {
+  await checkAdmin();
   loginUser();
   logoutUser();
   await render();
