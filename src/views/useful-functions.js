@@ -290,3 +290,11 @@ export const updateOrderSummary = () => {
   window.localStorage.setItem('order', JSON.stringify(orderObject));
   renderOrderSummary();
 };
+
+export async function checkAdmin() {
+  const userInfo = await Api.get('/api/user/info');
+  if (userInfo.role !== 'admin') {
+    alert('관리자 전용 페이지 입니다.');
+    window.location.href = '/';
+  }
+}
