@@ -70,9 +70,9 @@ export const setRegister = async () => {
     <li>
     <a href="/account" aria-current="page">
       <span class="icon">
-      <i class="fas fa-user"></i>
+      <i class="fas fa-user is-font-orange"></i>
       </span>
-      <span>계정관리</span>
+      <span class="is-font-orange">계정관리</span>
     </a>
   </li>
   `
@@ -100,9 +100,9 @@ export const changetoAdmin = async () => {
     <li>
     <a href="/admin" aria-current="page">
       <span class="icon">
-        <i class="fas fa-cog"></i>
+        <i class="fas fa-cog is-font-orange"></i>
       </span>
-      <span>페이지 관리</span>
+      <span class="is-font-orange">페이지 관리</span>
     </a>
   </li>
   `
@@ -113,6 +113,18 @@ export const changetoAdmin = async () => {
   } catch (err) {
     console.error(err.stack);
   }
+};
+
+export const setLocalStorageKeyObj = (localStorageKeyObj) => {
+  window.localStorage.setItem(
+    'localStorageKeyObj',
+    JSON.stringify(localStorageKeyObj)
+  );
+  return getLocalStorageKeyObj();
+};
+
+export const getLocalStorageKeyObj = () => {
+  return JSON.parse(window.localStorage.getItem('localStorageKeyObj'));
 };
 
 //LocalStorage에서 key에 해당하는 객체 반환. key가 없을 경우 list로 초기화 후 반환
@@ -240,8 +252,8 @@ function makeOrderSummary(orderSummary) {
         </div>
         <div class="total">
           <p class="total-label">총 결제금액</p>
-          <p class="total-price" id="orderTotal">${addCommas(
-            parseInt(orderSummary.productsTotal) + 3000
+          <p class="total-price" id="orderTotal">${calculateTotalPrice(
+            orderSummary.productsTotal
           )}</p>
         </div>
         <div class="purchase">
@@ -253,15 +265,18 @@ function makeOrderSummary(orderSummary) {
     `;
 }
 
-function renderOrderSummary() {
+function renderOrderSummary(localStorageKeyObj) {
   const orderSummary = document.getElementById('orderSummary');
-  const getOrderLocalStorageObj = getLocalStorageList('order');
-  orderSummary.innerHTML = makeOrderSummary(getOrderLocalStorageObj);
+  const orderLocalStorageObj = getLocalStorageList(localStorageKeyObj.order);
+  orderSummary.innerHTML = makeOrderSummary(orderLocalStorageObj);
 }
 
 // 결제정보 렌더링
-export const updateOrderSummary = () => {
-  const orderLocalStorage = window.localStorage.getItem('order');
+export const updateOrderSummary = (localStorageKeyObj) => {
+  console.log(localStorageKeyObj);
+  const orderLocalStorage = window.localStorage.getItem(
+    localStorageKeyObj.order
+  );
   const isOrder = orderLocalStorage !== null;
   let orderObject = {};
 
@@ -274,10 +289,11 @@ export const updateOrderSummary = () => {
     };
   }
 
-  const cartList = getLocalStorageList('cart');
-  const checkList = getLocalStorageList('checkList');
+  const cartList = getLocalStorageList(localStorageKeyObj.cart);
+  const checkList = getLocalStorageList(localStorageKeyObj.checkList);
 
   const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
+  console.log(checkedCartList);
   orderObject = {
     ids: checkedCartList.map((e) => e.id),
     productsCount: checkedCartList.length,
@@ -287,8 +303,11 @@ export const updateOrderSummary = () => {
     ),
   };
 
-  window.localStorage.setItem('order', JSON.stringify(orderObject));
-  renderOrderSummary();
+  window.localStorage.setItem(
+    localStorageKeyObj.order,
+    JSON.stringify(orderObject)
+  );
+  renderOrderSummary(localStorageKeyObj);
 };
 
 export async function checkAdmin() {
