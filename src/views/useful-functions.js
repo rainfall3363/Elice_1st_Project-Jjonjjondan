@@ -292,14 +292,23 @@ export const updateOrderSummary = (localStorageKeyObj) => {
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
 
   const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
-  orderObject = {
-    ids: checkedCartList.map((e) => e.id),
-    productsCount: checkedCartList.length,
-    productsTotal: checkedCartList.reduce(
-      (acc, e) => acc + parseInt(e.price) * parseInt(e.quantity),
-      0
-    ),
-  };
+
+  if (localStorageKeyObj.cart === 'buyNowCart') {
+    orderObject = {
+      ids: checkedCartList[0].id,
+      productsCount: 1,
+      productsTotal: parseInt(checkedCartList[0].price),
+    };
+  } else {
+    orderObject = {
+      ids: checkedCartList.map((e) => e.id),
+      productsCount: checkedCartList.length,
+      productsTotal: checkedCartList.reduce(
+        (acc, e) => acc + parseInt(e.price) * parseInt(e.quantity),
+        0
+      ),
+    };
+  }
 
   window.localStorage.setItem(
     localStorageKeyObj.order,
