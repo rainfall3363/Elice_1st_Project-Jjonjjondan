@@ -15,16 +15,14 @@
   --lightorange: #ffbc97;
 }
 
-*:not(i) {
+*:not(i, input) {
   font-family: 'EliceDigitalBaeum', sans-serif !important;
 }
 
 textarea:focus,
 select:focus,
 input:focus {
-  /* border: none !important; */
   border: 1px solid var(--orange) !important;
-  /* border-radius: 0 !important; */
   box-shadow: none !important;
 }
 
