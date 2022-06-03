@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   setRegister,
+  changetoAdmin,
   getLocalStorageKeyObj,
   getLocalStorageList,
 } from '/useful-functions.js';
@@ -29,6 +30,7 @@ async function init() {
   loginUser();
   logoutUser();
   setRegister();
+  changetoAdmin();
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
   searchAddressEvent();
