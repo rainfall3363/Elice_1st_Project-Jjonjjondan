@@ -35,7 +35,9 @@ function addUserInfo(user) {
 
   userName.innerText = user.fullName;
   userEmail.innerText = user.email;
-  userPhoneNumber.innerText = user.phoneNumber;
+  userPhoneNumber.innerText = user.phoneNumber
+    ? user.phoneNumber
+    : '전화번호가 없습니다.';
   userAddress.innerText = user.address
     ? `${user.address.address1} ${user.address.address2}`
     : '주소 정보가 없습니다.';

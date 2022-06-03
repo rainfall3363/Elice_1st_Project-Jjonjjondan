@@ -1,4 +1,9 @@
-import { loginUser, logoutUser, checkAdmin } from '../../useful-functions.js';
+import {
+  loginUser,
+  logoutUser,
+  checkAdmin,
+  addCommas,
+} from '../../useful-functions.js';
 import * as Api from '../../api.js';
 
 const deleteModal = document.querySelector('#deleteModal');
@@ -35,7 +40,7 @@ function createProductTable(product) {
   return `
     <tr>
       <th>${product.title}
-      <td>${product.price}원</td>
+      <td>${addCommas(product.price)}원</td>
       <td>
         ${maker}
       </td>
@@ -43,11 +48,15 @@ function createProductTable(product) {
       <td>${product.inventory}</td>
       <td>
         <a href="/admin/products/update/${product._id}">
-          <button class="button submit-button is-link is-outlined update-button" data-id="${product._id}">수정</button>
+          <button class="button submit-button is-link is-outlined update-button" data-id="${
+            product._id
+          }">수정</button>
         </a>
       </td>
       <td>
-        <button class="button delete-button is-danger is-outlined cancel-button" data-id="${product._id}">삭제</button>
+        <button class="button delete-button is-danger is-outlined cancel-button" data-id="${
+          product._id
+        }">삭제</button>
       </td>
     </tr>
   `;

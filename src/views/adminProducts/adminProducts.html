@@ -1,44 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>쇼핑-데모</title>
-    <!-- 아이콘 -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/elice-rabbit-favicon.png"
-    />
-    <!-- bulma css 관련 -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
-    />
+    <script src="/importHead.js"></script>
     <!-- 폰트 어썸: 아이콘 -->
     <script
       defer
       src="https://kit.fontawesome.com/7630448495.js"
       crossorigin="anonymous"
     ></script>
-    <!-- 구글 OAuth -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <!-- 카카오 OAuth -->
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <!-- 커스텀 css, js -->
     <link rel="stylesheet" href="adminProducts.css" />
     <script src="adminProducts.js" type="module" defer></script>
   </head>
   <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav
+      class="navbar is-background-apricot"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div class="container mt-3">
         <div class="navbar-brand">
-          <a class="navbar-item" href="/">
-            <img src="/elice-rabbit.png" width="30" height="30" />
-            <span class="has-text-link">쇼핑-데모</span>
+          <a class="navbar-item is-flex" href="/">
+            <img
+              src="/icon.png"
+              class="image is-48x48"
+              style="max-height: 100%"
+            />
+            <h1 class="title ml-2" style="font-size: 30px">
+              쫀쫀단
+              <p class="pt-2" style="font-size: 1rem">
+                <span class="is-font-orange">쫀득쫀득</span>
+                단백질
+              </p>
+            </h1>
           </a>
-
           <a
             role="button"
             class="navbar-burger"
@@ -55,13 +50,15 @@
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-end breadcrumb my-auto" aria-label="breadcrumbs">
             <ul id="navbar">
-              <li><a href="/login" id="loginId">로그인</a></li>
+              <li>
+                <a href="/login" id="loginId" class="is-font-orange">로그인</a>
+              </li>
               <li>
                 <a href="/admin" aria-current="page">
                   <span class="icon">
-                    <i class="fas fa-cog"></i>
+                    <i class="fas fa-cog is-font-orange"></i>
                   </span>
-                  <span>페이지 관리</span>
+                  <span class="is-font-orange">페이지 관리</span>
                 </a>
               </li>
             </ul>
@@ -78,11 +75,13 @@
         <div class="header is-flex is-justify-content-space-between">
           <h1 class="title pb-3">전체 상품 목록</h1>
           <a href="/admin/products/add">
-            <button class="button is-primary is-outlined">상품 추가</button>
+            <button class="button is-background-orange is-light">
+              상품 추가
+            </button>
           </a>
         </div>
         <table class="table">
-          <thead class="notification is-info is-light">
+          <thead class="notification is-background-orange is-light">
             <tr>
               <th>상품명</th>
               <th>가격</th>
