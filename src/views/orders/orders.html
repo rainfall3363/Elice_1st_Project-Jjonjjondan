@@ -1,26 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>쫀쫀단</title>
-    <!-- 아이콘 -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <!-- bulma css 관련 -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
-    />
+    <script src="/importHead.js"></script>
     <!-- 폰트 어썸: 아이콘 -->
     <script
       defer
       src="https://kit.fontawesome.com/7630448495.js"
       crossorigin="anonymous"
     ></script>
-    <!-- 구글 OAuth -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <!-- 카카오 OAuth -->
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <!-- 커스텀 css, js -->
     <link rel="stylesheet" href="orders.css" />
     <script src="orders.js" type="module" defer></script>
@@ -86,7 +73,7 @@
     <main
       class="is-flex is-justify-content-center is-align-items-center is-flex-direction-column"
     >
-      <h1 class="title mb-5">주문 목록</h1>
+      <h1 class="title mt-5 mb-5">주문 목록</h1>
       <section>
         <table class="table">
           <thead class="notification is-background-orange is-light">
