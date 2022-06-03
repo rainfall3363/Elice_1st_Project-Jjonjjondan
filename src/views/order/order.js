@@ -72,8 +72,8 @@ async function init() {
         deleteStorageAfterBuy();
         window.location.href = '/completeOrder';
       }
-    } catch {
-      alert(FAIL_MESSAGE);
+    } catch (err) {
+      alert(err.message);
     }
   });
 }
