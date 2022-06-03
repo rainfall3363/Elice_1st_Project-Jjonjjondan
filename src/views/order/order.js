@@ -39,10 +39,9 @@ async function init() {
   const localStorageKeyObj = getLocalStorageKeyObj();
   updateOrderSummary(localStorageKeyObj);
 
-  const orderList = makeOrderList(localStorageKeyObj);
-
   const purchaseButton = document.getElementById('purchaseButton');
   purchaseButton.addEventListener('click', async () => {
+    const orderList = makeOrderList(localStorageKeyObj);
     const receiverName = document.getElementById('receiverName');
     const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
     const postalCodeInput = document.getElementById('postalCode');
