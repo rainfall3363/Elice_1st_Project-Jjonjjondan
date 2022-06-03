@@ -40,7 +40,7 @@ const OrderSchema = new Schema(
         required: true,
       },
       request: { type: String, required: true },
-      status: { type: String, required: true, default: '상품 준비 중' },
+      status: { type: String, required: true, default: '상품 준비중' },
     },
   },
   {
