@@ -4,6 +4,12 @@ main > section {
   width: 70vw;
 }
 
+div.header {
+  width: 100%;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid var(--orange);
+}
+
 table {
   width: 100%;
   text-align: center;

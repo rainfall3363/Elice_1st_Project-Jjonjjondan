@@ -1,4 +1,8 @@
-import { loginUser, logoutUser } from '../../useful-functions.js';
+import {
+  loginUser,
+  logoutUser,
+  calculateTotalPrice,
+} from '../../useful-functions.js';
 import * as Api from '../../api.js';
 
 // elements
@@ -30,7 +34,12 @@ function createOrderTable(order) {
   const productNameString = order.order.orderList.reduce((str, element) => {
     return (str += `<p>${element.productName} ${element.quantity}개</p>`);
   }, ``);
+  const totalPrice = order.order.orderList.reduce(
+    (_, element) => element.price,
+    0
+  );
   const orderDate = order.createdAt.slice(0, 10).replaceAll('-', '');
+  const status = order.order.status;
 
   return `
   <tr>
@@ -39,9 +48,12 @@ function createOrderTable(order) {
     <td>
       ${productNameString}
     </td>
-    <td>${order.order.status}</td>
+    <td>${calculateTotalPrice(totalPrice)}원</td>
+    <td>${status}</td>
     <td>
-      <button class="button is-background-orange is-light cancel-button" data-id="${order._id}">취소하기</button>
+      <button class="button is-background-orange is-light cancel-button" data-id="${
+        order._id
+      }" ${status !== '상품 준비중' && 'disabled'}>취소하기</button>
     </td>
   </tr>
   `;
