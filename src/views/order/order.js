@@ -11,23 +11,6 @@ import {
 const FAIL_MESSAGE =
   '주문에 실패했습니다. 입력 사항을 다시 한 번 확인하고 시도해주세요.';
 
-// const newOrder = {
-//   ordererFullName: userInfo.fullName,
-//   ordererPhoneNumber: userInfo.hasOwnProperty('phoneNumber')
-//     ? userInfo.fullName
-//     : undefined,
-//   recipientFullName: receiverName.value,
-//   recipientPhoneNumber: receiverPhoneNumber.value,
-//   recipientAddress: {
-//     postalCode: postalCodeInput.value,
-//     address1: address1Input.value,
-//     address2: address2Input.value,
-//   },
-//   orderList: orderList,
-//   orderRequest: requestSelectBox.value,
-//   orderStatus: '상품 준비 중',
-// };
-
 const newOrder = {
   ordererUserId: 'testjam',
   ordererFullName: '',
