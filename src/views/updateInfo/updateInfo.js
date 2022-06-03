@@ -60,7 +60,11 @@ function checkPasswordInput() {
     passwordCheckInput.value = '';
     submitButton1.disabled = false;
   } else {
-    submitButton1.disabled = true;
+    if (passwordInput.value === passwordCheckInput.value) {
+      allCorrect();
+    } else {
+      notCorrect();
+    }
   }
 }
 
@@ -79,23 +83,37 @@ function checkPasswordCorrect() {
     submitButton1.disabled = false;
   } else {
     if (passwordInput.value === passwordCheckInput.value) {
-      passwordCorrect.classList.remove('is-hidden');
-      passwordNotCorrect.classList.add('is-hidden');
-      passwordInput.classList.remove('is-danger');
-      passwordInput.classList.add('is-success');
-      passwordCheckInput.classList.remove('is-danger');
-      passwordCheckInput.classList.add('is-success');
-      submitButton1.disabled = false;
+      allCorrect();
     } else {
-      passwordNotCorrect.classList.remove('is-hidden');
-      passwordCorrect.classList.add('is-hidden');
-      passwordInput.classList.remove('is-success');
-      passwordInput.classList.add('is-danger');
-      passwordCheckInput.classList.remove('is-success');
-      passwordCheckInput.classList.add('is-danger');
-      submitButton1.disabled = true;
+      notCorrect();
     }
   }
+}
+
+function allCorrect() {
+  const passwordCorrect = document.querySelector('#passwordCorrect');
+  const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
+
+  passwordCorrect.classList.remove('is-hidden');
+  passwordNotCorrect.classList.add('is-hidden');
+  passwordInput.classList.remove('is-danger');
+  passwordInput.classList.add('is-success');
+  passwordCheckInput.classList.remove('is-danger');
+  passwordCheckInput.classList.add('is-success');
+  submitButton1.disabled = false;
+}
+
+function notCorrect() {
+  const passwordCorrect = document.querySelector('#passwordCorrect');
+  const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
+
+  passwordNotCorrect.classList.remove('is-hidden');
+  passwordCorrect.classList.add('is-hidden');
+  passwordInput.classList.remove('is-success');
+  passwordInput.classList.add('is-danger');
+  passwordCheckInput.classList.remove('is-success');
+  passwordCheckInput.classList.add('is-danger');
+  submitButton1.disabled = true;
 }
 
 // 주소검색 API 사용 함수
@@ -135,6 +153,9 @@ function searchAddress() {
 
 // 현재 비밀번호 입력을 받는 모달 창 출력을 위한 함수
 function checkCurrentPassword() {
+  if (passwordInput.value.length <= 4) {
+    return alert('비밀번호는 반드시 4글자 이상이어야 합니다.');
+  }
   modal.classList.add('is-active');
   submitButton2.addEventListener('click', updateUserInfo);
   cancelButton2.addEventListener('click', modalDeactivate);
