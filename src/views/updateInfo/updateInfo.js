@@ -160,12 +160,24 @@ function searchAddress() {
 
 // 현재 비밀번호 입력을 받는 모달 창 출력을 위한 함수
 function checkCurrentPassword() {
-  if (passwordInput.value.length < 4) {
-    return alert('비밀번호는 반드시 4글자 이상이어야 합니다.');
+  if (!checkIntegrity()) {
+    return;
   }
   modal.classList.add('is-active');
   submitButton2.addEventListener('click', updateUserInfo);
   cancelButton2.addEventListener('click', modalDeactivate);
+}
+
+function checkIntegrity() {
+  if (nameInput.value.length < 2) {
+    alert('이름은 반드시 2글자 이상이어야 합니다.');
+    return false;
+  } else if (passwordInput.value.length < 4) {
+    alert('비밀번호는 반드시 4글자 이상이어야 합니다.');
+    return false;
+  }
+
+  return true;
 }
 
 // 모달 창을 없애는 이벤트 처리 함수

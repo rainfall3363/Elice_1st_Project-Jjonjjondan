@@ -49,11 +49,11 @@ async function handleSubmit(e) {
   }
 
   if (!isPasswordValid) {
-    return alert('비밀번호를 입력해 주세요.');
+    return alert('비밀번호를 4글자 이상 입력해 주세요.');
   }
 
   if (!isPasswordSame) {
-    return alert('비밀번호가 일치하지 않습니다.');
+    return alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
   }
 
   if (!isFullNameValid || !isPasswordValid) {
