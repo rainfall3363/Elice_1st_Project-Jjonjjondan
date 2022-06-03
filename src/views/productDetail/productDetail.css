@@ -1,0 +1,154 @@
+@import url('../globalStyle.css');
+
+#brandSection {
+  max-width: 80vw;
+  height: 70vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#productContent {
+  display: flex;
+  justify-content: center;
+  max-width: 1344px;
+  margin-top: 7rem;
+}
+
+#imgBox {
+  width: 60%;
+  height: 70vh;
+  margin-right: 5vw;
+}
+
+#productImage {
+  object-fit: fill;
+  width: 40vw;
+  height: 70vh;
+  margin-left: 15%;
+  vertical-align: middle;
+  border-radius: 3%;
+}
+
+#contents {
+  width: 40%;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  margin-left: 3vw;
+  margin-right: 4rem;
+  border-top: solid rgb(149, 146, 146);
+}
+
+#title {
+  font-size: 3rem;
+  font-weight: bolder;
+  margin-bottom: 0.5rem;
+}
+
+#price {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+#description {
+  margin-top: 3rem;
+}
+
+#innercontents {
+  width: 25vw;
+  height: 57.2vh;
+}
+
+#cartandbuyButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+#inputCart {
+  margin-right: 4%;
+  margin-bottom: 4%;
+}
+
+.button.is-success.is-outlined.is-focused,
+.button.is-success.is-outlined.is-hovered,
+.button.is-success.is-outlined:focus,
+.button.is-success.is-outlined:hover {
+  background-color: #ff7800;
+  border-color: #ff7800;
+}
+
+.button.is-success.is-outlined {
+  border-color: #ff7800;
+  color: #ff7800;
+}
+
+@media (max-width: 768px) {
+  #brandSection {
+    width: 100vw;
+    height: 80vh;
+    margin-top: 7rem;
+    padding-bottom: 10%;
+  }
+
+  #productContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #imgBox {
+    position: relative;
+    width: 70vw;
+    height: 55vh;
+  }
+
+  #productImage {
+    position: absolute;
+    object-fit: fill;
+    width: 70vw;
+    height: 50vh;
+    vertical-align: middle;
+    border-radius: 3%;
+    margin-left: 0%;
+  }
+
+  #contents {
+    width: 70vw;
+    height: 70vh;
+    border-top: solid rgb(149, 146, 146);
+    margin-left: 6%;
+  }
+
+  #title {
+    font-size: 3rem;
+    font-weight: bolder;
+    margin-bottom: 0.5rem;
+  }
+
+  #price {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  #description {
+    margin-top: 3rem;
+  }
+
+  #innercontents {
+    width: 45vw;
+    height: 62vh;
+  }
+
+  #cartandbuyButtons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #inputCart {
+    margin-right: 4%;
+    margin-bottom: 4%;
+  }
+  #buyNow {
+    margin-bottom: 4%;
+  }
+}

@@ -38,7 +38,7 @@ async function handleSubmit(e) {
   try {
     const data = { email, password };
 
-    const result = await Api.post('/api/login', data);
+    const result = await Api.post('/api/user/login', data);
     const token = result.token;
 
     // 로그인 성공, 토큰을 세션 스토리지에 저장
@@ -53,6 +53,6 @@ async function handleSubmit(e) {
     window.location.href = '/';
   } catch (err) {
     console.error(err.stack);
-    alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`);
+    alert(err.message);
   }
 }

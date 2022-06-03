@@ -2,12 +2,14 @@ import {
   loginUser,
   logoutUser,
   calculateTotalPrice,
+  checkAdmin,
 } from '../../useful-functions.js';
 import * as Api from '../../api.js';
 
 init();
 
 async function init() {
+  await checkAdmin();
   loginUser();
   logoutUser();
   await renderOrders();
@@ -15,66 +17,79 @@ async function init() {
 }
 
 async function renderOrders() {
-  const list = await (await fetch('./orderlist.json')).json();
   const tableBody = document.querySelector('#tableBody');
+  try {
+    const orders = await Api.get('/api/order/list');
 
-  for (let data in list) {
-    const html = createOrderTable(list[data]);
-    tableBody.insertAdjacentHTML('beforeend', html);
+    orders.forEach((order, index) => {
+      const html = createOrderTable(order, index);
+      tableBody.insertAdjacentHTML('beforeend', html);
+    });
+  } catch {
+    alert('주문 정보를 불러오는 데 실패했습니다. 다시 시도해 주세요.');
+    window.location.href = '/admin';
   }
 }
 
-function createOrderTable(data) {
-  const productNameString = data.order.orderList.reduce((str, element) => {
-    return (str += `<p>${element.productName} ${element.orderQuantity}개</p>`);
+function createOrderTable(order, index) {
+  const productNameString = order.order.orderList.reduce((str, element) => {
+    return (str += `<p>${element.productName} ${element.quantity}개</p>`);
   }, ``);
-  const totalPrice = data.order.orderList.reduce(
+  const totalPrice = order.order.orderList.reduce(
     (_, element) => element.price,
     0
   );
+  const orderDate = order.createdAt?.split('T')[0].replace(/[-]/g, '');
+  const status = order.order.status.trim();
 
   return `
-  <tr>
-    <th>${data.order.orderNumber}
-    <td>${data.createdAt}</td>
-    <td>
-      ${productNameString}
-    </td>
-    <td>${calculateTotalPrice(totalPrice)}원</td>
-    <td>
-      <div class="select">
-        <select id="orderStatusSelect">
-          <option ${
-            data.orderStatus === '상품 준비중' && 'selected'
-          }>상품 준비중</option>
-          <option ${
-            data.orderStatus === '상품 배송중' && 'selected'
-          }>상품 배송중</option>
-          <option ${
-            data.orderStatus === '배송 완료' && 'selected'
-          } class="has-background-success-lighter">배송 완료</option>
-        </select>
-      </div>
-    </td>
-    <td>
-      <button class="button is-danger is-outlined cancel-button" data-id="${
-        data.order.orderNumber
-      }">취소하기</button>
-    </td>
-  </tr>
+    <tr>
+      <th>${order._id}
+      <td>${orderDate}</td>
+      <td>
+        ${productNameString}
+      </td>
+      <td>${calculateTotalPrice(totalPrice)}원</td>
+      <td>
+        <div class="select">
+          <select class="orderStatusSelect" data-id="${
+            order._id
+          }" data-index="${index}">
+            <option ${
+              status === '상품 준비중' && 'selected'
+            }>상품 준비중</option>
+            <option ${
+              status === '상품 배송중' && 'selected'
+            }>상품 배송중</option>
+            <option ${
+              status === '배송 완료' && 'selected'
+            } class="has-background-success-lighter">배송 완료</option>
+          </select>
+        </div>
+      </td>
+      <td>
+        <button class="button is-background-orange is-light cancel-button" data-id="${
+          order._id
+        }" data-index="${index}" ${
+    status !== '상품 준비중' && 'disabled'
+  }>취소하기</button>
+      </td>
+    </tr>
   `;
 }
 
 function addAllEvents() {
   const calcelButton = document.querySelectorAll('.cancel-button');
-  const select = document.querySelector('#orderStatusSelect');
+  const statusSelectBox = document.querySelectorAll('.orderStatusSelect');
   const modalBackground = document.querySelector('.modal-background');
 
   calcelButton.forEach((node) => {
     node.addEventListener('click', openCancelModal);
   });
   modalBackground.addEventListener('click', closeCancelModal);
-  select.addEventListener('change', patchStatus);
+  statusSelectBox.forEach((element) => {
+    element.addEventListener('change', patchStatus);
+  });
 }
 
 function openCancelModal(event) {
@@ -87,18 +102,36 @@ function openCancelModal(event) {
   modal.classList.add('is-active');
 }
 
-function patchStatus() {
-  /* TODO: 상태 변경시 주문 patch 요청 보내는 로직 */
-  console.log('Status changed!');
+async function patchStatus(event) {
+  const status = event.target.value;
+  const cancelButton = document.querySelector(
+    `button[data-index="${event.target.dataset['index']}"]`
+  );
+  try {
+    await Api.patch('/api/order/update', event.target.dataset['id'], {
+      status,
+    });
+    if (status !== '상품 준비중') {
+      cancelButton.disabled = true;
+    } else {
+      cancelButton.disabled = false;
+    }
+  } catch {
+    alert('주문 상태 수정에 실패했습니다. 다시 한번 시도해주세요.');
+    window.location.reload();
+  }
 }
 
 function cancelOrder(orderId) {
   return async function (event) {
-    /* TODO: 비동기로 취소 처리하는 코드 */
-
-    event.stopPropagation();
-    alert(`${orderId}주문에 대한 취소요청이 완료되었습니다.`);
-    window.location.reload();
+    try {
+      await Api.delete('/api/order/delete', orderId);
+      event.stopPropagation();
+      alert(`${orderId} 주문에 대한 취소요청이 완료되었습니다.`);
+      window.location.reload();
+    } catch {
+      alert('주문 취소에 실패했습니다. 다시 한번 시도해주세요.');
+    }
   };
 }
 

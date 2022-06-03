@@ -1,13 +1,5 @@
 import { orderModel } from '../db';
 
-// 주문 생성
-// 주문 수정
-// 주문 조회
-//  - 전체 주문 목록
-//  - 유저ID로 조회
-//  - 주문번호로 조회
-// 주문 취소
-
 class OrderService {
   // 본 파일의 맨 아래에서, new OrderService(orderModel) 하면, 이 함수의 인자로 전달됨
   constructor(orderModel) {
@@ -16,32 +8,20 @@ class OrderService {
 
   // 주문 입력
   async putOrder(orderInfo) {
-    // 받아올 정보가 몹시 많음
-    // userId, fullName, phoneNumber / fullName, phoneNumber, address / orderList / request, orderStatus
-
-    // 객체 destructuring
-    const {
-      ordererUserId,
-      ordererFullName,
-      ordererPhoneNumber,
-      recipientFullName,
-      recipientPhoneNumber,
-      recipientAddress,
-      orderList,
-      request,
-      orderStatus,
-    } = orderInfo;
-
     const newOrderInfo = {
-      ordererUserId,
-      ordererFullName,
-      ordererPhoneNumber,
-      recipientFullName,
-      recipientPhoneNumber,
-      recipientAddress,
-      orderList,
-      request,
-      orderStatus,
+      orderer: {
+        userId: orderInfo.ordererUserId,
+      },
+      recipient: {
+        fullName: orderInfo.recipientFullName,
+        phoneNumber: orderInfo.recipientPhoneNumber,
+        address: orderInfo.recipientAddress,
+      },
+      order: {
+        orderList: orderInfo.orderList,
+        request: orderInfo.orderRequest,
+        status: orderInfo.orderStatus,
+      },
     };
     // db에 저장
     const createdNewOrder = await this.orderModel.create(newOrderInfo);
@@ -53,8 +33,6 @@ class OrderService {
   async getAllOrders() {
     // 모든 객체를 다 가져옴
     const orders = await this.orderModel.findAll();
-    // 작동함..!
-    // const tmp = orders.map((elem) => elem.order.orderList);
     return orders;
   }
 

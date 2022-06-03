@@ -21,14 +21,16 @@ getUserInfo();
 addAllevents();
 
 function addAllevents() {
-  passwordCheckInput.addEventListener('input', checkPassword);
+  phoneNumberInput.addEventListener('input', maxLengthCheck);
+  passwordInput.addEventListener('input', checkPasswordInput);
+  passwordCheckInput.addEventListener('input', checkPasswordCorrect);
   searchAddressButton.addEventListener('click', searchAddress);
   submitButton1.addEventListener('click', checkCurrentPassword);
   cancelButton1.addEventListener('click', handleCancel);
 }
 
 async function getUserInfo() {
-  const user = await Api.get('/api/userInfo');
+  const user = await Api.get('/api/user/info');
   role = user.role;
   renderUserInfo(user);
 }
@@ -45,38 +47,80 @@ function renderUserInfo(user) {
   }
 }
 
-// 비밀번호 변경 시 변경 비밀번호와 비밀번호 확인이 일치하는 지 확인하는 함수
-function checkPassword() {
+function maxLengthCheck(event) {
+  if (event.target.value.length > event.target.maxLength) {
+    event.target.value = event.target.value.slice(0, event.target.maxLength);
+  }
+}
+
+function checkPasswordInput() {
   const passwordCorrect = document.querySelector('#passwordCorrect');
   const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
 
-  if (!passwordCheckInput.value) {
+  if (passwordInput.value === '') {
+    passwordCorrect.classList.add('is-hidden');
+    passwordNotCorrect.classList.add('is-hidden');
+    passwordInput.classList.remove('is-danger');
+    passwordInput.classList.remove('is-success');
+    passwordCheckInput.classList.remove('is-danger');
+    passwordCheckInput.classList.remove('is-success');
+    passwordCheckInput.value = '';
+    submitButton1.disabled = false;
+  } else {
+    if (passwordInput.value === passwordCheckInput.value) {
+      allCorrect();
+    } else {
+      notCorrect();
+    }
+  }
+}
+
+// 비밀번호 변경 시 변경 비밀번호와 비밀번호 확인이 일치하는 지 확인하는 함수
+function checkPasswordCorrect() {
+  const passwordCorrect = document.querySelector('#passwordCorrect');
+  const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
+
+  if (passwordCheckInput.value === '' && passwordInput.value === '') {
     passwordInput.classList.remove('is-danger');
     passwordInput.classList.remove('is-success');
     passwordCheckInput.classList.remove('is-danger');
     passwordCheckInput.classList.remove('is-success');
     passwordCorrect.classList.add('is-hidden');
     passwordNotCorrect.classList.add('is-hidden');
-    submitButton1.disabled = true;
+    submitButton1.disabled = false;
   } else {
     if (passwordInput.value === passwordCheckInput.value) {
-      passwordCorrect.classList.remove('is-hidden');
-      passwordNotCorrect.classList.add('is-hidden');
-      passwordInput.classList.remove('is-danger');
-      passwordInput.classList.add('is-success');
-      passwordCheckInput.classList.remove('is-danger');
-      passwordCheckInput.classList.add('is-success');
-      submitButton1.disabled = false;
+      allCorrect();
     } else {
-      passwordNotCorrect.classList.remove('is-hidden');
-      passwordCorrect.classList.add('is-hidden');
-      passwordInput.classList.remove('is-success');
-      passwordInput.classList.add('is-danger');
-      passwordCheckInput.classList.remove('is-success');
-      passwordCheckInput.classList.add('is-danger');
-      submitButton1.disabled = true;
+      notCorrect();
     }
   }
+}
+
+function allCorrect() {
+  const passwordCorrect = document.querySelector('#passwordCorrect');
+  const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
+
+  passwordCorrect.classList.remove('is-hidden');
+  passwordNotCorrect.classList.add('is-hidden');
+  passwordInput.classList.remove('is-danger');
+  passwordInput.classList.add('is-success');
+  passwordCheckInput.classList.remove('is-danger');
+  passwordCheckInput.classList.add('is-success');
+  submitButton1.disabled = false;
+}
+
+function notCorrect() {
+  const passwordCorrect = document.querySelector('#passwordCorrect');
+  const passwordNotCorrect = document.querySelector('#passwordNotCorrect');
+
+  passwordNotCorrect.classList.remove('is-hidden');
+  passwordCorrect.classList.add('is-hidden');
+  passwordInput.classList.remove('is-success');
+  passwordInput.classList.add('is-danger');
+  passwordCheckInput.classList.remove('is-success');
+  passwordCheckInput.classList.add('is-danger');
+  submitButton1.disabled = true;
 }
 
 // 주소검색 API 사용 함수
@@ -103,7 +147,6 @@ function searchAddress() {
         if (extraAddr !== '') {
           extraAddr = ' (' + extraAddr + ')';
         }
-      } else {
       }
 
       postalCodeInput.value = data.zonecode;
@@ -117,6 +160,9 @@ function searchAddress() {
 
 // 현재 비밀번호 입력을 받는 모달 창 출력을 위한 함수
 function checkCurrentPassword() {
+  if (passwordInput.value.length < 4) {
+    return alert('비밀번호는 반드시 4글자 이상이어야 합니다.');
+  }
   modal.classList.add('is-active');
   submitButton2.addEventListener('click', updateUserInfo);
   cancelButton2.addEventListener('click', modalDeactivate);
@@ -138,10 +184,6 @@ async function updateUserInfo() {
   const address2 = address2Input.value;
   const currentPassword = currentPasswordInput.value;
 
-  if (!userName || !phoneNumber || !postalCode || !address2) {
-    return alert('배송지 정보를 모두 입력해 주세요.');
-  }
-
   const address = {
     postalCode,
     address1,
@@ -158,7 +200,7 @@ async function updateUserInfo() {
   };
 
   try {
-    const result = await Api.patch(`/api/users/update`, '', data);
+    const result = await Api.patch(`/api/user/update`, '', data);
     if (result) {
       alert('회원님의 정보가 정상적으로 수정되었습니다.');
       window.location.href = '/account';
@@ -169,5 +211,10 @@ async function updateUserInfo() {
 }
 
 function handleCancel() {
-  window.location.href = '/account';
+  const confirmFlag = confirm(
+    '작성하신 정보가 전부 삭제됩니다. 나가시려면 확인을 눌러주세요.'
+  );
+  if (confirmFlag) {
+    window.location.href = '/account';
+  }
 }

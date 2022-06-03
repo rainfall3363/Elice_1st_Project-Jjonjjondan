@@ -4,6 +4,16 @@ import { CategorySchema } from '../schemas/category-schema';
 const Category = model('category', CategorySchema);
 
 export class CategoryModel {
+  // 카테고리 상세
+  async findByCategoryId(categoryId) {
+    const category = await Category.findOne({ _id: categoryId });
+    return category;
+  }
+  // 카테고리명으로 찾기
+  async findByCategoryName(categoryName) {
+    const category = await Category.findOne({ categoryName });
+    return category;
+  }
   // 카테고리 추가
   async create(categoryInfo) {
     const createdNewCategory = await Category.create(categoryInfo);
@@ -14,21 +24,20 @@ export class CategoryModel {
     const categories = await Category.find({});
     return categories;
   }
-  // 특정 카테고리 조회
-  async findByCategoryId(categoryId) {
-    const category = await Category.findOne({ _id: categoryId });
-    return category;
-  }
   // 카테고리 수정
-  async update({ productId, update }) {
-    const filter = { _id: productId };
+  async update({ categoryId, update }) {
+    const filter = { _id: categoryId };
     const option = { returnOriginal: false };
-    const updatedCategory = await User.findOneAndUpdate(filter, update, option);
+    const updatedCategory = await Category.findOneAndUpdate(
+      filter,
+      update,
+      option
+    );
     return updatedCategory;
   }
   // 카테고리 삭제
   async delete(categoryId) {
-    const category = await Category.findOneAndDeleteOne({ _id: productId });
+    const category = await Category.findOneAndDelete({ _id: categoryId });
     return category;
   }
 }

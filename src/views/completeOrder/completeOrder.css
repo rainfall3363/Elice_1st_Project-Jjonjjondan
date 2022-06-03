@@ -1,0 +1,56 @@
+@import url('../globalStyle.css');
+
+.cart-header {
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.cart-header .title {
+  margin-bottom: 0;
+  padding-top: 2rem;
+}
+
+.cart-header .subtitle {
+  line-height: 1.7;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 2rem 0.5rem 0;
+}
+
+.subtitle-cart,
+.subtitle {
+  cursor: pointer;
+}
+
+.orderbox {
+  display: flex;
+  height: 50vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  text-align: center;
+  font-size: 1.6rem;
+  padding: 3rem 5rem;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+#checkOrder {
+  margin-top: 2rem;
+  margin-right: 4%;
+  margin-bottom: 4%;
+}
+#continueShopping {
+  margin-bottom: 4%;
+}
+
+#textcomplete {
+  color: #ff7800;
+}

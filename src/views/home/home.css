@@ -1,33 +1,17 @@
-/* .div-container {
+@import url('../globalStyle.css');
+
+.homeSection {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  max-width: 80vw;
 }
-
-.landing {
-  cursor: pointer;
-  border: 1px solid red;
-  padding: 10px;
-}
-
-.greeting {
-  cursor: pointer;
-  border: 1px solid blue;
-  padding: 10px;
-  margin-left: 3rem;
-} */
 
 /* 슬라이드 css */
-
-* {
-  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-}
-
 #slideContainer {
   position: relative;
-  max-width: 50rem;
-  margin: 5rem auto;
+  max-width: 55vw;
+  margin-top: 7rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .slideBox {
@@ -66,7 +50,7 @@
   color: white;
   font-weight: bold;
   font-size: 18px;
-  transition: 0.6s ease;
+  transition: 0.3s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
   text-align: center;
@@ -100,4 +84,21 @@
   text-align: left;
   margin: 0px 0px 5px 0px;
   font-size: 1rem;
+}
+
+/* 카테고리 css */
+.menu {
+  display: flex;
+  flex-direction: column;
+  max-width: 30vw;
+  margin-top: 7rem;
+}
+
+.menu-list a {
+  color: #ff7800;
+}
+
+.menu-list a:hover {
+  background-color: #ff7800;
+  color: #f7f7f7;
 }

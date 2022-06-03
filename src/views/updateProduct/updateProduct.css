@@ -1,0 +1,19 @@
+@import url('/globalStyle.css');
+
+main {
+  height: 85vh;
+}
+
+main > section {
+  width: 60vw;
+}
+
+main > .title {
+  width: 60vw;
+  border-bottom: 3px solid var(--orange);
+}
+
+.photo_input {
+  border: none;
+  font-size: 2rem;
+}

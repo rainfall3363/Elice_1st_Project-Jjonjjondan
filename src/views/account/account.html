@@ -1,43 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>쇼핑-데모</title>
-    <!-- 아이콘 -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="../elice-rabbit-favicon.png"
-    />
-    <!-- bulma css 관련 -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
-    />
+    <script src="/importHead.js"></script>
     <!-- 폰트 어썸: 아이콘 -->
     <script
       defer
       src="https://kit.fontawesome.com/7630448495.js"
       crossorigin="anonymous"
     ></script>
-    <!-- 구글 OAuth -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <!-- 카카오 OAuth -->
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <!-- 커스텀 css, js -->
     <link rel="stylesheet" href="account.css" />
     <script src="account.js" type="module" defer></script>
   </head>
   <body>
     <!-- 헤더 -->
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav
+      class="navbar is-background-apricot"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div class="container mt-3">
         <div class="navbar-brand">
-          <a class="navbar-item" href="/">
-            <img src="../elice-rabbit.png" width="30" height="30" />
-            <span class="has-text-link">쇼핑-데모</span>
+          <a class="navbar-item is-flex" href="/">
+            <img
+              src="/icon.png"
+              class="image is-48x48"
+              style="max-height: 100%"
+            />
+            <h1 class="title ml-2" style="font-size: 30px">
+              쫀쫀단
+              <p class="pt-2" style="font-size: 1rem">
+                <span class="is-font-orange">쫀득쫀득</span>
+                단백질
+              </p>
+            </h1>
           </a>
 
           <a
@@ -56,13 +52,15 @@
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-end breadcrumb my-auto" aria-label="breadcrumbs">
             <ul id="navbar">
-              <li><a href="/login" id="loginId">로그인</a></li>
+              <li>
+                <a href="/login" id="loginId" class="is-font-orange">로그인</a>
+              </li>
               <li>
                 <a href="/cart" aria-current="page">
                   <span class="icon">
-                    <i class="fas fa-cart-shopping"></i>
+                    <i class="fas fa-cart-shopping is-font-orange"></i>
                   </span>
-                  <span>카트</span>
+                  <span class="is-font-orange">카트</span>
                 </a>
               </li>
             </ul>
@@ -75,10 +73,10 @@
       class="is-flex is-justify-content-center is-align-items-center is-flex-direction-column"
     >
       <section
-        class="information_section is-flex is-justify-content-space-between mt-3"
+        class="information_section is-flex is-justify-content-space-around mt-3"
       >
         <img
-          src="../elice-rabbit.png"
+          src="/profile.png"
           alt="profile_image is-rounded"
           class="profile_image is-size-1"
         />
@@ -114,19 +112,15 @@
         id="option"
         class="option is-flex is-justify-content-space-evenly is-align-items-center"
       >
-        <a href="/updateInfo" class="button is-link is-light">
+        <a href="/account/update" class="button">
           <i class="fas fa-user-edit mr-2"></i>
           <p>회원정보 수정</p>
         </a>
-        <a href="/productRegister" class="is-hidden button is-link is-light">
-          <i class="fas fa-bags-shopping mr-2"></i>
-          <p>상품 등록</p>
-        </a>
-        <a class="button is-link is-light">
+        <a href="/account/orders" class="button">
           <i class="fas fa-shopping-bag mr-2"></i>
           <p>주문 조회</p>
         </a>
-        <button id="deleteButton" class="button is-link is-light">
+        <button id="deleteButton" class="button">
           <i class="fas fa-sign-out mr-2"></i>
           <p>회원 탈퇴</p>
         </button>

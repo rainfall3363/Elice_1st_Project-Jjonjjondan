@@ -1,8 +1,9 @@
-import { loginUser, logoutUser } from '../useful-functions.js';
+import { loginUser, logoutUser, checkAdmin } from '../useful-functions.js';
 
 init();
 
-function init() {
+async function init() {
   loginUser();
   logoutUser();
+  await checkAdmin();
 }

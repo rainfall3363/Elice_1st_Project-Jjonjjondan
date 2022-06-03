@@ -1,0 +1,37 @@
+@import url('/globalStyle.css');
+
+main {
+  height: 85vh;
+}
+
+main > section {
+  width: 70vw;
+}
+
+div.header {
+  border-bottom: 3px solid var(--orange);
+}
+
+div.is-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  row-gap: 2rem;
+  column-gap: 2rem;
+}
+
+div.content {
+  height: 10vh;
+}
+
+.category-container {
+  height: 100%;
+}
+
+.modal-content {
+  height: 13rem;
+  width: 30rem;
+}
+
+.box {
+  height: 100%;
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="/importHead.js"></script>
+    <!-- 폰트 어썸: 아이콘 -->
+    <script
+      defer
+      src="https://kit.fontawesome.com/7630448495.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="adminProducts.css" />
+    <script src="adminProducts.js" type="module" defer></script>
+  </head>
+  <body>
+    <nav
+      class="navbar is-background-apricot"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="container mt-3">
+        <div class="navbar-brand">
+          <a class="navbar-item is-flex" href="/">
+            <img
+              src="/icon.png"
+              class="image is-48x48"
+              style="max-height: 100%"
+            />
+            <h1 class="title ml-2" style="font-size: 30px">
+              쫀쫀단
+              <p class="pt-2" style="font-size: 1rem">
+                <span class="is-font-orange">쫀득쫀득</span>
+                단백질
+              </p>
+            </h1>
+          </a>
+          <a
+            role="button"
+            class="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-end breadcrumb my-auto" aria-label="breadcrumbs">
+            <ul id="navbar">
+              <li>
+                <a href="/login" id="loginId" class="is-font-orange">로그인</a>
+              </li>
+              <li>
+                <a href="/admin" aria-current="page">
+                  <span class="icon">
+                    <i class="fas fa-cog is-font-orange"></i>
+                  </span>
+                  <span class="is-font-orange">페이지 관리</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main
+      class="is-flex is-justify-content-center is-align-items-center is-flex-direction-column"
+    >
+      <!-- 주문 목록 테이블 -->
+      <section class="section">
+        <div class="header is-flex is-justify-content-space-between">
+          <h1 class="title pb-3">전체 상품 목록</h1>
+          <a href="/admin/products/add">
+            <button class="button is-background-orange is-light">
+              상품 추가
+            </button>
+          </a>
+        </div>
+        <table class="table">
+          <thead class="notification is-background-orange is-light">
+            <tr>
+              <th>상품명</th>
+              <th>가격</th>
+              <th>제조사</th>
+              <th>카테고리</th>
+              <th>재고</th>
+              <th>수정</th>
+              <th>삭제</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </section>
+      <div id="deleteModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <div
+            class="box is-flex is-justify-content-center is-flex-direction-column"
+          >
+            <span class="mb-4">
+              상품 삭제시 복구할 수 없습니다. 정말 삭제하시겠습니까?
+            </span>
+            <button id="modalYesButton" class="button is-danger">네</button>
+            <button id="modalCancelButton" class="button">아니오</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

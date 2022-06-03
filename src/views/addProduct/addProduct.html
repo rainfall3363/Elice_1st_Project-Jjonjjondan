@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="/importHead.js"></script>
+    <!-- 폰트 어썸: 아이콘 -->
+    <script
+      defer
+      src="https://kit.fontawesome.com/7630448495.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="addProduct.css" />
+    <script src="addProduct.js" type="module" defer></script>
+  </head>
+  <body>
+    <nav
+      class="navbar is-background-apricot"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="container mt-3">
+        <div class="navbar-brand">
+          <a class="navbar-item is-flex" href="/">
+            <img
+              src="/icon.png"
+              class="image is-48x48"
+              style="max-height: 100%"
+            />
+            <h1 class="title ml-2" style="font-size: 30px">
+              쫀쫀단
+              <p class="pt-2" style="font-size: 1rem">
+                <span class="is-font-orange">쫀득쫀득</span>
+                단백질
+              </p>
+            </h1>
+          </a>
+
+          <a
+            role="button"
+            class="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-end breadcrumb my-auto" aria-label="breadcrumbs">
+            <ul id="navbar">
+              <li>
+                <a href="/login" id="loginId" class="is-font-orange">로그인</a>
+              </li>
+              <li>
+                <a href="/admin" aria-current="page">
+                  <span class="icon">
+                    <i class="fas fa-cog is-font-orange"></i>
+                  </span>
+                  <span class="is-font-orange">페이지 관리</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main
+      class="is-flex is-justify-content-center is-align-items-center is-flex-direction-column"
+    >
+      <h1 class="title pb-5">신규 상품 등록</h1>
+      <section id="productFormSection">
+        <div class="field">
+          <label class="label">상품명</label>
+          <div class="control has-icons-left">
+            <input
+              id="productName"
+              class="input"
+              type="text"
+              placeholder="상품명"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-tag"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="field columns">
+          <div class="column">
+            <label class="label">가격</label>
+            <div class="control has-icons-left">
+              <input
+                id="productPrice"
+                class="input"
+                type="text"
+                placeholder="가격"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-dollar-sign"></i>
+              </span>
+            </div>
+          </div>
+          <div class="column">
+            <label class="label">제조사</label>
+            <div class="control has-icons-left">
+              <input
+                id="productMaker"
+                class="input"
+                type="text"
+                placeholder="제조사"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-industry"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field columns">
+          <div class="column">
+            <label class="label">재고</label>
+            <div class="control has-icons-left">
+              <input
+                id="productStock"
+                class="input"
+                type="text"
+                placeholder="재고"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-sort-amount-down"></i>
+              </span>
+            </div>
+          </div>
+          <div class="column">
+            <label class="label">카테고리</label>
+            <div class="control">
+              <div class="select">
+                <select id="categorySelect">
+                  <option>카테고리를 선택해주세요</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="file has-name is-fullwidth is-flex-direction-column">
+            <label class="label">이미지 업로드</label>
+            <label class="file-label">
+              <input
+                id="productImage"
+                class="file-input"
+                type="file"
+                name="resume"
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">상품 이미지 업로드</span>
+              </span>
+              <span class="file-name">사진(JPG, JPEG, PNG)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">상품 설명</label>
+          <div class="control">
+            <textarea
+              id="productDescription"
+              class="textarea"
+              placeholder="상품 설명"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button id="postButton" class="button is-link">상품 추가</button>
+          </div>
+          <div class="control">
+            <button id="cancelButton" class="button is-danger is-light">
+              취소
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

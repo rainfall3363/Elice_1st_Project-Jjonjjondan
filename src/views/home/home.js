@@ -3,47 +3,73 @@
 // 코드 예시를 남겨 두었습니다.
 
 import * as Api from '/api.js';
-import { setRegister } from '/useful-functions.js';
-import { logoutUser } from '/useful-functions.js';
-import { loginUser } from '/useful-functions.js';
-import { randomId } from '/useful-functions.js';
+import {
+  setRegister,
+  loginUser,
+  logoutUser,
+  changetoAdmin,
+} from '/useful-functions.js';
 
-loginUser();
-logoutUser();
-setRegister();
+init();
 
-// async function getDataFromApi() {
-//   // 예시 URI입니다. 현재 주어진 프로젝트 코드에는 없는 URI입니다.
-//   const data = await Api.get('/api/user/data');
-//   const random = randomId();
+async function init() {
+  loginUser();
+  logoutUser();
+  setRegister();
+  changetoAdmin();
+  const data = await categoryData();
+  categoryRender(data);
+  categorymenuRender(data);
+}
 
-//   console.log({ data });
-//   console.log({ random });
-// }
-categoryList();
-
-async function categoryList() {
-  const slideContainer = document.getElementById('slideContainer');
-  const data = await Api.get('/api/categorylist');
-  for (let i = 0; i < data.length; i++) {
-    const categoryId = data[i].categoryId;
-    const description = data[i].description;
-    const imageUrl = data[i].imageURL;
-    const categoryName = data[i].categoryName;
-    slideContainer.insertAdjacentHTML(
-      'beforeend',
-      `
-      <div class="slideBox">
-      <a href="/products/${categoryId}" class="slidesAtag">
-        <img src="${imageUrl}" style="width: 50rem; height: 30rem";>
-      </a>
-      <p class="brandName">Camping</p>
-      <h3 class="categoryName">${categoryName}</h3>
-      <p class="categoryDescription">${description}</p>
-      </div>
-      `
-    );
+async function categoryData() {
+  try {
+    const data = await Api.get('/api/category/list');
+    return data;
+  } catch (err) {
+    console.error(err.stack);
+    alert(`카테고리 정보를 불러오는 데 실패하였습니다.${err.message}`);
   }
+}
+
+//카테고리 메뉴바 렌더링
+function categorymenuRender(data) {
+  data.forEach((elem) => {
+    const categoryName = elem.categoryName;
+    if (categoryName) {
+      const menulist = document.getElementById('menulist');
+      menulist.insertAdjacentHTML(
+        'beforeend',
+        `
+        <li><a href="/products?categoryName=${categoryName}">${categoryName}</a></li>
+          `
+      );
+    }
+  });
+}
+
+//카테고리 슬라이더 렌더링
+function categoryRender(data) {
+  data.forEach((elem) => {
+    const description = elem.description;
+    const imageURL = elem.imageUrl;
+    const categoryName = elem.categoryName;
+    if (categoryName) {
+      const slideContainer = document.getElementById('slideContainer');
+      slideContainer.insertAdjacentHTML(
+        'beforeend',
+        `
+          <div class="slideBox">
+          <a href="/products?categoryName=${categoryName}" class="slidesAtag">
+            <img src="${imageURL}" style="width: 50rem; height: 30rem";>
+          </a>
+          <h3 class="categoryName">${categoryName}</h3>
+          <p class="categoryDescription">${description}</p>
+          </div>
+          `
+      );
+    }
+  });
 
   //이미지 자동 슬라이드
   let autoslideIndex = 0;

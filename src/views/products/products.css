@@ -1,0 +1,69 @@
+@import url('../globalStyle.css');
+
+#setDiv {
+  display: flex;
+}
+
+#productSection {
+  max-width: 1344px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: auto;
+}
+
+.box {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 18rem;
+  margin: 1.5rem;
+}
+
+.box:hover {
+  cursor: pointer;
+  background-color: #ffbc97;
+  transition: 0.5s ease;
+}
+
+#blank {
+  display: block;
+  height: 7rem;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#productImage {
+  height: 200px;
+  width: 200px;
+  border-radius: 5px;
+}
+
+.title {
+  margin-top: 10px;
+  font-size: 2rem;
+}
+
+.description {
+  font-size: 1rem;
+}
+
+.price {
+  font-size: 2rem;
+  margin-top: 3rem;
+}
+
+#categorynavbar {
+  margin: 0;
+  padding-right: 35px;
+}
+
+#changecategoryname {
+  margin: auto;
+  padding: auto;
+  color: #ff7800;
+}

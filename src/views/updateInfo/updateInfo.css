@@ -1,3 +1,5 @@
+@import url('/globalStyle.css');
+
 body {
   width: 100vw;
   height: 100vh;
@@ -6,4 +8,10 @@ body {
 .field {
   width: 35rem;
   margin-top: 20px;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

@@ -1,17 +1,14 @@
-// 이제 userModel 받아왔으니 admin 검색 가능
-import { productModel, userModel } from '../db';
+import { productModel } from '../db';
 
 class ProductService {
   // 본 파일의 맨 아래에서, new ProductService(productModel) 하면, 이 함수의 인자로 전달됨
-  constructor(productModel, userModel) {
+  constructor(productModel) {
     this.productModel = productModel;
-    this.userModel = userModel;
   }
 
   // 상품 등록
   async addProduct(productInfo) {
-    const { title, price, description, maker, category, image } = productInfo;
-
+    const { title } = productInfo;
     // 상품명 중복 확인
     const product = await this.productModel.findByTitle(title);
     if (product) {
@@ -22,7 +19,6 @@ class ProductService {
 
     // db에 저장
     const createdNewProduct = await this.productModel.create(productInfo);
-
     return createdNewProduct;
   }
 
@@ -35,9 +31,10 @@ class ProductService {
   // 상품 상세정보 불러오기
   async getProductInfo(productId) {
     const product = await this.productModel.findByProductId(productId);
-    const { title, price, description, maker, category, image } = product;
+    const { title, price, description, maker, categoryName, image, inventory } =
+      product;
 
-    return { title, price, description, maker, category, image };
+    return { title, price, description, maker, categoryName, image, inventory };
   }
 
   // 상품정보 수정
@@ -61,16 +58,14 @@ class ProductService {
 
   // 상품 삭제
   async deleteProduct(productId) {
-    const product = await this.productModel.findById(productId);
+    const product = await this.productModel.delete(productId);
     if (!product) {
       throw new Error('해당 상품 정보가 없습니다. 유효한 ID가 아닙니다.');
     }
-    const deletedProductInfo = await this.productModel.deleteOne(productId);
-
-    return deletedProductInfo;
+    return product;
   }
 }
 
-const productService = new ProductService(productModel, userModel);
+const productService = new ProductService(productModel);
 
 export { productService };

@@ -1,9 +1,4 @@
-import {
-  getLocalStorageList,
-  getLocalStorageListById,
-  addLocalStorageList,
-  editQuantityLocalStorageListById,
-} from '/useful-functions.js';
+import { getLocalStorageList, inputCart } from '/useful-functions.js';
 
 let localStorageGetBtnElement = document.getElementById('localStorageGetBtn');
 localStorageGetBtnElement.addEventListener('click', function () {
@@ -18,22 +13,5 @@ localStorageAddBtnElement.addEventListener('click', function () {
     product: prompt('상품?'),
     price: prompt('가격?'),
   };
-
-  const valueList = getLocalStorageList('cart');
-  const storeId = productDummySchema.id;
-  const StorageList = valueList.filter((e) => e.id == storeId);
-
-  if (StorageList === null) {
-    addLocalStorageList('cart', productDummySchema);
-  } else {
-    let quantityValue = parseInt(
-      getLocalStorageListById('cart', storeId).quantity
-    );
-    quantityValue++;
-    if (quantityValue >= 99) {
-      editQuantityLocalStorageListById('cart', storeId, 99);
-    } else {
-      editQuantityLocalStorageListById('cart', storeId, quantityValue);
-    }
-  }
+  inputCart(productDummySchema.id, productDummySchema);
 });
