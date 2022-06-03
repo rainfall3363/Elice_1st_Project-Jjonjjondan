@@ -1,8 +1,29 @@
+@import url('../globalStyle.css');
+
+#setDiv {
+  display: flex;
+}
+
+#productSection {
+  max-width: 1344px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: auto;
+}
+
 .box {
   display: flex;
   align-items: flex-start;
-  width: 1000px;
-  margin: auto;
+  justify-content: center;
+  width: 18rem;
+  margin: 1.5rem;
+}
+
+.box:hover {
+  cursor: pointer;
+  background-color: #ffbc97;
+  transition: 0.5s ease;
 }
 
 #blank {
@@ -10,19 +31,20 @@
   height: 7rem;
 }
 
-#product {
+.product {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 2rem;
 }
 
 #productImage {
   height: 200px;
   width: 200px;
+  border-radius: 5px;
 }
 
 .title {
+  margin-top: 10px;
   font-size: 2rem;
 }
 
@@ -32,5 +54,16 @@
 
 .price {
   font-size: 2rem;
-  margin-top: 4rem;
+  margin-top: 3rem;
+}
+
+#categorynavbar {
+  margin: 0;
+  padding-right: 35px;
+}
+
+#changecategoryname {
+  margin: auto;
+  padding: auto;
+  color: #ff7800;
 }

@@ -12,6 +12,7 @@
   --yellow: #ffe300;
   --apricot: #fff6f1;
   --white: #f7f7f7;
+  --lightorange: #ffbc97;
 }
 
 *:not(i) {
@@ -24,6 +25,10 @@
 
 .is-font-white {
   color: var(--white) !important;
+}
+
+.is-font-lightorange {
+  color: var(--lightorange) !important;
 }
 
 .is-background-orange {

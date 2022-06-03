@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired } from '../middlewares';
+import { loginRequired, whoAmI } from '../middlewares';
 import { orderService } from '../services';
 
 const orderRouter = Router();
 
 // 주문 생성 api
-orderRouter.post('/register', async (req, res, next) => {
+orderRouter.post('/register', whoAmI, async (req, res, next) => {
   try {
     // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
     // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
@@ -18,9 +18,8 @@ orderRouter.post('/register', async (req, res, next) => {
     }
 
     // req (request)의 body에서 데이터 가져오기
-    const ordererUserId = req.body.ordererUserId;
-    const ordererFullName = req.body.ordererFullName;
-    const ordererPhoneNumber = req.body.ordererPhoneNumber;
+    // id는 whoAmI를 통해 로그인 상태라면 현재 로그인되어 있는 id, 아니라면 guest가 입력됨
+    const ordererUserId = req.currentUserId;
     const recipientFullName = req.body.recipientFullName;
     const recipientPhoneNumber = req.body.recipientPhoneNumber;
     // address는 객체 형태 (postalCode, address1, address2)
@@ -33,8 +32,6 @@ orderRouter.post('/register', async (req, res, next) => {
     // 위 데이터를 유저 db에 추가하기
     const newOrder = await orderService.putOrder({
       ordererUserId,
-      ordererFullName,
-      ordererPhoneNumber,
       recipientFullName,
       recipientPhoneNumber,
       recipientAddress,

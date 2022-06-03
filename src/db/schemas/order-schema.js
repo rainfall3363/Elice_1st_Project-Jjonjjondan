@@ -3,9 +3,7 @@ import { Schema } from 'mongoose';
 const OrderSchema = new Schema(
   {
     orderer: {
-      userId: { type: String, default: 'Guest' },
-      fullName: { type: String, required: true },
-      phoneNumber: { type: String, required: true },
+      userId: { type: String, required: true },
     },
     recipient: {
       fullName: { type: String, required: true },
