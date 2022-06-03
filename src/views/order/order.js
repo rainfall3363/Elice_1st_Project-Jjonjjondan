@@ -3,6 +3,7 @@ import {
   updateOrderSummary,
   loginUser,
   logoutUser,
+  setRegister,
   getLocalStorageKeyObj,
   getLocalStorageList,
 } from '/useful-functions.js';
@@ -48,6 +49,7 @@ init();
 async function init() {
   loginUser();
   logoutUser();
+  setRegister();
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
   searchAddressEvent();
