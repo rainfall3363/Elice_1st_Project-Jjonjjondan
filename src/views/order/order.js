@@ -9,21 +9,6 @@ import {
   getLocalStorageList,
 } from '/useful-functions.js';
 
-const FAIL_MESSAGE =
-  '주문에 실패했습니다. 입력 사항을 다시 한 번 확인하고 시도해주세요.';
-
-const newOrder = {
-  recipientFullName: '',
-  recipientPhoneNumber: '',
-  recipientAddress: {
-    postalCode: '',
-    address1: '',
-    address2: '',
-  },
-  orderList: [],
-  orderRequest: '',
-};
-
 init();
 
 async function init() {
@@ -31,34 +16,33 @@ async function init() {
   logoutUser();
   setRegister();
   changetoAdmin();
+
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
-  searchAddressEvent();
+  addAllEvents();
   const localStorageKeyObj = getLocalStorageKeyObj();
   updateOrderSummary(localStorageKeyObj);
-
-  const purchaseButton = document.getElementById('purchaseButton');
-  purchaseButton.addEventListener('click', addNewOrder);
 }
 
 async function addNewOrder() {
   const localStorageKeyObj = getLocalStorageKeyObj();
-  const orderList = makeOrderList(localStorageKeyObj);
   const receiverName = document.getElementById('receiverName');
   const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
   const postalCodeInput = document.getElementById('postalCode');
   const address1Input = document.getElementById('address1');
   const address2Input = document.getElementById('address2');
-  const requestSelectBox = document.getElementById('requestSelectBox');
 
-  newOrder.recipientFullName = receiverName.value;
-  newOrder.recipientPhoneNumber = receiverPhoneNumber.value;
-  newOrder.recipientAddress.postalCode = postalCodeInput.value;
-  newOrder.recipientAddress.address1 = address1Input.value;
-  newOrder.recipientAddress.address2 = address2Input.value;
-
-  newOrder.orderList = orderList;
-  newOrder.orderRequest = requestSelectBox.value;
+  const newOrder = {
+    recipientFullName: receiverName.value,
+    recipientPhoneNumber: receiverPhoneNumber.value,
+    recipientAddress: {
+      postalCode: postalCodeInput.value,
+      address1: address1Input.value,
+      address2: address2Input.value,
+    },
+    orderList: makeOrderList(localStorageKeyObj),
+    orderRequest: '',
+  };
 
   if (!checkIntegrity(newOrder)) {
     return alert('모든 값을 입력해주세요.');
@@ -157,9 +141,12 @@ function searchAddress() {
   }).open();
 }
 
-function searchAddressEvent() {
+function addAllEvents() {
   const searchAddressButton = document.getElementById('searchAddressButton');
   searchAddressButton.addEventListener('click', searchAddress);
+
+  const purchaseButton = document.getElementById('purchaseButton');
+  purchaseButton.addEventListener('click', addNewOrder);
 }
 
 function makeOrderList(localStorageKeyObj) {
