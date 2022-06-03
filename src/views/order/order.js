@@ -24,55 +24,6 @@ async function init() {
   updateOrderSummary(localStorageKeyObj);
 }
 
-async function addNewOrder() {
-  const localStorageKeyObj = getLocalStorageKeyObj();
-  const receiverName = document.getElementById('receiverName');
-  const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
-  const postalCodeInput = document.getElementById('postalCode');
-  const address1Input = document.getElementById('address1');
-  const address2Input = document.getElementById('address2');
-
-  const newOrder = {
-    recipientFullName: receiverName.value,
-    recipientPhoneNumber: receiverPhoneNumber.value,
-    recipientAddress: {
-      postalCode: postalCodeInput.value,
-      address1: address1Input.value,
-      address2: address2Input.value,
-    },
-    orderList: makeOrderList(localStorageKeyObj),
-    orderRequest: '',
-  };
-
-  if (!checkIntegrity(newOrder)) {
-    return alert('모든 값을 입력해주세요.');
-  }
-
-  try {
-    const result = await Api.post('/api/order/register', newOrder);
-    if (result) {
-      deleteStorageAfterBuy();
-      window.location.href = '/completeOrder';
-    }
-  } catch (err) {
-    alert(err.message);
-  }
-}
-
-function checkIntegrity(newOrder) {
-  if (
-    newOrder.recipientFullName === '' ||
-    newOrder.recipientPhoneNumber === '' ||
-    newOrder.recipientAddress.postalCode === '' ||
-    newOrder.recipientAddress.address1 === '' ||
-    newOrder.recipientAddress.address2 === '' ||
-    newOrder.orderRequest === ''
-  ) {
-    return false;
-  }
-  return true;
-}
-
 async function renderUserInfo() {
   try {
     const result = await Api.get('/api/user/info');
@@ -101,6 +52,14 @@ function renderDeliveryInfo(userInfo) {
     address1Input.value = userInfo.address.address1;
     address2Input.value = userInfo.address.address2;
   }
+}
+
+function addAllEvents() {
+  const searchAddressButton = document.getElementById('searchAddressButton');
+  searchAddressButton.addEventListener('click', searchAddress);
+
+  const purchaseButton = document.getElementById('purchaseButton');
+  purchaseButton.addEventListener('click', addNewOrder);
 }
 
 // 주소검색 API 사용 함수
@@ -141,12 +100,39 @@ function searchAddress() {
   }).open();
 }
 
-function addAllEvents() {
-  const searchAddressButton = document.getElementById('searchAddressButton');
-  searchAddressButton.addEventListener('click', searchAddress);
+async function addNewOrder() {
+  const localStorageKeyObj = getLocalStorageKeyObj();
+  const receiverName = document.getElementById('receiverName');
+  const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
+  const postalCodeInput = document.getElementById('postalCode');
+  const address1Input = document.getElementById('address1');
+  const address2Input = document.getElementById('address2');
 
-  const purchaseButton = document.getElementById('purchaseButton');
-  purchaseButton.addEventListener('click', addNewOrder);
+  const newOrder = {
+    recipientFullName: receiverName.value,
+    recipientPhoneNumber: receiverPhoneNumber.value,
+    recipientAddress: {
+      postalCode: postalCodeInput.value,
+      address1: address1Input.value,
+      address2: address2Input.value,
+    },
+    orderList: makeOrderList(localStorageKeyObj),
+    orderRequest: '',
+  };
+
+  if (!checkIntegrity(newOrder)) {
+    return alert('모든 값을 입력해주세요.');
+  }
+
+  try {
+    const result = await Api.post('/api/order/register', newOrder);
+    if (result) {
+      deleteStorageAfterBuy();
+      window.location.href = '/completeOrder';
+    }
+  } catch (err) {
+    alert(err.message);
+  }
 }
 
 function makeOrderList(localStorageKeyObj) {
@@ -163,6 +149,20 @@ function makeOrderList(localStorageKeyObj) {
       };
     });
   return checkedCartList;
+}
+
+function checkIntegrity(newOrder) {
+  if (
+    newOrder.recipientFullName === '' ||
+    newOrder.recipientPhoneNumber === '' ||
+    newOrder.recipientAddress.postalCode === '' ||
+    newOrder.recipientAddress.address1 === '' ||
+    newOrder.recipientAddress.address2 === '' ||
+    newOrder.orderRequest === ''
+  ) {
+    return false;
+  }
+  return true;
 }
 
 function deleteStorageAfterBuy() {
