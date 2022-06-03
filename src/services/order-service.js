@@ -11,8 +11,6 @@ class OrderService {
     const newOrderInfo = {
       orderer: {
         userId: orderInfo.ordererUserId,
-        fullName: orderInfo.ordererFullName,
-        phoneNumber: orderInfo.ordererPhoneNumber,
       },
       recipient: {
         fullName: orderInfo.recipientFullName,
