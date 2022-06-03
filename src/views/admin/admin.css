@@ -10,7 +10,7 @@ main > section {
 
 div.header {
   margin-bottom: 2rem;
-  border-bottom: 1px solid var(--orange);
+  border-bottom: 3px solid var(--orange);
 }
 
 div.is-grid {
