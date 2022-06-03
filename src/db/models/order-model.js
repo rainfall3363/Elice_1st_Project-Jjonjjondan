@@ -17,7 +17,7 @@ export class OrderModel {
   }
 
   async findByUserId(userId) {
-    const orders = await Order.find({ userId: userId });
+    const orders = await Order.find({ _id: userId });
     // 한 유저에 여러 개의 주문이 존재할 수 있다
     // 객체 담은 객체 리턴, 근데 배열은 아님
     return orders;
