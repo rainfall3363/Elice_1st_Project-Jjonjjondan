@@ -67,7 +67,7 @@ async function init() {
 
     newOrder.ordererFullName = userInfo.fullName;
     newOrder.ordererPhoneNumber = userInfo.hasOwnProperty('phoneNumber')
-      ? userInfo.fullName
+      ? userInfo.phoneNumber
       : undefined;
     newOrder.recipientFullName =
       receiverName.value === '' ? undefined : receiverName.value;
@@ -85,6 +85,7 @@ async function init() {
     try {
       const result = await Api.post('/api/order/register', newOrder);
       if (result) {
+        deleteStorageAfterBuy();
         window.location.href = '/completeOrder';
       }
     } catch {
@@ -191,4 +192,20 @@ async function postOrderInfo(userInfo, orderList) {
   } catch {
     alert(FAIL_MESSAGE);
   }
+}
+
+function deleteStorageAfterBuy() {
+  const localStorageKeyObj = getLocalStorageKeyObj();
+  const cartList = getLocalStorageList(localStorageKeyObj.cart);
+  const checkList = getLocalStorageList(localStorageKeyObj.checkList);
+
+  const refreshCartList = cartList.filter((e) => !checkList.includes(e.id));
+
+  window.localStorage.setItem(
+    localStorageKeyObj.cart,
+    JSON.stringify(refreshCartList)
+  );
+  window.localStorage.setItem(localStorageKeyObj.checkList, JSON.stringify([]));
+  window.localStorage.setItem(localStorageKeyObj.order, JSON.stringify({}));
+  window.localStorage.setItem('localStorageKeyObj', JSON.stringify({}));
 }
