@@ -21,6 +21,7 @@ getUserInfo();
 addAllevents();
 
 function addAllevents() {
+  phoneNumberInput.addEventListener('input', maxLengthCheck);
   passwordInput.addEventListener('input', checkPasswordInput);
   passwordCheckInput.addEventListener('input', checkPasswordCorrect);
   searchAddressButton.addEventListener('click', searchAddress);
@@ -43,6 +44,12 @@ function renderUserInfo(user) {
     postalCodeInput.value = userAddress.postalCode;
     address1Input.value = userAddress.address1;
     address2Input.value = userAddress.address2;
+  }
+}
+
+function maxLengthCheck(event) {
+  if (event.target.value.length > event.target.maxLength) {
+    event.target.value = event.target.value.slice(0, event.target.maxLength);
   }
 }
 
@@ -153,7 +160,7 @@ function searchAddress() {
 
 // 현재 비밀번호 입력을 받는 모달 창 출력을 위한 함수
 function checkCurrentPassword() {
-  if (passwordInput.value.length <= 4) {
+  if (passwordInput.value.length < 4) {
     return alert('비밀번호는 반드시 4글자 이상이어야 합니다.');
   }
   modal.classList.add('is-active');
