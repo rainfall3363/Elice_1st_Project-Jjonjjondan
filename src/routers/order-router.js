@@ -119,14 +119,37 @@ orderRouter.patch('/update/:orderId', async function (req, res, next) {
     }
 
     // body data로부터 업데이트할 주문 정보를 추출함.
+    // 전달 받은 정보
     const orderId = req.params.orderId;
-    const orderStatus = req.body.status;
+    const status = req.body.status;
+    // 기존 정보를 불러와야 함
+    const orders = await orderService.getOrdersByOrderId(orderId);
+    const userId = orders.orderer.userId;
+    const fullName = orders.recipient.fullName;
+    const phoneNumber = orders.recipient.phoneNumber;
+    const address = orders.recipient.address;
+    const orderList = orders.order.orderList;
+    const request = orders.order.request;
 
-    if (!orderStatus) {
+    if (!status) {
       throw new Error('입력한 상태 값이 없습니다. 다시 입력해주세요.');
     }
 
-    const toUpdate = { order: { status: orderStatus } };
+    const toUpdate = {
+      orderer: {
+        ...(userId && { userId }),
+      },
+      recipient: {
+        ...(fullName && { fullName }),
+        ...(phoneNumber && { phoneNumber }),
+        ...(address && { address }),
+      },
+      order: {
+        ...(orderList && { orderList }),
+        ...(request && { request }),
+        ...(status && { status }),
+      },
+    };
 
     // 주문 상태를 업데이트함.
     const updatedOrderStatus = await orderService.setOrderStatus(
