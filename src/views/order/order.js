@@ -39,10 +39,9 @@ async function init() {
   const localStorageKeyObj = getLocalStorageKeyObj();
   updateOrderSummary(localStorageKeyObj);
 
-  const orderList = makeOrderList(localStorageKeyObj);
-
   const purchaseButton = document.getElementById('purchaseButton');
   purchaseButton.addEventListener('click', async () => {
+    const orderList = makeOrderList(localStorageKeyObj);
     const receiverName = document.getElementById('receiverName');
     const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
     const postalCodeInput = document.getElementById('postalCode');
@@ -73,8 +72,8 @@ async function init() {
         deleteStorageAfterBuy();
         window.location.href = '/completeOrder';
       }
-    } catch {
-      alert(FAIL_MESSAGE);
+    } catch (err) {
+      alert(err.message);
     }
   });
 }
@@ -155,16 +154,16 @@ function searchAddressEvent() {
 function makeOrderList(localStorageKeyObj) {
   const cartList = getLocalStorageList(localStorageKeyObj.cart);
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
-  const checkedCartList = cartList.map((e) => {
-    if (checkList.includes(e.id)) {
+  const checkedCartList = cartList
+    .filter((e) => checkList.includes(e.id))
+    .map((e) => {
       return {
         productId: e.id,
         productName: e.title,
         quantity: e.quantity,
         price: e.price,
       };
-    }
-  });
+    });
   return checkedCartList;
 }
 
