@@ -1,3 +1,5 @@
+@import url('../globalStyle.css');
+
 .header-search-input {
   width: 20rem;
 }
@@ -233,6 +235,31 @@ input[type='number']::-webkit-outer-spin-button {
   font-weight: 800;
   height: 4rem;
   width: 100%;
+}
+
+.button.is-info.is-focused,
+.button.is-info.is-hovered,
+.button.is-info:focus,
+.button.is-info:hover {
+  background-color: #ff7800;
+  border-color: #ff7800;
+}
+
+.button.is-info {
+  background-color: transparent;
+  border-color: #ff7800;
+  color: #ff7800;
+  font-family: 'EliceDigitalBaeum', sans-serif;
+}
+
+.box.order-summary {
+  background-color: #f7f7f7;
+  border-radius: 6px;
+  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%),
+    0 0 0 1px rgb(10 10 10 / 2%);
+  color: #4a4a4a;
+  display: block;
+  padding: 1.25rem;
 }
 
 @media only screen and (max-width: 500px) {
