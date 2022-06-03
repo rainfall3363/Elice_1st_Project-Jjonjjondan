@@ -4,7 +4,44 @@ import {
   loginUser,
   logoutUser,
   getLocalStorageKeyObj,
+  getLocalStorageList,
 } from '/useful-functions.js';
+
+const FAIL_MESSAGE =
+  '주문에 실패했습니다. 입력 사항을 다시 한 번 확인하고 시도해주세요.';
+
+// const newOrder = {
+//   ordererFullName: userInfo.fullName,
+//   ordererPhoneNumber: userInfo.hasOwnProperty('phoneNumber')
+//     ? userInfo.fullName
+//     : undefined,
+//   recipientFullName: receiverName.value,
+//   recipientPhoneNumber: receiverPhoneNumber.value,
+//   recipientAddress: {
+//     postalCode: postalCodeInput.value,
+//     address1: address1Input.value,
+//     address2: address2Input.value,
+//   },
+//   orderList: orderList,
+//   orderRequest: requestSelectBox.value,
+//   orderStatus: '상품 준비 중',
+// };
+
+const newOrder = {
+  ordererUserId: 'testjam',
+  ordererFullName: '',
+  ordererPhoneNumber: '',
+  recipientFullName: '',
+  recipientPhoneNumber: '',
+  recipientAddress: {
+    postalCode: '',
+    address1: '',
+    address2: '',
+  },
+  orderList: [],
+  orderRequest: '',
+  orderStatus: '상품 준비 중',
+};
 
 init();
 
@@ -13,10 +50,48 @@ async function init() {
   logoutUser();
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
+  searchAddressEvent();
   const localStorageKeyObj = getLocalStorageKeyObj();
   updateOrderSummary(localStorageKeyObj);
-  postOrderInfo();
-  // deleteBuyNowStorage();
+
+  const orderList = makeOrderList(localStorageKeyObj);
+
+  const purchaseButton = document.getElementById('purchaseButton');
+  purchaseButton.addEventListener('click', async () => {
+    const receiverName = document.getElementById('receiverName');
+    const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
+    const postalCodeInput = document.getElementById('postalCode');
+    const address1Input = document.getElementById('address1');
+    const address2Input = document.getElementById('address2');
+    const requestSelectBox = document.getElementById('requestSelectBox');
+
+    newOrder.ordererFullName = userInfo.fullName;
+    newOrder.ordererPhoneNumber = userInfo.hasOwnProperty('phoneNumber')
+      ? userInfo.phoneNumber
+      : undefined;
+    newOrder.recipientFullName =
+      receiverName.value === '' ? undefined : receiverName.value;
+    newOrder.recipientPhoneNumber = receiverPhoneNumber.value;
+    newOrder.recipientAddress.postalCode =
+      postalCodeInput.value === '' ? undefined : postalCodeInput.value;
+    newOrder.recipientAddress.address1 =
+      address1Input.value === '' ? undefined : address1Input.value;
+    newOrder.recipientAddress.address2 =
+      address2Input.value === '' ? undefined : address2Input.value;
+
+    newOrder.orderList = orderList;
+    newOrder.orderRequest = requestSelectBox.value;
+
+    try {
+      const result = await Api.post('/api/order/register', newOrder);
+      if (result) {
+        deleteStorageAfterBuy();
+        window.location.href = '/completeOrder';
+      }
+    } catch {
+      alert(FAIL_MESSAGE);
+    }
+  });
 }
 
 async function renderUserInfo() {
@@ -33,25 +108,104 @@ async function renderUserInfo() {
 function renderDeliveryInfo(userInfo) {
   const receiverName = document.getElementById('receiverName');
   const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
-  const postalCode = document.getElementById('postalCode');
-  const address1 = document.getElementById('address1');
-  const address2 = document.getElementById('address2');
+  const postalCodeInput = document.getElementById('postalCode');
+  const address1Input = document.getElementById('address1');
+  const address2Input = document.getElementById('address2');
 
   receiverName.value = userInfo.fullName;
-  if ('phoneNumber' in userInfo) {
+
+  if (userInfo.hasOwnProperty('phoneNumber')) {
     receiverPhoneNumber.value = userInfo.phoneNumber;
   }
-  if ('address' in userInfo) {
-    postalCode.value = userInfo.address.postalCode;
-    address1.value = userInfo.address.address1;
-    address2.value = userInfo.address.address2;
+  if (userInfo.hasOwnProperty('address')) {
+    postalCodeInput.value = userInfo.address.postalCode;
+    address1Input.value = userInfo.address.address1;
+    address2Input.value = userInfo.address.address2;
   }
 }
 
-function postOrderInfo() {}
+// 주소검색 API 사용 함수
+function searchAddress() {
+  new daum.Postcode({
+    oncomplete: function (data) {
+      let addr = '';
+      let extraAddr = '';
 
-function deleteBuyNowStorage() {
-  window.localStorage.setItem('localStorageKeyObj', JSON.stringify({}));
+      if (data.userSelectedType === 'R') {
+        addr = data.roadAddress;
+      } else {
+        addr = data.jibunAddress;
+      }
+
+      if (data.userSelectedType === 'R') {
+        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+          extraAddr += data.bname;
+        }
+        if (data.buildingName !== '' && data.apartment === 'Y') {
+          extraAddr +=
+            extraAddr !== '' ? ', ' + data.buildingName : data.buildingName;
+        }
+        if (extraAddr !== '') {
+          extraAddr = ' (' + extraAddr + ')';
+        }
+      }
+      const postalCodeInput = document.getElementById('postalCode');
+      const address1Input = document.getElementById('address1');
+      const address2Input = document.getElementById('address2');
+
+      postalCodeInput.value = data.zonecode;
+      address1Input.value = `${addr} ${extraAddr}`;
+      address2Input.value = '';
+      address2Input.placeholder = '상세 주소 입력';
+      address2Input.focus();
+    },
+  }).open();
 }
 
-// console.log(userInfo);
+function searchAddressEvent() {
+  const searchAddressButton = document.getElementById('searchAddressButton');
+  searchAddressButton.addEventListener('click', searchAddress);
+}
+
+function makeOrderList(localStorageKeyObj) {
+  const cartList = getLocalStorageList(localStorageKeyObj.cart);
+  const checkList = getLocalStorageList(localStorageKeyObj.checkList);
+  const checkedCartList = cartList.map((e) => {
+    if (checkList.includes(e.id)) {
+      return {
+        productId: e.id,
+        productName: e.title,
+        quantity: e.quantity,
+        price: e.price,
+      };
+    }
+  });
+  return checkedCartList;
+}
+
+async function postOrderInfo(userInfo, orderList) {
+  try {
+    const result = await Api.post('/api/order/register', newOrder);
+    if (result) {
+      window.location.href = '/completeOrder';
+    }
+  } catch {
+    alert(FAIL_MESSAGE);
+  }
+}
+
+function deleteStorageAfterBuy() {
+  const localStorageKeyObj = getLocalStorageKeyObj();
+  const cartList = getLocalStorageList(localStorageKeyObj.cart);
+  const checkList = getLocalStorageList(localStorageKeyObj.checkList);
+
+  const refreshCartList = cartList.filter((e) => !checkList.includes(e.id));
+
+  window.localStorage.setItem(
+    localStorageKeyObj.cart,
+    JSON.stringify(refreshCartList)
+  );
+  window.localStorage.setItem(localStorageKeyObj.checkList, JSON.stringify([]));
+  window.localStorage.setItem(localStorageKeyObj.order, JSON.stringify({}));
+  window.localStorage.setItem('localStorageKeyObj', JSON.stringify({}));
+}
