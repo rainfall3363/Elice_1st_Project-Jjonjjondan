@@ -67,8 +67,6 @@ export const setRegister = async () => {
         register.insertAdjacentHTML(
           'beforeend',
           `
-    <li>
-    <a href="/account" aria-current="page">
       <span class="icon">
       <i class="fas fa-user is-font-orange"></i>
       </span>
@@ -77,6 +75,7 @@ export const setRegister = async () => {
   </li>
   `
         );
+        register.href = '/account';
       }
     }
   } catch (err) {
@@ -97,8 +96,6 @@ export const changetoAdmin = async () => {
         register.insertAdjacentHTML(
           'beforeend',
           `
-    <li>
-    <a href="/admin" aria-current="page">
       <span class="icon">
         <i class="fas fa-cog is-font-orange"></i>
       </span>

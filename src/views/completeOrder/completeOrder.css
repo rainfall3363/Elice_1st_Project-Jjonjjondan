@@ -1,3 +1,5 @@
+@import url('../globalStyle.css');
+
 .cart-header {
   border-bottom: 1px solid #dbdbdb;
   display: flex;
@@ -47,4 +49,8 @@
 }
 #continueShopping {
   margin-bottom: 4%;
+}
+
+#textcomplete {
+  color: #ff7800;
 }

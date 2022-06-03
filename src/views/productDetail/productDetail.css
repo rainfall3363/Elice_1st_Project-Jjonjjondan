@@ -1,23 +1,27 @@
+@import url('../globalStyle.css');
+
 #brandSection {
-  width: 100vw;
+  max-width: 80vw;
   height: 70vh;
-  margin-top: 7rem;
-  padding-bottom: 10%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #productContent {
   display: flex;
   justify-content: center;
+  max-width: 1344px;
+  margin-top: 7rem;
 }
 
 #imgBox {
-  width: 50vw;
+  width: 60%;
   height: 70vh;
-  margin-right: 3%;
+  margin-right: 5vw;
 }
 
 #productImage {
-  object-fit: cover;
+  object-fit: fill;
   width: 40vw;
   height: 70vh;
   margin-left: 15%;
@@ -26,11 +30,11 @@
 }
 
 #contents {
-  width: 50vw;
+  width: 40%;
   height: 70vh;
   display: flex;
   flex-direction: column;
-  margin-left: 3%;
+  margin-left: 3vw;
   margin-right: 4rem;
   border-top: solid rgb(149, 146, 146);
 }
@@ -51,8 +55,8 @@
 }
 
 #innercontents {
-  width: 45vw;
-  height: 62vh;
+  width: 25vw;
+  height: 57.2vh;
 }
 
 #cartandbuyButtons {
@@ -63,6 +67,19 @@
 #inputCart {
   margin-right: 4%;
   margin-bottom: 4%;
+}
+
+.button.is-success.is-outlined.is-focused,
+.button.is-success.is-outlined.is-hovered,
+.button.is-success.is-outlined:focus,
+.button.is-success.is-outlined:hover {
+  background-color: #ff7800;
+  border-color: #ff7800;
+}
+
+.button.is-success.is-outlined {
+  border-color: #ff7800;
+  color: #ff7800;
 }
 
 @media (max-width: 768px) {
@@ -87,7 +104,7 @@
 
   #productImage {
     position: absolute;
-    object-fit: cover;
+    object-fit: fill;
     width: 70vw;
     height: 50vh;
     vertical-align: middle;
