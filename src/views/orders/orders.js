@@ -41,7 +41,7 @@ function createOrderTable(order) {
     </td>
     <td>${order.order.status}</td>
     <td>
-      <button class="button is-danger is-outlined cancel-button" data-id="${order._id}">취소하기</button>
+      <button class="button is-background-orange is-light cancel-button" data-id="${order._id}">취소하기</button>
     </td>
   </tr>
   `;

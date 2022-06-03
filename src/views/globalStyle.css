@@ -8,13 +8,14 @@
 
 :root {
   --orange: #ff7800;
-  --orange-dark: #ce6102;
+  --orange-light: #ffb16c;
   --yellow: #ffe300;
+  --apricot: #fff6f1;
   --white: #f7f7f7;
 }
 
-* {
-  font-family: 'EliceDigitalBaeum', sans-serif;
+*:not(i) {
+  font-family: 'EliceDigitalBaeum', sans-serif !important;
 }
 
 .is-font-orange {
@@ -26,5 +27,17 @@
 }
 
 .is-background-orange {
-  background-color: var(--orange);
+  background-color: var(--orange) !important;
+}
+
+.is-background-orange.is-light {
+  background-color: var(--orange-light) !important;
+}
+
+.is-background-yellow {
+  background-color: var(--yellow) !important;
+}
+
+.is-background-apricot {
+  background-color: var(--apricot) !important;
 }
