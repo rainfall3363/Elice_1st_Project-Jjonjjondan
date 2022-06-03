@@ -38,42 +38,55 @@ async function init() {
   updateOrderSummary(localStorageKeyObj);
 
   const purchaseButton = document.getElementById('purchaseButton');
-  purchaseButton.addEventListener('click', async () => {
-    const orderList = makeOrderList(localStorageKeyObj);
-    const receiverName = document.getElementById('receiverName');
-    const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
-    const postalCodeInput = document.getElementById('postalCode');
-    const address1Input = document.getElementById('address1');
-    const address2Input = document.getElementById('address2');
-    const requestSelectBox = document.getElementById('requestSelectBox');
+  purchaseButton.addEventListener('click', addNewOrder);
+}
 
-    newOrder.ordererFullName = userInfo.fullName;
-    newOrder.ordererPhoneNumber = userInfo.hasOwnProperty('phoneNumber')
-      ? userInfo.phoneNumber
-      : undefined;
-    newOrder.recipientFullName =
-      receiverName.value === '' ? undefined : receiverName.value;
-    newOrder.recipientPhoneNumber = receiverPhoneNumber.value;
-    newOrder.recipientAddress.postalCode =
-      postalCodeInput.value === '' ? undefined : postalCodeInput.value;
-    newOrder.recipientAddress.address1 =
-      address1Input.value === '' ? undefined : address1Input.value;
-    newOrder.recipientAddress.address2 =
-      address2Input.value === '' ? undefined : address2Input.value;
+async function addNewOrder() {
+  const localStorageKeyObj = getLocalStorageKeyObj();
+  const orderList = makeOrderList(localStorageKeyObj);
+  const receiverName = document.getElementById('receiverName');
+  const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
+  const postalCodeInput = document.getElementById('postalCode');
+  const address1Input = document.getElementById('address1');
+  const address2Input = document.getElementById('address2');
+  const requestSelectBox = document.getElementById('requestSelectBox');
 
-    newOrder.orderList = orderList;
-    newOrder.orderRequest = requestSelectBox.value;
+  newOrder.recipientFullName = receiverName.value;
+  newOrder.recipientPhoneNumber = receiverPhoneNumber.value;
+  newOrder.recipientAddress.postalCode = postalCodeInput.value;
+  newOrder.recipientAddress.address1 = address1Input.value;
+  newOrder.recipientAddress.address2 = address2Input.value;
 
-    try {
-      const result = await Api.post('/api/order/register', newOrder);
-      if (result) {
-        deleteStorageAfterBuy();
-        window.location.href = '/completeOrder';
-      }
-    } catch (err) {
-      alert(err.message);
+  newOrder.orderList = orderList;
+  newOrder.orderRequest = requestSelectBox.value;
+
+  if (!checkIntegrity(newOrder)) {
+    return alert('모든 값을 입력해주세요.');
+  }
+
+  try {
+    const result = await Api.post('/api/order/register', newOrder);
+    if (result) {
+      deleteStorageAfterBuy();
+      window.location.href = '/completeOrder';
     }
-  });
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+function checkIntegrity(newOrder) {
+  if (
+    newOrder.recipientFullName === '' ||
+    newOrder.recipientPhoneNumber === '' ||
+    newOrder.recipientAddress.postalCode === '' ||
+    newOrder.recipientAddress.address1 === '' ||
+    newOrder.recipientAddress.address2 === '' ||
+    newOrder.orderRequest === ''
+  ) {
+    return false;
+  }
+  return true;
 }
 
 async function renderUserInfo() {
@@ -163,17 +176,6 @@ function makeOrderList(localStorageKeyObj) {
       };
     });
   return checkedCartList;
-}
-
-async function postOrderInfo(userInfo, orderList) {
-  try {
-    const result = await Api.post('/api/order/register', newOrder);
-    if (result) {
-      window.location.href = '/completeOrder';
-    }
-  } catch {
-    alert(FAIL_MESSAGE);
-  }
 }
 
 function deleteStorageAfterBuy() {
