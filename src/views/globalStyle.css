@@ -10,6 +10,7 @@
   --orange: #ff7800;
   --yellow: #ffe300;
   --white: #f7f7f7;
+  --lightorange: #ffbc97;
 }
 
 * {
@@ -18,4 +19,12 @@
 
 .is-font-orange {
   color: var(--orange) !important;
+}
+
+.is-font-white {
+  color: var(--white) !important;
+}
+
+.is-font-lightorange {
+  color: var(--lightorange) !important;
 }

@@ -19,6 +19,7 @@ async function init() {
   changetoAdmin();
   const data = await categoryData();
   categoryRender(data);
+  categorymenuRender(data);
 }
 
 async function categoryData() {
@@ -31,6 +32,23 @@ async function categoryData() {
   }
 }
 
+//카테고리 메뉴바 렌더링
+function categorymenuRender(data) {
+  data.forEach((elem) => {
+    const categoryName = elem.categoryName;
+    if (categoryName) {
+      const menulist = document.getElementById('menulist');
+      menulist.insertAdjacentHTML(
+        'beforeend',
+        `
+        <li><a href="/products?categoryName=${categoryName}">${categoryName}</a></li>
+          `
+      );
+    }
+  });
+}
+
+//카테고리 슬라이더 렌더링
 function categoryRender(data) {
   data.forEach((elem) => {
     const description = elem.description;
@@ -45,7 +63,6 @@ function categoryRender(data) {
           <a href="/products?categoryName=${categoryName}" class="slidesAtag">
             <img src="${imageURL}" style="width: 50rem; height: 30rem";>
           </a>
-          <p class="brandName">Camping</p>
           <h3 class="categoryName">${categoryName}</h3>
           <p class="categoryDescription">${description}</p>
           </div>

@@ -1,7 +1,14 @@
+@import url('../globalStyle.css');
+
+.homeSection {
+  display: flex;
+  max-width: 80vw;
+}
+
 /* 슬라이드 css */
 #slideContainer {
   position: relative;
-  max-width: 50rem;
+  max-width: 55vw;
   margin-top: 7rem;
   margin-left: auto;
   margin-right: auto;
@@ -43,7 +50,7 @@
   color: white;
   font-weight: bold;
   font-size: 18px;
-  transition: 0.6s ease;
+  transition: 0.3s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
   text-align: center;
@@ -77,4 +84,21 @@
   text-align: left;
   margin: 0px 0px 5px 0px;
   font-size: 1rem;
+}
+
+/* 카테고리 css */
+.menu {
+  display: flex;
+  flex-direction: column;
+  max-width: 30vw;
+  margin-top: 7rem;
+}
+
+.menu-list a {
+  color: #ff7800;
+}
+
+.menu-list a:hover {
+  background-color: #ff7800;
+  color: #f7f7f7;
 }
