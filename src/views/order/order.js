@@ -4,10 +4,44 @@ import {
   loginUser,
   logoutUser,
   getLocalStorageKeyObj,
+  getLocalStorageList,
 } from '/useful-functions.js';
 
 const FAIL_MESSAGE =
   '주문에 실패했습니다. 입력 사항을 다시 한 번 확인하고 시도해주세요.';
+
+// const newOrder = {
+//   ordererFullName: userInfo.fullName,
+//   ordererPhoneNumber: userInfo.hasOwnProperty('phoneNumber')
+//     ? userInfo.fullName
+//     : undefined,
+//   recipientFullName: receiverName.value,
+//   recipientPhoneNumber: receiverPhoneNumber.value,
+//   recipientAddress: {
+//     postalCode: postalCodeInput.value,
+//     address1: address1Input.value,
+//     address2: address2Input.value,
+//   },
+//   orderList: orderList,
+//   orderRequest: requestSelectBox.value,
+//   orderStatus: '상품 준비 중',
+// };
+
+const newOrder = {
+  ordererUserId: 'testjam',
+  ordererFullName: '',
+  ordererPhoneNumber: '',
+  recipientFullName: '',
+  recipientPhoneNumber: '',
+  recipientAddress: {
+    postalCode: '',
+    address1: '',
+    address2: '',
+  },
+  orderList: [],
+  orderRequest: '',
+  orderStatus: '상품 준비 중',
+};
 
 init();
 
@@ -19,8 +53,44 @@ async function init() {
   searchAddressEvent();
   const localStorageKeyObj = getLocalStorageKeyObj();
   updateOrderSummary(localStorageKeyObj);
-  postOrderInfo();
-  // deleteBuyNowStorage();
+
+  const orderList = makeOrderList(localStorageKeyObj);
+
+  const purchaseButton = document.getElementById('purchaseButton');
+  purchaseButton.addEventListener('click', async () => {
+    const receiverName = document.getElementById('receiverName');
+    const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
+    const postalCodeInput = document.getElementById('postalCode');
+    const address1Input = document.getElementById('address1');
+    const address2Input = document.getElementById('address2');
+    const requestSelectBox = document.getElementById('requestSelectBox');
+
+    newOrder.ordererFullName = userInfo.fullName;
+    newOrder.ordererPhoneNumber = userInfo.hasOwnProperty('phoneNumber')
+      ? userInfo.fullName
+      : undefined;
+    newOrder.recipientFullName =
+      receiverName.value === '' ? undefined : receiverName.value;
+    newOrder.recipientPhoneNumber = receiverPhoneNumber.value;
+    newOrder.recipientAddress.postalCode =
+      postalCodeInput.value === '' ? undefined : postalCodeInput.value;
+    newOrder.recipientAddress.address1 =
+      address1Input.value === '' ? undefined : address1Input.value;
+    newOrder.recipientAddress.address2 =
+      address2Input.value === '' ? undefined : address2Input.value;
+
+    newOrder.orderList = orderList;
+    newOrder.orderRequest = requestSelectBox.value;
+
+    try {
+      const result = await Api.post('/api/order/register', newOrder);
+      if (result) {
+        window.location.href = '/completeOrder';
+      }
+    } catch {
+      alert(FAIL_MESSAGE);
+    }
+  });
 }
 
 async function renderUserInfo() {
@@ -37,27 +107,24 @@ async function renderUserInfo() {
 function renderDeliveryInfo(userInfo) {
   const receiverName = document.getElementById('receiverName');
   const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
-  const postalCode = document.getElementById('postalCode');
-  const address1 = document.getElementById('address1');
-  const address2 = document.getElementById('address2');
+  const postalCodeInput = document.getElementById('postalCode');
+  const address1Input = document.getElementById('address1');
+  const address2Input = document.getElementById('address2');
 
   receiverName.value = userInfo.fullName;
+
   if (userInfo.hasOwnProperty('phoneNumber')) {
     receiverPhoneNumber.value = userInfo.phoneNumber;
   }
   if (userInfo.hasOwnProperty('address')) {
-    postalCode.value = userInfo.address.postalCode;
-    address1.value = userInfo.address.address1;
-    address2.value = userInfo.address.address2;
+    postalCodeInput.value = userInfo.address.postalCode;
+    address1Input.value = userInfo.address.address1;
+    address2Input.value = userInfo.address.address2;
   }
 }
 
 // 주소검색 API 사용 함수
 function searchAddress() {
-  const postalCodeInput = document.getElementById('postalCode');
-  const address1Input = document.getElementById('address1');
-  const address2Input = document.getElementById('address2');
-
   new daum.Postcode({
     oncomplete: function (data) {
       let addr = '';
@@ -81,6 +148,9 @@ function searchAddress() {
           extraAddr = ' (' + extraAddr + ')';
         }
       }
+      const postalCodeInput = document.getElementById('postalCode');
+      const address1Input = document.getElementById('address1');
+      const address2Input = document.getElementById('address2');
 
       postalCodeInput.value = data.zonecode;
       address1Input.value = `${addr} ${extraAddr}`;
@@ -96,44 +166,23 @@ function searchAddressEvent() {
   searchAddressButton.addEventListener('click', searchAddress);
 }
 
-async function postOrderInfo() {
-  // const newOrder = {
-  //   orderer: {
-  //     userId: '628c691d587f8e4eda07ef61ㅁㅁㅁ',
-  //     fullName: '테스트',
-  //     phoneNumber: '01012345678',
-  //   },
-  //   recipient: {
-  //     fullName: '김재민',
-  //     phoneNumber: '01012345567',
-  //     address: {
-  //       postalCode: '12234',
-  //       address1: '대전시 대덕구 중리동 232-23',
-  //       address2: 'ㅇㅇ빌 ㅇㅇㅇ호',
-  //     },
-  //   },
-  //   order: {
-  //     status: '상품 배송중',
-  //     orderList: [],
-  //   },
-  // };
+function makeOrderList(localStorageKeyObj) {
+  const cartList = getLocalStorageList(localStorageKeyObj.cart);
+  const checkList = getLocalStorageList(localStorageKeyObj.checkList);
+  const checkedCartList = cartList.map((e) => {
+    if (checkList.includes(e.id)) {
+      return {
+        productId: e.id,
+        productName: e.title,
+        quantity: e.quantity,
+        price: e.price,
+      };
+    }
+  });
+  return checkedCartList;
+}
 
-  const newOrder = {
-    ordererUserId: '628c691d587f8e4eda07ef61',
-    ordererFullName: '테스트',
-    ordererPhoneNumber: '01012345678',
-    recipientFullName: '김재민',
-    recipientPhoneNumber: '01012345567',
-    recipientAddress: {
-      postalCode: '12234',
-      address1: '대전광역시 대덕구 중리동',
-      address2: '무슨빌 3층 303호',
-    },
-    orderList: [],
-    orderRequest: '문앞요',
-    orderStatus: '상품 배송중',
-  };
-
+async function postOrderInfo(userInfo, orderList) {
   try {
     const result = await Api.post('/api/order/register', newOrder);
     if (result) {
@@ -143,9 +192,3 @@ async function postOrderInfo() {
     alert(FAIL_MESSAGE);
   }
 }
-
-function deleteBuyNowStorage() {
-  window.localStorage.setItem('localStorageKeyObj', JSON.stringify({}));
-}
-
-// console.log(userInfo);
