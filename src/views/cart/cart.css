@@ -249,6 +249,7 @@ input[type='number']::-webkit-outer-spin-button {
   background-color: transparent;
   border-color: #ff7800;
   color: #ff7800;
+  font-family: 'EliceDigitalBaeum', sans-serif;
 }
 
 .box.order-summary {
