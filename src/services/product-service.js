@@ -1,11 +1,9 @@
-// 이제 userModel 받아왔으니 admin 검색 가능
-import { productModel, userModel } from '../db';
+import { productModel } from '../db';
 
 class ProductService {
   // 본 파일의 맨 아래에서, new ProductService(productModel) 하면, 이 함수의 인자로 전달됨
-  constructor(productModel, userModel) {
+  constructor(productModel) {
     this.productModel = productModel;
-    this.userModel = userModel;
   }
 
   // 상품 등록
@@ -68,6 +66,6 @@ class ProductService {
   }
 }
 
-const productService = new ProductService(productModel, userModel);
+const productService = new ProductService(productModel);
 
 export { productService };

@@ -1,6 +1,5 @@
-// 평가기준표 기반 작성
 import { Schema } from 'mongoose';
-// 상품번호, 상품명, 가격, 설명, 제조사, 카테고리
+// 상품명, 가격, 설명, 제조사, 카테고리명, 재고
 const ProductSchema = new Schema(
   {
     title: {
