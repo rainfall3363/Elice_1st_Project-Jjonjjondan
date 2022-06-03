@@ -154,16 +154,16 @@ function searchAddressEvent() {
 function makeOrderList(localStorageKeyObj) {
   const cartList = getLocalStorageList(localStorageKeyObj.cart);
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
-  const checkedCartList = cartList.map((e) => {
-    if (checkList.includes(e.id)) {
+  const checkedCartList = cartList
+    .filter((e) => checkList.includes(e.id))
+    .map((e) => {
       return {
         productId: e.id,
         productName: e.title,
         quantity: e.quantity,
         price: e.price,
       };
-    }
-  });
+    });
   return checkedCartList;
 }
 
