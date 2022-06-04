@@ -21,9 +21,7 @@ async function init() {
   renderDeliveryInfo(userInfo);
   const localStorageKeyObj = getLocalStorageKeyObj();
   if (Object.keys(localStorageKeyObj).length === 0) {
-    alert(
-      '이미 결제하신 내역이 있습니다. 주문 상세페이지에서 다시 주문하여 주시기 바랍니다.'
-    );
+    alert('정상적인 경로로 다시 주문 진행하여 주시기 바랍니다.');
     return;
   }
   updateOrderSummary(localStorageKeyObj);
