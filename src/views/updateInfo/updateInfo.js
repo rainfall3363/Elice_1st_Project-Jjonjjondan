@@ -169,10 +169,16 @@ function checkCurrentPassword() {
 }
 
 function checkIntegrity() {
+  const password = passwordInput.value;
+  const passwordCheck = passwordCheckInput.value;
+
   if (nameInput.value.length < 2) {
     alert('이름은 반드시 2글자 이상이어야 합니다.');
     return false;
-  } else if (passwordInput.value.length < 4) {
+  } else if (
+    password.length < 4 &&
+    (password.length !== 0 || passwordCheck.length !== 0)
+  ) {
     alert('비밀번호는 반드시 4글자 이상이어야 합니다.');
     return false;
   }
