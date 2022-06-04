@@ -148,6 +148,12 @@ async function addNewOrder() {
 function makeOrderList(localStorageKeyObj) {
   const cartList = getLocalStorageList(localStorageKeyObj.cart);
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
+  if (checkList.length == 0) {
+    alert(
+      '상품을 선택하지 않으셨습니다. 상품을 선택하여 다시 진행하여 주시길 바랍니다.'
+    );
+    window.location.href = document.referrer;
+  }
   const checkedCartList = cartList
     .filter((e) => checkList.includes(e.id))
     .map((e) => {
