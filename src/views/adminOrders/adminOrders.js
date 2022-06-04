@@ -35,10 +35,9 @@ function createOrderTable(order, index) {
   const productNameString = order.order.orderList.reduce((str, element) => {
     return (str += `<p>${element.productName} ${element.quantity}개</p>`);
   }, ``);
-  const totalPrice = order.order.orderList.reduce(
-    (_, element) => element.price,
-    0
-  );
+  const totalPrice = order.order.orderList.reduce((acc, element) => {
+    return (acc += element.price * element.quantity);
+  }, 0);
   const orderDate = order.createdAt?.split('T')[0].replace(/[-]/g, '');
   const status = order.order.status.trim();
 

@@ -287,7 +287,6 @@ export const updateOrderSummary = (localStorageKeyObj) => {
 
   const cartList = getLocalStorageList(localStorageKeyObj.cart);
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
-
   const checkedCartList = cartList.filter((e) => checkList.includes(e.id));
 
   if (localStorageKeyObj.cart === 'buyNowCart') {

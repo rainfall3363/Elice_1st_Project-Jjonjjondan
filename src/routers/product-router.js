@@ -68,6 +68,24 @@ productRouter.get('/info/:productId', async function (req, res, next) {
   }
 });
 
+productRouter.get('/search', async function (req, res, next) {
+  try {
+    const searchWord = req.query.searchWord;
+    const products = await productService.getProducts();
+    let resultArr = [];
+
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].title.includes(searchWord)) {
+        resultArr.push(products[i]);
+      }
+    }
+
+    res.status(200).json(resultArr);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // 상품 정보 수정
 // (예를 들어 /api/products/abc12345 로 요청하면 req.params.productId는 'abc12345' 문자열로 됨)
 productRouter.patch('/update/:productId', async function (req, res, next) {

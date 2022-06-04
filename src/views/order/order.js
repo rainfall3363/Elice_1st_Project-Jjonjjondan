@@ -4,24 +4,10 @@ import {
   loginUser,
   logoutUser,
   setRegister,
+  changetoAdmin,
   getLocalStorageKeyObj,
   getLocalStorageList,
 } from '/useful-functions.js';
-
-const FAIL_MESSAGE =
-  '주문에 실패했습니다. 입력 사항을 다시 한 번 확인하고 시도해주세요.';
-
-const newOrder = {
-  recipientFullName: '',
-  recipientPhoneNumber: '',
-  recipientAddress: {
-    postalCode: '',
-    address1: '',
-    address2: '',
-  },
-  orderList: [],
-  orderRequest: '',
-};
 
 init();
 
@@ -29,49 +15,18 @@ async function init() {
   loginUser();
   logoutUser();
   setRegister();
+  changetoAdmin();
+
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
-  searchAddressEvent();
   const localStorageKeyObj = getLocalStorageKeyObj();
+  if (Object.keys(localStorageKeyObj).length === 0) {
+    alert('정상적인 경로로 다시 주문 진행하여 주시기 바랍니다.');
+    return;
+  }
   updateOrderSummary(localStorageKeyObj);
-
-  const purchaseButton = document.getElementById('purchaseButton');
-  purchaseButton.addEventListener('click', async () => {
-    const orderList = makeOrderList(localStorageKeyObj);
-    const receiverName = document.getElementById('receiverName');
-    const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
-    const postalCodeInput = document.getElementById('postalCode');
-    const address1Input = document.getElementById('address1');
-    const address2Input = document.getElementById('address2');
-    const requestSelectBox = document.getElementById('requestSelectBox');
-
-    newOrder.ordererFullName = userInfo.fullName;
-    newOrder.ordererPhoneNumber = userInfo.hasOwnProperty('phoneNumber')
-      ? userInfo.phoneNumber
-      : undefined;
-    newOrder.recipientFullName =
-      receiverName.value === '' ? undefined : receiverName.value;
-    newOrder.recipientPhoneNumber = receiverPhoneNumber.value;
-    newOrder.recipientAddress.postalCode =
-      postalCodeInput.value === '' ? undefined : postalCodeInput.value;
-    newOrder.recipientAddress.address1 =
-      address1Input.value === '' ? undefined : address1Input.value;
-    newOrder.recipientAddress.address2 =
-      address2Input.value === '' ? undefined : address2Input.value;
-
-    newOrder.orderList = orderList;
-    newOrder.orderRequest = requestSelectBox.value;
-
-    try {
-      const result = await Api.post('/api/order/register', newOrder);
-      if (result) {
-        deleteStorageAfterBuy();
-        window.location.href = '/completeOrder';
-      }
-    } catch (err) {
-      alert(err.message);
-    }
-  });
+  addAllEvents();
+  window.addEventListener('beforeunload', deleteStorageAfterBuy);
 }
 
 async function renderUserInfo() {
@@ -102,6 +57,14 @@ function renderDeliveryInfo(userInfo) {
     address1Input.value = userInfo.address.address1;
     address2Input.value = userInfo.address.address2;
   }
+}
+
+function addAllEvents() {
+  const searchAddressButton = document.getElementById('searchAddressButton');
+  searchAddressButton.addEventListener('click', searchAddress);
+
+  const purchaseButton = document.getElementById('purchaseButton');
+  purchaseButton.addEventListener('click', addNewOrder);
 }
 
 // 주소검색 API 사용 함수
@@ -142,14 +105,55 @@ function searchAddress() {
   }).open();
 }
 
-function searchAddressEvent() {
-  const searchAddressButton = document.getElementById('searchAddressButton');
-  searchAddressButton.addEventListener('click', searchAddress);
+async function addNewOrder() {
+  const localStorageKeyObj = getLocalStorageKeyObj();
+  const receiverName = document.getElementById('receiverName');
+  const receiverPhoneNumber = document.getElementById('receiverPhoneNumber');
+  const postalCodeInput = document.getElementById('postalCode');
+  const address1Input = document.getElementById('address1');
+  const address2Input = document.getElementById('address2');
+  const requestSelectBox = document.getElementById('requestSelectBox');
+
+  const newOrder = {
+    recipientFullName: receiverName.value,
+    recipientPhoneNumber: receiverPhoneNumber.value,
+    recipientAddress: {
+      postalCode: postalCodeInput.value,
+      address1: address1Input.value,
+      address2: address2Input.value,
+    },
+    orderList: makeOrderList(localStorageKeyObj),
+    orderRequest:
+      requestSelectBox.options[requestSelectBox.selectedIndex].text ===
+      '배송시 요청사항을 선택해 주세요.'
+        ? ''
+        : requestSelectBox.options[requestSelectBox.selectedIndex].text,
+  };
+
+  if (!checkIntegrity(newOrder)) {
+    return alert('모든 값을 입력해주세요.');
+  }
+
+  try {
+    const result = await Api.post('/api/order/register', newOrder);
+    if (result) {
+      deleteStorageAfterBuy();
+      window.location.href = '/completeOrder';
+    }
+  } catch (err) {
+    alert(err.message);
+  }
 }
 
 function makeOrderList(localStorageKeyObj) {
   const cartList = getLocalStorageList(localStorageKeyObj.cart);
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
+  if (checkList.length == 0) {
+    alert(
+      '상품을 선택하지 않으셨습니다. 상품을 선택하여 다시 진행하여 주시길 바랍니다.'
+    );
+    window.location.href = document.referrer;
+  }
   const checkedCartList = cartList
     .filter((e) => checkList.includes(e.id))
     .map((e) => {
@@ -163,19 +167,28 @@ function makeOrderList(localStorageKeyObj) {
   return checkedCartList;
 }
 
-async function postOrderInfo(userInfo, orderList) {
-  try {
-    const result = await Api.post('/api/order/register', newOrder);
-    if (result) {
-      window.location.href = '/completeOrder';
-    }
-  } catch {
-    alert(FAIL_MESSAGE);
+function checkIntegrity(newOrder) {
+  if (
+    newOrder.recipientFullName === '' ||
+    newOrder.recipientPhoneNumber === '' ||
+    newOrder.recipientAddress.postalCode === '' ||
+    newOrder.recipientAddress.address1 === '' ||
+    newOrder.recipientAddress.address2 === '' ||
+    newOrder.orderRequest === ''
+  ) {
+    return false;
   }
+  return true;
 }
 
 function deleteStorageAfterBuy() {
   const localStorageKeyObj = getLocalStorageKeyObj();
+  if (Object.keys(localStorageKeyObj).length === 0) {
+    alert(
+      '이미 결제하신 내역이 있습니다. 주문 상세페이지에서 다시 주문하여 주시기 바랍니다.'
+    );
+    return;
+  }
   const cartList = getLocalStorageList(localStorageKeyObj.cart);
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
 
