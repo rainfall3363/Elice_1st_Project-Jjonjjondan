@@ -19,9 +19,16 @@ async function init() {
 
   const userInfo = await renderUserInfo();
   renderDeliveryInfo(userInfo);
-  addAllEvents();
   const localStorageKeyObj = getLocalStorageKeyObj();
+  if (Object.keys(localStorageKeyObj).length === 0) {
+    alert(
+      '이미 결제하신 내역이 있습니다. 주문 상세페이지에서 다시 주문하여 주시기 바랍니다.'
+    );
+    return;
+  }
   updateOrderSummary(localStorageKeyObj);
+  addAllEvents();
+  window.addEventListener('beforeunload', deleteStorageAfterBuy);
 }
 
 async function renderUserInfo() {
@@ -107,6 +114,7 @@ async function addNewOrder() {
   const postalCodeInput = document.getElementById('postalCode');
   const address1Input = document.getElementById('address1');
   const address2Input = document.getElementById('address2');
+  const requestSelectBox = document.getElementById('requestSelectBox');
 
   const newOrder = {
     recipientFullName: receiverName.value,
@@ -117,7 +125,11 @@ async function addNewOrder() {
       address2: address2Input.value,
     },
     orderList: makeOrderList(localStorageKeyObj),
-    orderRequest: '',
+    orderRequest:
+      requestSelectBox.options[requestSelectBox.selectedIndex].text ===
+      '배송시 요청사항을 선택해 주세요.'
+        ? ''
+        : requestSelectBox.options[requestSelectBox.selectedIndex].text,
   };
 
   if (!checkIntegrity(newOrder)) {
@@ -167,6 +179,12 @@ function checkIntegrity(newOrder) {
 
 function deleteStorageAfterBuy() {
   const localStorageKeyObj = getLocalStorageKeyObj();
+  if (Object.keys(localStorageKeyObj).length === 0) {
+    alert(
+      '이미 결제하신 내역이 있습니다. 주문 상세페이지에서 다시 주문하여 주시기 바랍니다.'
+    );
+    return;
+  }
   const cartList = getLocalStorageList(localStorageKeyObj.cart);
   const checkList = getLocalStorageList(localStorageKeyObj.checkList);
 
