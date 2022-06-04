@@ -1,4 +1,4 @@
-@import url('../globalStyle.css');
+@import url('/globalStyle.css');
 
 #setDiv {
   display: flex;
@@ -66,4 +66,24 @@
   margin: auto;
   padding: auto;
   color: #ff7800;
+}
+
+#searchInput {
+  width: 400px;
+  height: 65px;
+  border: none;
+  border-bottom: 3px solid var(--orange);
+  font-size: 1.5rem;
+}
+
+#searchInput:focus {
+  outline: none;
+  border: none !important;
+  border-bottom: 3px solid var(--orange) !important;
+}
+
+.search-button {
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
 }

@@ -11,7 +11,7 @@
   --orange-light: #ffb16c;
   --yellow: #ffe300;
   --apricot: #fff6f1;
-  --white: #f7f7f7;
+  --white: #fff;
   --lightorange: #ffbc97;
 }
 
@@ -52,4 +52,8 @@ input:focus {
 
 .is-background-apricot {
   background-color: var(--apricot) !important;
+}
+
+.is-background-white {
+  background-color: var(--white);
 }
