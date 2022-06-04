@@ -62,8 +62,8 @@ async function renderProduct(productData) {
       <p id="description">${productData.description}</p>
     </div>
   <div id="cartandbuyButtons">
-    <button id="inputCart" class="button is-info is-outlined button is-medium is-fullwidth">장바구니 담기</button>
-    <button id="buyNow" class="button is-success is-outlined button is-medium is-fullwidth">바로 구매하기</button>
+    <button id="inputCart" class="button is-info is-outlined is-medium is-fullwidth">장바구니 담기</button>
+    <button id="buyNow" class="button is-success is-outlined is-medium is-fullwidth">바로 구매하기</button>
   </div>
   </div>
   </section>
@@ -75,6 +75,15 @@ async function renderProduct(productData) {
 function buttonEvents(data) {
   const inputCartbutton = document.getElementById('inputCart');
   const buyNowbutton = document.getElementById('buyNow');
+
+  if (data.inventory === 0) {
+    inputCartbutton.setAttribute('disabled', true);
+    inputCartbutton.innerText = '매진';
+    inputCartbutton.classList.remove('is-info');
+    buyNowbutton.setAttribute('disabled', true);
+    buyNowbutton.innerText = '매진';
+    buyNowbutton.classList.remove('is-success');
+  }
 
   inputCartbutton.addEventListener('click', inputcartbuttondata(data));
   buyNowbutton.addEventListener('click', buyNow(data));
