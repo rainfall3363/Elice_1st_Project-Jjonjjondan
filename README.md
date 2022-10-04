@@ -3,7 +3,7 @@
 헬스 관련제품들을 조회하고, 장바구니에 추가하고, 또 주문을 할 수 있는 쇼핑몰 프로젝트입니다. <br />
 쫀쫀단이라는 이름은 쫀득쫀득 단백질의 약자입니다.
 
-### http://kdt-sw2-seoul-team19.elicecoding.com/
+### https://docs.google.com/presentation/d/1rg6Lc1mpnJH5TWTJ-7YoLQj_h1RY6MqsfxluHdG_W1I/edit?usp=sharing
 
 <br>
 
